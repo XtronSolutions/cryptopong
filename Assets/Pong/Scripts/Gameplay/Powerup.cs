@@ -40,7 +40,7 @@ public class Powerup : MonoBehaviour {
 		FadePowerup (false);
 	}
 
-	public void TriggerPowerup(Paddle pad)
+	public void TriggerPowerup(BasePaddle pad)
 	{
 		PowerUp (pad);
 		FadePowerup (true);
@@ -63,7 +63,7 @@ public class Powerup : MonoBehaviour {
 	}
 
 
-	public void PowerUp(Paddle pad)
+	public void PowerUp(BasePaddle pad)
 	{
 		switch (type)
 		{
@@ -86,31 +86,31 @@ public class Powerup : MonoBehaviour {
 	}
 
 
-	public void  PaddleSpeedUp(Paddle pad)
+	public void  PaddleSpeedUp(BasePaddle pad)
 	{
 		if(pad.speed<15)
 			pad.speed += Managers.PowUps.speedUpValue;
 	}
 
-	public void PaddleSpeedDown(Paddle pad)
+	public void PaddleSpeedDown(BasePaddle pad)
 	{
 		if(pad.speed>5)
 			pad.speed -= Managers.PowUps.speedDownValue;
 	}
 
-	public void PaddleEnlarge(Paddle pad)
+	public void PaddleEnlarge(BasePaddle pad)
 	{	
 		if(pad.transform.localScale.x <0.7f)
 			pad.transform.localScale += new Vector3 (Managers.PowUps.enlargeValue,0,0);
 	}
 
-	public void PaddleShrink(Paddle pad)
+	public void PaddleShrink(BasePaddle pad)
 	{
 		if(pad.transform.localScale.x >0.1f)
 			pad.transform.localScale -= new Vector3 (Managers.PowUps.shrinkValue,0,0);
 	}
 
-	public IEnumerator PaddleGhost(Paddle pad)
+	public IEnumerator PaddleGhost(BasePaddle pad)
 	{
 		print ("IMPLEMENT YOUR GHOSTING USE YOUR IMAGINATION xd");
 		yield break;

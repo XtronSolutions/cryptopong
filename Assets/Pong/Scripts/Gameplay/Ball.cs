@@ -21,7 +21,7 @@ public class Ball : MonoBehaviour
     [HideInInspector]
 	public Rigidbody2D ballBody;
     [HideInInspector]
-    public Paddle lastTouchedPaddle;
+    public BasePaddle lastTouchedPaddle;
 
 	void Awake ()
 	{		
@@ -52,7 +52,7 @@ public class Ball : MonoBehaviour
 			temp = (other.transform.position.y > 1) ? -1 : 1;
 			Vector2 dir = new Vector2 (x, temp).normalized;
 			ballBody.velocity = dir * velocity.magnitude * speedMultiplier ;
-			lastTouchedPaddle = other.gameObject.GetComponent<Paddle>();
+			lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
 		} 
 	}
 

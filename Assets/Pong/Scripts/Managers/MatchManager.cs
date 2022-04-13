@@ -28,8 +28,8 @@ public class MatchManager : MonoBehaviour
         aiPaddle.transform.position = Constants.AI;
         playerPaddle.transform.localScale = Constants.PADDLE_SCALE;
         aiPaddle.transform.localScale = Constants.PADDLE_SCALE;
-        playerPaddle.GetComponent<Paddle>().speed = Constants.PADDLE_SPEED;
-        aiPaddle.GetComponent<Paddle>().speed = Constants.PADDLE_SPEED;
+        playerPaddle.GetComponent<BasePaddle>().speed = Constants.PADDLE_SPEED;
+        aiPaddle.GetComponent<BasePaddle>().speed = Constants.PADDLE_SPEED_AI;
     }
 
     public void RetrieveSavedMatch()
@@ -41,8 +41,8 @@ public class MatchManager : MonoBehaviour
         aiPaddle.transform.localScale = savedGame.aiScale;
 
         ball.ballBody.velocity = savedGame.ballVelocity;
-        playerPaddle.GetComponent<Paddle>().speed = savedGame.playerSpeed;
-        aiPaddle.GetComponent<Paddle>().speed = savedGame.aiSpeed;
+        playerPaddle.GetComponent<BasePaddle>().speed = savedGame.playerSpeed;
+        aiPaddle.GetComponent<BasePaddle>().speed = savedGame.aiSpeed;
 
         Managers.Score.aiScore = savedGame.aiScore;
         Managers.Score.playerScore = savedGame.playerScore;
@@ -57,8 +57,8 @@ public class MatchManager : MonoBehaviour
         savedGame.aiScale = aiPaddle.transform.localScale;
 
         savedGame.ballVelocity = ball.ballBody.velocity;
-        savedGame.playerSpeed = playerPaddle.GetComponent<Paddle>().speed;
-        savedGame.aiSpeed = aiPaddle.GetComponent<Paddle>().speed;
+        savedGame.playerSpeed = playerPaddle.GetComponent<BasePaddle>().speed;
+        savedGame.aiSpeed = aiPaddle.GetComponent<BasePaddle>().speed;
 
         savedGame.aiScore = Managers.Score.aiScore;
         savedGame.playerScore = Managers.Score.playerScore;
