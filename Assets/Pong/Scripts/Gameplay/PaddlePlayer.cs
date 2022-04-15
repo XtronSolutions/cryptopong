@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PaddlePlayer : BasePaddle
 {
+    private Vector2 DefaultPosition;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -26,7 +28,7 @@ public class PaddlePlayer : BasePaddle
 
     void KeyboardInput()
     {
-        float direction = Input.GetAxisRaw("Horizontal");
+        float direction = Input.GetAxisRaw("Vertical");
         CheckMovementBlock(direction);
     }
 
@@ -36,29 +38,29 @@ public class PaddlePlayer : BasePaddle
 
         if (Input.GetMouseButton(0))
         {
-            direction = (Input.mousePosition.x > Screen.width / 2) ? 1 : -1;
+            direction = (Input.mousePosition.y > Screen.width / 2) ? 1 : -1;
         }
         CheckMovementBlock(direction);
     }
 
     void DragInput()
     {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, 0, 0);
+        Vector3 curScreenPoint = new Vector3(0, Input.mousePosition.y, 0);
 
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-        curPosition.y = -4;
+        curPosition.y = Mathf.Clamp(curPosition.y, -MaxBound, MaxBound);;
         curPosition.z = 0;
-        curPosition.x = Mathf.Clamp(curPosition.x, -MaxBound, MaxBound);
+        curPosition.x = DefaultPosition.x;
         transform.position = curPosition;
     }
 
     void CheckMovementBlock(float dir)
     {
-        float nextFramePosX = Mathf.Abs((new Vector2(dir, 0) * speed * Time.deltaTime).x + transform.position.x);
+        float nextFramePosX = Mathf.Abs((new Vector2(0, dir) * speed * Time.deltaTime).y + transform.position.y);
 
         if (nextFramePosX < MaxBound)
         {
-            transform.Translate(new Vector2(dir, 0) * speed * Time.deltaTime);
+            transform.Translate(new Vector2(0, dir) * speed * Time.deltaTime);
         }
     }
 }

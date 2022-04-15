@@ -16,9 +16,9 @@ using UnityEngine.SceneManagement;
 
 public static class Constants 
 {
-	public static readonly Vector2 PLAYER           = new  Vector2(0, -4f);
-	public static readonly Vector2 AI               = new  Vector2(0,  4f);
-	public static readonly Vector2 PADDLE_SCALE     = new  Vector2(0.4f,  0.1f);
+	public static readonly Vector2 PLAYER           = new  Vector2(8, -0.25f);
+	public static readonly Vector2 AI               = new  Vector2(-8,  -0.25f);
+	public static readonly Vector2 PADDLE_SCALE     = new  Vector2(0.1f,  0.4f);
 	public static readonly float   PADDLE_SPEED     = 10f;
 	public static readonly float   PADDLE_SPEED_AI     = 4f;
 }

@@ -5,14 +5,17 @@ using UnityEngine;
 public class PaddleBot : BasePaddle
 {
     [SerializeField] private float ReactionSpeed;
-    
-    [Range(1, 3),Header("Dumb - Smart - Tony Stark")]
+
+    [Range(1, 3), Header("Dumb - Smart - Tony Stark")]
     [SerializeField] protected int Intelligence = 3;
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        Events.OnIntelligenceChanged += OnIntelligenceChanged;
     }
+
+    private void OnIntelligenceChanged(int value) => Intelligence = value;
 
     // Update is called once per frame
     protected override void Update()
@@ -27,21 +30,21 @@ public class PaddleBot : BasePaddle
 
     void AIControl()
     {
-        if (Mathf.Sign(transform.position.y) == Mathf.Sign(_ball.ballBody.velocity.y))
+        if (Mathf.Sign(transform.position.x) == Mathf.Sign(_ball.ballBody.velocity.x))
         {
-            if (_ball.transform.position.x > transform.position.x + 0.410f)
+            if (_ball.transform.position.y > transform.position.y + 0.410f)
             {
-                if (_rigidBody.velocity.x < 0)
+                if (_rigidBody.velocity.y < 0)
                     _rigidBody.velocity = Vector2.zero;
 
-                _rigidBody.velocity = Vector2.right * ReactionSpeed;
+                _rigidBody.velocity = Vector2.up * ReactionSpeed;
             }
-            else if (_ball.transform.position.x < transform.position.x - 0.410f)
+            else if (_ball.transform.position.y < transform.position.y - 0.410f)
             {
-                if (_rigidBody.velocity.x > 0)
+                if (_rigidBody.velocity.y > 0)
                     _rigidBody.velocity = Vector2.zero;
 
-                _rigidBody.velocity = Vector2.left * ReactionSpeed;
+                _rigidBody.velocity = Vector2.down * ReactionSpeed;
             }
             else
             {
