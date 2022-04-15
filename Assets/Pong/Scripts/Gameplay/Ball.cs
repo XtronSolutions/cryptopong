@@ -31,14 +31,17 @@ public class Ball : MonoBehaviour
 
     private void OnEnable()
     {
+        Events.OnBallSpeedChanged += OnBallSpeedChanged;
         Events.OnImpactMultiplierChanged += OnImpactMultiplierChanged;
     }
 
     private void OnDisable()
     {
+        Events.OnBallSpeedChanged += OnBallSpeedChanged;
         Events.OnImpactMultiplierChanged -= OnImpactMultiplierChanged;
     }
 
+    private void OnBallSpeedChanged(float value) => speed = value;
     private void OnImpactMultiplierChanged(float value) => speedMultiplier = value;
 
     void OnCollisionEnter2D(Collision2D other)

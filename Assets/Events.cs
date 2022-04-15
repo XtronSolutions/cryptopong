@@ -10,4 +10,7 @@ public static partial class Events
 
     public static event Action<float> OnImpactMultiplierChanged = null;
     public static void DoChangeImpactMultiplier(float value) => OnImpactMultiplierChanged?.Invoke(value);
+
+    public static event Action<float> OnBallSpeedChanged = null;
+    public static void DoChangeBallSpeed(float value) => OnBallSpeedChanged?.Invoke(value);
 }
