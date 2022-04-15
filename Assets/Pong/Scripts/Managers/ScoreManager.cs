@@ -12,36 +12,37 @@
 using UnityEngine;
 using System.Collections;
 
-public class ScoreManager : MonoBehaviour {
+public class ScoreManager : MonoBehaviour
+{
 
-	public int playerScore;
-	public int aiScore;
-	public int scoreLimit;
+    public int playerScore;
+    public int aiScore;
+    public int scoreLimit;
 
-	public PaddleOwner Winner
-	{
-		get
-		{ 
-			return (aiScore > playerScore) ? PaddleOwner.PLAYER : PaddleOwner.AI;
-		}
-	}
+    public PaddleOwner Winner
+    {
+        get
+        {
+            return (playerScore > aiScore) ? PaddleOwner.PLAYER : PaddleOwner.AI;
+        }
+    }
 
-	public void OnScore(PaddleOwner scorer)
-	{	
-		if (scorer == PaddleOwner.PLAYER)
-		{
-			playerScore++;
-		} 
-		else if (scorer == PaddleOwner.AI)
-		{
-			aiScore++;
-		}
+    public void OnScore(PaddleOwner scorer)
+    {
+        if (scorer == PaddleOwner.PLAYER)
+        {
+            playerScore++;
+        }
+        else if (scorer == PaddleOwner.AI)
+        {
+            aiScore++;
+        }
 
-		Managers.UI.inGameUI.UpdateScore ();
+        Managers.UI.inGameUI.UpdateScore();
 
-		if(playerScore == scoreLimit || aiScore == scoreLimit)
-			Managers.Game.SetState (typeof(GameOverState));
-		else 
-			Managers.Game.SetState (typeof(GoalState));
-	}
+        if (playerScore == scoreLimit || aiScore == scoreLimit)
+            Managers.Game.SetState(typeof(GameOverState));
+        else
+            Managers.Game.SetState(typeof(GoalState));
+    }
 }

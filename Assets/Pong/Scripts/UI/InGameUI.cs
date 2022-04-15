@@ -13,49 +13,50 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class InGameUI : MonoBehaviour {
+public class InGameUI : MonoBehaviour
+{
 
-	public Text info;
-	public Text score;
-	public Button gameBackButton;
+    public Text info;
+    public Text score;
+    public Button gameBackButton;
 
-	[HideInInspector]
-	public Color infoInitColor;
-	[HideInInspector]
-	public Color scoreInitColor;
+    [HideInInspector]
+    public Color infoInitColor;
+    [HideInInspector]
+    public Color scoreInitColor;
 
-	void Start()
-	{
-		infoInitColor = info.color;
-		scoreInitColor = score.color;
-	}
+    void Start()
+    {
+        infoInitColor = info.color;
+        scoreInitColor = score.color;
+    }
 
-	public void UpdateScore()
-	{
-		score.text = Managers.Score.playerScore + "-" + Managers.Score.aiScore;
-	}
+    public void UpdateScore()
+    {
+        score.text = Managers.Score.aiScore + "-" + Managers.Score.playerScore;
+    }
 
-	public void GameInfo(string txt)
-	{
-		info.text = txt;
-	}
+    public void GameInfo(string txt)
+    {
+        info.text = txt;
+    }
 
-	public void GameBackButtonClicked()
-	{
-		Managers.Audio.PlayClickSound ();
-		Managers.UI.ActivateUI (Menus.MAIN);
-		Managers.Game.SetState(typeof(MenuState));
-		Managers.Match.SaveMatch ();
-	}
+    public void GameBackButtonClicked()
+    {
+        Managers.Audio.PlayClickSound();
+        Managers.UI.ActivateUI(Menus.MAIN);
+        Managers.Game.SetState(typeof(MenuState));
+        Managers.Match.SaveMatch();
+    }
 
-	public void SetInfoText(string text,bool isEnabled)
-	{
-		Managers.UI.inGameUI.info.enabled = isEnabled;
-		Managers.UI.inGameUI.info.text = text;
+    public void SetInfoText(string text, bool isEnabled)
+    {
+        Managers.UI.inGameUI.info.enabled = isEnabled;
+        Managers.UI.inGameUI.info.text = text;
 
-		if (!isEnabled)
-			info.color = infoInitColor;
-	}
+        if (!isEnabled)
+            info.color = infoInitColor;
+    }
 
 
 }
