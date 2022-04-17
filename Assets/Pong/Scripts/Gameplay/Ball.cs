@@ -41,7 +41,11 @@ public class Ball : MonoBehaviour
         Events.OnImpactMultiplierChanged -= OnImpactMultiplierChanged;
     }
 
-    private void OnBallSpeedChanged(float value) => speed = value;
+    private void OnBallSpeedChanged(float value) 
+    {
+        speed = value;
+        ballBody.velocity = Vector3.ClampMagnitude(ballBody.velocity, speed);
+    }
     private void OnImpactMultiplierChanged(float value) => speedMultiplier = value;
 
     void OnCollisionEnter2D(Collision2D other)
