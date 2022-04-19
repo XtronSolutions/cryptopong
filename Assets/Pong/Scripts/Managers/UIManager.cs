@@ -15,27 +15,23 @@ using UnityEngine.UI;
 
 public enum Menus
 {
-	MAIN,
-	INGAME,
-	GAMEOVER
+    MAIN,
+    INGAME,
+    GAMEOVER,
+    DIFFICULTY,
 }
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
-	public MainMenu mainMenu;
-	public InGameUI inGameUI;
+    public MainMenu mainMenu;
+    public InGameUI inGameUI;
+    public DifficultyMenu DifficultyMenu;
 
-	public void ActivateUI(Menus menutype)
-	{
-		if (menutype.Equals (Menus.MAIN))
-		{
-			inGameUI.gameObject.SetActive (false);
-			mainMenu.gameObject.SetActive (true);
-		}
-		else if(menutype.Equals(Menus.INGAME))
-		{
-			inGameUI.gameObject.SetActive (true);
-			mainMenu.gameObject.SetActive (false);
-		}	
-	}
+    public void ActivateUI(Menus menutype)
+    {
+        inGameUI.gameObject.SetActive(menutype.Equals(Menus.INGAME));
+        mainMenu.gameObject.SetActive(menutype.Equals(Menus.MAIN));
+        DifficultyMenu.gameObject.SetActive(menutype.Equals(Menus.DIFFICULTY));
+    }
 }

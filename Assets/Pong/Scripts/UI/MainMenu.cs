@@ -46,9 +46,9 @@ public class MainMenu : PersistentSingleton<MainMenu>
 	public void NewGame ()
 	{
 		Managers.Audio.PlayClickSound ();
-		Managers.Match.ResetSavedGame ();
-		Managers.Game.SetState(typeof(KickOffState));
-		Managers.UI.ActivateUI (Menus.INGAME);
+		// Managers.Match.ResetSavedGame ();
+		// Managers.Game.SetState(typeof(KickOffState));
+		Managers.UI.ActivateUI (Menus.DIFFICULTY);
 	}
 
 	public void Settings ()
