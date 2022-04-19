@@ -1,0 +1,13 @@
+Converting script [1 / 1]	[/Pong/Scripts/Gameplay/PaddlePlayer.cs]
+	Fragments : 4
+		[ 0] : Line:   31	InputMethod   GetAxisRaw          	("Vertical")
+		[ 1] : Line:   39	InputMethod   GetMouseButton      	(0)
+		[ 2] : Line:   41	InputProperty mousePosition       
+		[ 3] : Line:   48	InputProperty mousePosition       
+
+
+1 scripts modified!
+Overwriting actual scripts...
+	[0 / 1] from  [/Users/macbook/cryptopong/CF2-Data/Script-Backups/2022-04-18-17-47/Assets-After//Pong/Scripts/Gameplay/PaddlePlayer.cs] to [/Users/macbook/cryptopong/Assets//Pong/Scripts/Gameplay/PaddlePlayer.cs]
+
+Overwriting COMPLETED!

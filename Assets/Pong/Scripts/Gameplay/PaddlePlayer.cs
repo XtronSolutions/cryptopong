@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,18 +17,20 @@ public class PaddlePlayer : BasePaddle
     {
         if (Managers.Input.isActive)
         {
-            if (Managers.Input.inputType == InputMethod.KeyboardInput)
-                KeyboardInput();
-            else if (Managers.Input.inputType == InputMethod.TouchLRInput)
-                TouchLRInput();
-            else
-                DragInput();
+            // if (Managers.Input.inputType == InputMethod.KeyboardInput)
+            //     KeyboardInput();
+            // else if (Managers.Input.inputType == InputMethod.TouchLRInput)
+            //     TouchLRInput();
+            // else
+            //     DragInput();
+
+            KeyboardInput();
         }
     }
 
     void KeyboardInput()
     {
-        float direction = Input.GetAxisRaw("Vertical");
+        float direction = Mathf.Clamp((Input.GetAxis("Mouse Y") + Input.GetAxis("Vertical")), -1, 1);
         CheckMovementBlock(direction);
     }
 
@@ -36,19 +38,19 @@ public class PaddlePlayer : BasePaddle
     {
         float direction = 0;
 
-        if (Input.GetMouseButton(0))
+        if (ControlFreak2.CF2Input.GetMouseButton(0))
         {
-            direction = (Input.mousePosition.y > Screen.width / 2) ? 1 : -1;
+            direction = (ControlFreak2.CF2Input.mousePosition.y > Screen.width / 2) ? 1 : -1;
         }
         CheckMovementBlock(direction);
     }
 
     void DragInput()
     {
-        Vector3 curScreenPoint = new Vector3(0, Input.mousePosition.y, 0);
+        Vector3 curScreenPoint = new Vector3(0, ControlFreak2.CF2Input.mousePosition.y, 0);
 
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-        curPosition.y = Mathf.Clamp(curPosition.y, -MaxBound, MaxBound);;
+        curPosition.y = Mathf.Clamp(curPosition.y, -MaxBound, MaxBound); ;
         curPosition.z = 0;
         curPosition.x = DefaultPosition.x;
         transform.position = curPosition;
