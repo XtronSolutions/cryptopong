@@ -15,118 +15,120 @@ using DG.Tweening;
 
 public enum PowerupType
 {
-	PADDLE_SPEED_UP,
-	PADDLE_SPEED_DOWN,
-	PADDLE_ENLARGE,
-	PADDLE_SHRINK,
-	PADDLE_GHOST
+    PADDLE_SPEED_UP,
+    PADDLE_SPEED_DOWN,
+    PADDLE_ENLARGE,
+    PADDLE_SHRINK,
+    PADDLE_GHOST
 }
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Powerup : MonoBehaviour {
+public class Powerup : MonoBehaviour
+{
 
-	public PowerupType type;
-	public float PowerupLifeDuration;
+    public PowerupType type;
+    public float PowerupLifeDuration;
 
-	private SpriteRenderer _sprite;
+    private SpriteRenderer _sprite;
 
-	void Awake()
-	{
-		_sprite = GetComponent<SpriteRenderer> ();
-	}
+    void Awake()
+    {
+        _sprite = GetComponent<SpriteRenderer>();
+    }
 
-	void Start()
-	{
-		FadePowerup (false);
-	}
+    void Start()
+    {
+        FadePowerup(false);
+    }
 
-	public void TriggerPowerup(BasePaddle pad)
-	{
-		PowerUp (pad);
-		FadePowerup (true);
-	}
-
-
-	public void FadePowerup(bool collected)
-	{
-		if (collected)
-		{
-			DisablePowerup();
-		}
-		else
-		{
-			DOTween.ToAlpha (() => _sprite.color, x => _sprite.color = x, 0, PowerupLifeDuration / 5).SetLoops (5)
-		.OnComplete (() => {
-					DisablePowerup();
-			});
-		}				
-	}
+    public void TriggerPowerup(BasePaddle pad)
+    {
+        PowerUp(pad);
+        FadePowerup(true);
+    }
 
 
-	public void PowerUp(BasePaddle pad)
-	{
-		switch (type)
-		{
-			case PowerupType.PADDLE_SPEED_UP:
-				PaddleSpeedUp(pad);
-				break;
-			case PowerupType.PADDLE_SPEED_DOWN:
-				PaddleSpeedDown(pad);
-				break;
-			case PowerupType.PADDLE_ENLARGE:
-				PaddleEnlarge(pad);
-				break;
-			case PowerupType.PADDLE_SHRINK:
-				PaddleShrink(pad);
-				break;
-			case PowerupType.PADDLE_GHOST:
-				PaddleGhost(pad);
-				break;
-		}
-	}
+    public void FadePowerup(bool collected)
+    {
+        if (collected)
+        {
+            DisablePowerup();
+        }
+        else
+        {
+            DOTween.ToAlpha(() => _sprite.color, x => _sprite.color = x, 0, PowerupLifeDuration / 5).SetLoops(5)
+        .OnComplete(() =>
+        {
+            DisablePowerup();
+        });
+        }
+    }
 
 
-	public void  PaddleSpeedUp(BasePaddle pad)
-	{
-		if(pad.speed<15)
-			pad.speed += Managers.PowUps.speedUpValue;
-	}
+    public void PowerUp(BasePaddle pad)
+    {
+        switch (type)
+        {
+            case PowerupType.PADDLE_SPEED_UP:
+                PaddleSpeedUp(pad);
+                break;
+            case PowerupType.PADDLE_SPEED_DOWN:
+                PaddleSpeedDown(pad);
+                break;
+            case PowerupType.PADDLE_ENLARGE:
+                PaddleEnlarge(pad);
+                break;
+            case PowerupType.PADDLE_SHRINK:
+                PaddleShrink(pad);
+                break;
+            case PowerupType.PADDLE_GHOST:
+                PaddleGhost(pad);
+                break;
+        }
+    }
 
-	public void PaddleSpeedDown(BasePaddle pad)
-	{
-		if(pad.speed>5)
-			pad.speed -= Managers.PowUps.speedDownValue;
-	}
 
-	public void PaddleEnlarge(BasePaddle pad)
-	{	
-		if(pad.transform.localScale.x <0.7f)
-			pad.transform.localScale += new Vector3 (Managers.PowUps.enlargeValue,0,0);
-	}
+    public void PaddleSpeedUp(BasePaddle pad)
+    {
+        if (pad.speed < 15)
+            pad.speed += Managers.PowUps.speedUpValue;
+    }
 
-	public void PaddleShrink(BasePaddle pad)
-	{
-		if(pad.transform.localScale.x >0.1f)
-			pad.transform.localScale -= new Vector3 (Managers.PowUps.shrinkValue,0,0);
-	}
+    public void PaddleSpeedDown(BasePaddle pad)
+    {
+        if (pad.speed > 5)
+            pad.speed -= Managers.PowUps.speedDownValue;
+    }
 
-	public IEnumerator PaddleGhost(BasePaddle pad)
-	{
-		print ("IMPLEMENT YOUR GHOSTING USE YOUR IMAGINATION xd");
-		yield break;
-	}
+    public void PaddleEnlarge(BasePaddle pad)
+    {
+        if (pad.transform.localScale.y < 1.7f)
+            pad.transform.localScale += new Vector3(0, Managers.PowUps.enlargeValue, 0);
+    }
 
-	IEnumerator DisableEffect()
-	{
-		_sprite.enabled = false;
-		GetComponent<BoxCollider2D> ().enabled = false;
-		yield return new WaitForSeconds (Managers.PowUps.powerupImpactDuration);
-		DisablePowerup ();
-	}
+    public void PaddleShrink(BasePaddle pad)
+    {
+        if (pad.transform.localScale.y > 0.4f)
+            pad.transform.localScale -= new Vector3(0, Managers.PowUps.shrinkValue, 0);
+    }
 
-	public void DisablePowerup()
-	{
-		Managers.PowUps.spawnedPowerupList.Remove (this);
-		Destroy(this.gameObject);
-	}
+    public IEnumerator PaddleGhost(BasePaddle pad)
+    {
+        print("IMPLEMENT YOUR GHOSTING USE YOUR IMAGINATION xd");
+        yield break;
+    }
+
+    IEnumerator DisableEffect()
+    {
+        _sprite.enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
+        yield return new WaitForSeconds(Managers.PowUps.powerupImpactDuration);
+        DisablePowerup();
+    }
+
+    public void DisablePowerup()
+    {
+        Managers.PowUps.spawnedPowerupList.Remove(this);
+        Destroy(this.gameObject);
+    }
 }
