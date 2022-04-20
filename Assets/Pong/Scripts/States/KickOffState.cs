@@ -37,7 +37,7 @@ public class KickOffState : _StatesBase
 
     public override void OnUpdate()
     {
-        Debug.Log("<color=yellow>KickOff State</color> OnUpdate");
+        // Debug.Log("<color=yellow>KickOff State</color> OnUpdate");
 
     }
 

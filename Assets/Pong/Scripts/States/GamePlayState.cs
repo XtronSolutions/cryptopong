@@ -16,7 +16,7 @@ public class GamePlayState : _StatesBase {
 
 	public override void OnUpdate ()
 	{
-		Debug.Log ("<color=yellow>Gameplay State</color> OnUpdate");
+		// Debug.Log ("<color=yellow>Gameplay State</color> OnUpdate");
 		Managers.Match.ball.ParticleRotation ();
 
 	}

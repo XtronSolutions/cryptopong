@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PaddlePlayer : BasePaddle
 {
-    private Vector2 DefaultPosition;
-
+    public Vector2 DefaultPosition;
+    public RectTransform YBoundsRef;
+    public float diff;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -50,19 +52,19 @@ public class PaddlePlayer : BasePaddle
         Vector3 curScreenPoint = new Vector3(0, ControlFreak2.CF2Input.mousePosition.y, 0);
 
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-        curPosition.y = Mathf.Clamp(curPosition.y, -MaxBound, MaxBound); ;
-        curPosition.z = 0;
-        curPosition.x = DefaultPosition.x;
+        curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+        // curPosition.z = 0;
+        // curPosition.x = DefaultPosition.x;
         transform.position = curPosition;
     }
 
     void CheckMovementBlock(float dir)
     {
-        float nextFramePosX = Mathf.Abs((new Vector2(0, dir) * speed * Time.deltaTime).y + transform.position.y);
+        transform.Translate(new Vector2(0, dir) * speed * Time.deltaTime);
 
-        if (nextFramePosX < MaxBound)
-        {
-            transform.Translate(new Vector2(0, dir) * speed * Time.deltaTime);
-        }
+        var pos = transform.position;
+        diff = YBoundsRef.position.y;
+        pos.y = Mathf.Clamp(pos.y, -diff, diff);
+        transform.position = pos;
     }
 }
