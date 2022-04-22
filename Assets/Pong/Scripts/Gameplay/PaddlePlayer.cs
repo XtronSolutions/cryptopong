@@ -24,16 +24,16 @@ public class PaddlePlayer : BasePaddle
             // else if (Managers.Input.inputType == InputMethod.TouchLRInput)
             //     TouchLRInput();
             // else
-            //     DragInput();
+            DragInput();
 
-            KeyboardInput();
+            // KeyboardInput();
         }
     }
 
     void KeyboardInput()
     {
-        float direction = Mathf.Clamp((Input.GetAxis("Mouse Y") + Input.GetAxis("Vertical")), -1, 1);
-        CheckMovementBlock(direction);
+        // float direction = Mathf.Clamp((Input.GetAxis("Mouse Y") + Input.GetAxis("Vertical")), -1, 1);
+        // CheckMovementBlock(direction);
     }
 
     void TouchLRInput()
@@ -47,14 +47,31 @@ public class PaddlePlayer : BasePaddle
         CheckMovementBlock(direction);
     }
 
+    private float deltaY;
+
     void DragInput()
     {
-        Vector3 curScreenPoint = new Vector3(0, ControlFreak2.CF2Input.mousePosition.y, 0);
-
+        Vector3 curScreenPoint = new Vector3(0, Input.mousePosition.y, 0);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-        curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
-        // curPosition.z = 0;
-        // curPosition.x = DefaultPosition.x;
+        curPosition.x = transform.position.x;
+        curPosition.z = transform.position.z;
+
+        if (Application.isMobilePlatform)
+        {
+            if (Input.GetMouseButtonDown(0))
+                deltaY = (transform.position.y - curPosition.y);
+
+            if (Input.GetMouseButton(0))
+            {
+                curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                transform.position = curPosition;
+            }
+        }
+        else
+        {
+            curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+        }
+        
         transform.position = curPosition;
     }
 
