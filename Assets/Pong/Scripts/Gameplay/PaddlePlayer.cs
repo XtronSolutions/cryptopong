@@ -1,13 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 public class PaddlePlayer : BasePaddle
 {
     public Vector2 DefaultPosition;
     public RectTransform YBoundsRef;
     public float diff;
+
+    [DllImport("__Internal")]
+    private static extern bool IsMobile();
+
+    public bool isMobile()
+    {
+#if !UNITY_EDITOR && UNITY_WEBGL
+         return IsMobile();
+#endif
+        return false;
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -56,7 +69,7 @@ public class PaddlePlayer : BasePaddle
         curPosition.x = transform.position.x;
         curPosition.z = transform.position.z;
 
-        if (Application.isMobilePlatform)
+        if (isMobile())
         {
             if (Input.GetMouseButtonDown(0))
                 deltaY = (transform.position.y - curPosition.y);
@@ -70,9 +83,9 @@ public class PaddlePlayer : BasePaddle
         else
         {
             curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+            transform.position = curPosition;
         }
-        
-        transform.position = curPosition;
+
     }
 
     void CheckMovementBlock(float dir)
