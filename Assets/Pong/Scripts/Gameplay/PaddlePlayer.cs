@@ -61,7 +61,7 @@ public class PaddlePlayer : BasePaddle
     }
 
     private float deltaY;
-
+    private Vector3 lastMousePos;
     void DragInput()
     {
         Vector3 curScreenPoint = new Vector3(0, Input.mousePosition.y, 0);
@@ -82,8 +82,25 @@ public class PaddlePlayer : BasePaddle
         }
         else
         {
-            curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
-            transform.position = curPosition;
+            var isKeyboard = Mathf.RoundToInt(Input.GetAxis("Vertical"))  !=  0;
+            if(isKeyboard)
+            {
+                if(!lastMousePos.Equals(curPosition))
+                {
+                    lastMousePos = curPosition;
+                }
+
+                CheckMovementBlock(Input.GetAxis("Vertical"));
+            }else
+            {
+                var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
+                if(!hasMouseMoved)
+                return;
+
+                lastMousePos = Vector3.zero;
+                curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                transform.position = curPosition;
+            }
         }
 
     }
