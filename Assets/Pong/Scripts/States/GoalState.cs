@@ -17,12 +17,12 @@ public class GoalState : _StatesBase
 
 	public override void OnDeactivate ()
 	{
-		Debug.Log ("<color=red>Goal State</color> OnDeactivate");
+		// Debug.Log ("<color=red>Goal State</color> OnDeactivate");
 	}
 
 	public override void OnUpdate ()
 	{
-		Debug.Log ("<color=yellow>Goal State</color> OnUpdate");
+		// Debug.Log ("<color=yellow>Goal State</color> OnUpdate");
 	}
 
 	#endregion

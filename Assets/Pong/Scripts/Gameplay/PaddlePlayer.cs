@@ -69,32 +69,33 @@ public class PaddlePlayer : BasePaddle
         curPosition.x = transform.position.x;
         curPosition.z = transform.position.z;
 
-        if (isMobile())
+        var isKeyboard = Mathf.RoundToInt(Input.GetAxis("Vertical")) != 0;
+        if (isKeyboard)
         {
-            if (Input.GetMouseButtonDown(0))
-                deltaY = (transform.position.y - curPosition.y);
+            if (!lastMousePos.Equals(curPosition))
+                lastMousePos = curPosition;
 
-            if (Input.GetMouseButton(0))
-            {
-                curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
-                transform.position = curPosition;
-            }
+            float direction = Mathf.Clamp((Input.GetAxis("Vertical")), -1, 1);
+            CheckMovementBlock(direction);
         }
         else
         {
-            var isKeyboard = Mathf.RoundToInt(Input.GetAxis("Vertical"))  !=  0;
-            if(isKeyboard)
+            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                if(!lastMousePos.Equals(curPosition))
-                    lastMousePos = curPosition;
+                if (Input.GetMouseButtonDown(0))
+                    deltaY = (transform.position.y - curPosition.y);
 
-                float direction = Mathf.Clamp((Input.GetAxis("Vertical")), -1, 1);
-                CheckMovementBlock(direction);
-            }else
+                if (Input.GetMouseButton(0))
+                {
+                    curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                    transform.position = curPosition;
+                }
+            }
+            else
             {
                 var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
-                if(!hasMouseMoved)
-                return;
+                if (!hasMouseMoved)
+                    return;
 
                 lastMousePos = Vector3.zero;
                 curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
@@ -102,6 +103,32 @@ public class PaddlePlayer : BasePaddle
             }
         }
 
+        // if (isMobile())
+        {
+        }
+        // else
+        // {
+        //     var isKeyboard = Mathf.RoundToInt(Input.GetAxis("Vertical")) != 0;
+        //     if (isKeyboard)
+        //     {
+        //         if (!lastMousePos.Equals(curPosition))
+        //             lastMousePos = curPosition;
+
+        //         float direction = Mathf.Clamp((Input.GetAxis("Vertical")), -1, 1);
+        //         CheckMovementBlock(direction);
+        //     }
+        //     else
+        //     {
+        //         var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
+        //         if (!hasMouseMoved)
+        //             return;
+
+        //         lastMousePos = Vector3.zero;
+        //         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+        //         transform.position = curPosition;
+        //         Debug.Log("here! 2");
+        //     }
+        // }
     }
 
     void CheckMovementBlock(float dir)
