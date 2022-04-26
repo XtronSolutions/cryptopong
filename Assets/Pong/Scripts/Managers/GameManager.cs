@@ -14,15 +14,6 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public static class Constants 
-{
-	public static readonly Vector2 PLAYER           = new  Vector2(8, -0.25f);
-	public static readonly Vector2 AI               = new  Vector2(-8,  -0.25f);
-	public static readonly Vector3 PADDLE_SCALE     = new  Vector3(1f,  1f, 1f);
-	public static readonly float   PADDLE_SPEED     = 10f;
-	public static readonly float   PADDLE_SPEED_AI     = 4f;
-}
-
 public class GameManager : MonoBehaviour
 {
 	public string debugState;

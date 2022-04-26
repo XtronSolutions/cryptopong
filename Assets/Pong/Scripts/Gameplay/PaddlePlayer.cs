@@ -90,7 +90,8 @@ public class PaddlePlayer : BasePaddle
                     lastMousePos = curPosition;
                 }
 
-                CheckMovementBlock(Input.GetAxis("Vertical"));
+                float direction = Mathf.Clamp((Input.GetAxis("Vertical")), -1, 1);
+                CheckMovementBlock(direction);
             }else
             {
                 var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
