@@ -86,9 +86,7 @@ public class PaddlePlayer : BasePaddle
             if(isKeyboard)
             {
                 if(!lastMousePos.Equals(curPosition))
-                {
                     lastMousePos = curPosition;
-                }
 
                 CheckMovementBlock(Input.GetAxis("Vertical"));
             }else
