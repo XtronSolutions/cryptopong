@@ -25,7 +25,7 @@ public class MenuState : _StatesBase {
 
 	public override void OnDeactivate ()
 	{
-		Debug.Log ("<color=red>Menu State</color> OnDeactivate");
+		// Debug.Log ("<color=red>Menu State</color> OnDeactivate");
 	}
 
 	public override void OnUpdate ()

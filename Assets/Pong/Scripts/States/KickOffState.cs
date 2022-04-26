@@ -31,7 +31,7 @@ public class KickOffState : _StatesBase
 
     public override void OnDeactivate()
     {
-        Debug.Log("<color=red>KickOff State</color> OnDeactivate");
+        // Debug.Log("<color=red>KickOff State</color> OnDeactivate");
 
     }
 

@@ -11,7 +11,7 @@ public class GamePlayState : _StatesBase {
 	}
 	public override void OnDeactivate ()
 	{
-		Debug.Log ("<color=red>Gameplay State</color> OnDeactivate");
+		// Debug.Log ("<color=red>Gameplay State</color> OnDeactivate");
 	}
 
 	public override void OnUpdate ()
