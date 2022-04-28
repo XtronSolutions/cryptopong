@@ -29,6 +29,7 @@ public static class Constants
     public static string UserName = "";//name of the user
 	public static int FlagSelectedIndex = 0;//flag selected index for avatar
 	public static int TotalWins = 0; //variable to store total wins of the player
+    public static int TotalHits = 0;//variable to store total hits of player
 	public static int TotalScore = 0; //variable to store total score accomulation of the user
 	public static string WalletAddress = ""; //stored wallet address for the connected user
 	public static bool WalletConnected = false;//bool to keep track if wallet was connected or not

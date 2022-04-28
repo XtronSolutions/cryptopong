@@ -9,17 +9,16 @@ public class UserData
 {
     public string UserName { get; set; }
     public string WalletAddress { get; set; }
-    public double TimeSeconds { get; set; }
     public string UID { get; set; }
     public double NumberOfTries { get; set; }
-    public double NumberOfTriesPractice { get; set; }
     public string Email { get; set; }
     public int AvatarID { get; set; }
-    public EndDate TournamentEndDate { get; set; }
     public Timestamp ProfileCreated { get; set; }
     public int TotalWins { get; set; }
+    public int TotalHits { get; set; }
     public int TotalScore { get; set; }
 }
+
 
 public class AuthCredentials
 {
@@ -91,16 +90,17 @@ public class FirebaseManager : MonoBehaviour
         PlayerData.Email = (string)response.SelectToken("data").SelectToken("Email");
         PlayerData.UserName = (string)response.SelectToken("data").SelectToken("UserName");
         PlayerData.WalletAddress = (string)response.SelectToken("data").SelectToken("WalletAddress");
-        PlayerData.TimeSeconds = (double)response.SelectToken("data").SelectToken("TimeSeconds");
         PlayerData.UID = (string)response.SelectToken("data").SelectToken("UID");
         PlayerData.NumberOfTries = (double)response.SelectToken("data").SelectToken("NumberOfTries");
-        PlayerData.NumberOfTriesPractice = (double)response.SelectToken("data").SelectToken("NumberOfTriesPractice");
         PlayerData.AvatarID = (int)response.SelectToken("data").SelectToken("AvatarID");
         PlayerData.TotalWins = (int)response.SelectToken("data").SelectToken("TotalWins");
+        PlayerData.TotalHits = (int)response.SelectToken("data").SelectToken("TotalHits");
+        PlayerData.TotalScore = (int)response.SelectToken("data").SelectToken("TotalScore");
+
         Constants.TotalWins = PlayerData.TotalWins;
-        PlayerData.TournamentEndDate = new EndDate();
-        PlayerData.TournamentEndDate.nanoseconds = (double)response.SelectToken("data").SelectToken("TournamentEndDate").SelectToken("nanoseconds");
-        PlayerData.TournamentEndDate.seconds = (double)response.SelectToken("data").SelectToken("TournamentEndDate").SelectToken("seconds");
+        Constants.TotalHits = PlayerData.TotalHits;
+        Constants.TotalScore = PlayerData.TotalScore;
+
         PlayerData.ProfileCreated = new Timestamp();
         PlayerData.ProfileCreated.nanoseconds = (double)response.SelectToken("data").SelectToken("ProfileCreated").SelectToken("nanoseconds");
         PlayerData.ProfileCreated.seconds = (double)response.SelectToken("data").SelectToken("ProfileCreated").SelectToken("seconds");
@@ -382,6 +382,8 @@ public class FirebaseManager : MonoBehaviour
             Constants.UserName = PlayerData.UserName;
             Constants.FlagSelectedIndex = PlayerData.AvatarID;
             Constants.TotalWins = PlayerData.TotalWins;
+            Constants.TotalHits = PlayerData.TotalHits;
+            Constants.TotalScore = PlayerData.TotalScore;
 
             //if (MainMenuViewController.Instance)
                 //MainMenuViewController.Instance.ChangeUserNameText(Constants.UserName);
@@ -427,6 +429,8 @@ public class FirebaseManager : MonoBehaviour
             Constants.UserName = PlayerData.UserName;
             Constants.FlagSelectedIndex = PlayerData.AvatarID;
             Constants.TotalWins = PlayerData.TotalWins;
+            Constants.TotalHits = PlayerData.TotalHits;
+            Constants.TotalScore = PlayerData.TotalScore;
 
         }
         else
@@ -436,12 +440,11 @@ public class FirebaseManager : MonoBehaviour
             PlayerData.UserName = Constants.SavedUserName;
             Constants.UserName = PlayerData.UserName;
             PlayerData.TotalWins = Constants.TotalWins;
-            PlayerData.TimeSeconds = 0;
+            PlayerData.TotalHits = Constants.TotalHits;
+            PlayerData.TotalScore = Constants.TotalScore;
             PlayerData.UID = UID;
             PlayerData.NumberOfTries = 0;
-            PlayerData.NumberOfTriesPractice = 0;
             PlayerData.Email = Constants.SavedEmail;
-            PlayerData.TournamentEndDate = null;
             PlayerData.AvatarID = Constants.FlagSelectedIndex;
 
             if(Constants.isUsingFirebaseSDK)
