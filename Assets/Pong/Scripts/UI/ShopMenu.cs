@@ -21,6 +21,7 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
 
     private int Index;
 
+    private bool Initialised = false;
     private CharactersDatabase.Character GetCharacter => Database.Characters[Index];
 
     // Start is called before the first frame update
@@ -44,6 +45,23 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         }
     }
 
+    private void OnEnable()
+    {
+        if (Initialised)
+        {
+            Index = Database.GetSelectedCharacterIndex;
+            StartCoroutine(Refresh());
+        }
+    }
+
+    private IEnumerator Refresh()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        UpdatePreview();
+        Pagination.ChangePage(Index);
+    }
+
     private IEnumerator Start()
     {
         UpdatePreview();
@@ -53,6 +71,7 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
 
         yield return new WaitForSeconds(0.1f);
         Pagination.ChangePage(Index);
+        Initialised = true;
     }
 
     private void OnSelect()
