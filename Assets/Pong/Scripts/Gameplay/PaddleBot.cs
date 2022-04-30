@@ -8,14 +8,29 @@ public class PaddleBot : BasePaddle
 
     [Range(1, 3), Header("Dumb - Smart - Tony Stark")]
     [SerializeField] protected int Intelligence = 3;
+    [SerializeField] private RuntimeAnimatorController[] Characters;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         Events.OnIntelligenceChanged += OnIntelligenceChanged;
+
+        base.Animator.runtimeAnimatorController = Characters[Random.Range(0, Characters.Length)];
     }
 
     private void OnIntelligenceChanged(int value) => Intelligence = value;
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Ball")
+        {
+            if (base.Animator)
+            {
+                base.Animator.Play("Attack");
+            }
+        }
+    }
 
     // Update is called once per frame
     protected override void Update()
