@@ -29,6 +29,9 @@ public class AudioManager : MonoBehaviour {
 		musicSource.volume = PlayerPrefs.GetFloat ("Music");
 	}
 
+	public float GetSoundVolume => soundSource.volume;
+	public float GetMusicVolume => musicSource.volume;
+
 	#region Sound FX
 	public void PlayLoseSound()
 	{
@@ -58,11 +61,8 @@ public class AudioManager : MonoBehaviour {
 
 	public void SetSoundFxVolume(float value)
 	{
-		float temp = value + soundSource.volume;
-		if (temp < 0 || temp > 1)
-			return;
-		else
-			soundSource.volume += value;
+		float temp = Mathf.Clamp(value + soundSource.volume,0,1);
+		soundSource.volume += value;
 	}
 	#endregion
 
@@ -80,11 +80,8 @@ public class AudioManager : MonoBehaviour {
 
 	public void SetSoundMusicVolume(float value)
 	{
-		float temp = value + musicSource.volume;
-		if (temp < 0 || temp > 1)
-			return;
-		else
-			musicSource.volume += value;
+		float temp = Mathf.Clamp(value + musicSource.volume,0,1);		
+		musicSource.volume += value;
 	}
 	#endregion
 

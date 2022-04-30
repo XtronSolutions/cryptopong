@@ -21,6 +21,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
 	public GameObject showAdsRewarded;
 	public GameObject showAdsDefault;
 	public GameObject continueButton;
+	public GameObject shopMenu;
 	public Text pongLogoText;
 
 	void OnEnable()
@@ -56,6 +57,13 @@ public class MainMenu : PersistentSingleton<MainMenu>
 		Managers.Audio.PlayClickSound ();
 		DisableMenuButtons ();
 		settingsMenu.SetActive (true);
+	}
+
+	public void Shop()
+	{
+		Managers.Audio.PlayClickSound ();
+		DisableMenuButtons ();
+		shopMenu.SetActive (true);
 	}
 
 	public void Credits ()
