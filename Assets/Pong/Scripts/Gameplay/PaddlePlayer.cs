@@ -12,6 +12,7 @@ public class PaddlePlayer : BasePaddle
 
     [DllImport("__Internal")]
     private static extern bool IsMobile();
+    private CharactersDatabase Database;
 
     public bool isMobile()
     {
@@ -24,7 +25,25 @@ public class PaddlePlayer : BasePaddle
     // Start is called before the first frame update
     protected override void Start()
     {
+        base.Start();
+        Database = Resources.Load<CharactersDatabase>(nameof(CharactersDatabase));
+    }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        base.Animator.runtimeAnimatorController = Database.GetSelectedCharacter.AnimatorController;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Ball")
+        {
+            if (base.Animator)
+            {
+                base.Animator.Play("Attack");
+            }
+        }
     }
 
     // Update is called once per frame
@@ -102,33 +121,6 @@ public class PaddlePlayer : BasePaddle
                 transform.position = curPosition;
             }
         }
-
-        // if (isMobile())
-        {
-        }
-        // else
-        // {
-        //     var isKeyboard = Mathf.RoundToInt(Input.GetAxis("Vertical")) != 0;
-        //     if (isKeyboard)
-        //     {
-        //         if (!lastMousePos.Equals(curPosition))
-        //             lastMousePos = curPosition;
-
-        //         float direction = Mathf.Clamp((Input.GetAxis("Vertical")), -1, 1);
-        //         CheckMovementBlock(direction);
-        //     }
-        //     else
-        //     {
-        //         var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
-        //         if (!hasMouseMoved)
-        //             return;
-
-        //         lastMousePos = Vector3.zero;
-        //         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
-        //         transform.position = curPosition;
-        //         Debug.Log("here! 2");
-        //     }
-        // }
     }
 
     void CheckMovementBlock(float dir)

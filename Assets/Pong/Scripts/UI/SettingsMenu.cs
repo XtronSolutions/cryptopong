@@ -17,40 +17,68 @@ public class SettingsMenu : MonoBehaviour {
 
 	public Text soundVolumeText,musicVolumeText;
 	public Dropdown controllerSelectionDropdown;
+	private float deltaSound, deltaMusic;
+
+	[Space(10)]
+	public Slider SoundSlider, MusicSlider;
 
 	void Awake()
 	{
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString();
-		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString();
+		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
+		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString()+"%";
 		controllerSelectionDropdown.value =PlayerPrefs.GetInt ("Input");
+
+		SoundSlider.value = Managers.Audio.GetSoundVolume;
+		MusicSlider.value = Managers.Audio.GetMusicVolume;
+
+		// SoundSlider.AddListener.OnValueChanged(OnSoundUpdate);
+		// MusicSlider.AddListener.OnValueChanged(OnMusicUpdate);
+	}
+
+	public void OnSoundUpdate(float value)
+	{
+		Managers.Audio.SetSoundFxVolume (value);
+		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
+		Managers.Audio.PlayClickSound ();
+	}
+
+	public void OnMusicUpdate(float value)
+	{
+		Managers.Audio.SetSoundMusicVolume (value);
+		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString()+"%";
+		Managers.Audio.PlayClickSound ();
 	}
 
 	public void IncrementSound()
 	{
-		Managers.Audio.SetSoundFxVolume (0.01f);
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString();
+		Managers.Audio.SetSoundFxVolume (0.1f);
+		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
 		Managers.Audio.PlayClickSound ();
+		SoundSlider.value = Managers.Audio.GetSoundVolume;
 	}
 
 	public void DecrementSound()
 	{
-		Managers.Audio.SetSoundFxVolume (-0.01f);
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString();
+		Managers.Audio.SetSoundFxVolume (-0.1f);
+		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
 		Managers.Audio.PlayClickSound ();
+		SoundSlider.value = Managers.Audio.GetSoundVolume;
 	}
 
 	public void IncrementMusic()
 	{
-		Managers.Audio.SetSoundMusicVolume (0.01f);
-		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString();
+		Managers.Audio.SetSoundMusicVolume (0.1f);
+		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString()+"%";
 		Managers.Audio.PlayClickSound ();
+		MusicSlider.value = Managers.Audio.GetMusicVolume;
 	}
 
 	public void DecrementMusic()
 	{
-		Managers.Audio.SetSoundMusicVolume(-0.01f);
-		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString();
+		Managers.Audio.SetSoundMusicVolume(-0.1f);
+		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString()+"%";
 		Managers.Audio.PlayClickSound ();
+		MusicSlider.value = Managers.Audio.GetMusicVolume;
 	}
 
 	public void InputMethodChanged()

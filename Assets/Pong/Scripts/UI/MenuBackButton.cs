@@ -12,12 +12,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class MenuBackButton : MonoBehaviour {
-
+public class MenuBackButton : MonoBehaviour 
+{
+	public GameObject Panel;
 	public void OnClickBackButton()
 	{
 		Managers.Audio.PlayClickSound ();
-		transform.parent.gameObject.SetActive (false);
+		Panel.SetActive (false);
 		MainMenu.Instance.menuButtons.SetActive (true);
 		PlayerPrefs.SetFloat ("Sound",Managers.Audio.soundSource.volume);
 		PlayerPrefs.SetFloat ("Music",Managers.Audio.musicSource.volume);
