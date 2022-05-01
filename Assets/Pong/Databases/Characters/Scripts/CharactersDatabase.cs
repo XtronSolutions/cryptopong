@@ -46,7 +46,6 @@ public class CharactersDatabase : ScriptableObject
             PlayerPrefs.SetInt(StatusKey, (int)state);
             PlayerPrefs.Save();
 
-            Debug.Log($"{Name} ---> {state}");
             return UnlockStatus;
         }
 
@@ -69,7 +68,7 @@ public class CharactersDatabase : ScriptableObject
             character.Key = BasePrefix + i;
         }
 
-        Debug.Log("Init ---> Completed.");
+        Debug.Log(" ---> CharactersDatabase.Init()");
     }
 
     public void Select(string key)
