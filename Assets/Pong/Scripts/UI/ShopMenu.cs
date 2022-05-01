@@ -17,7 +17,7 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
     [SerializeField] private Transform CharacterContainer;
     [SerializeField] private HorizontalScrollSnap Pagination;
 
-    private CharactersDatabase Database;
+    private CharactersDatabase Database => Databases.CharactersDatabase;
 
     private int Index;
 
@@ -28,7 +28,6 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
     public override void Awake()
     {
         base.Awake();
-        Database = Resources.Load<CharactersDatabase>(nameof(CharactersDatabase));
         Init();
     }
 
@@ -76,11 +75,12 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
 
     private void OnSelect()
     {
-        StatusText.text = "EQUIPPED";
-        Database.Select(Database.Characters[Index].Key);
-        
+        var character = Database.Characters[Index];
+        Debug.Log($"Character ---> {character.Key}");
+        Database.Select(character.Key);
+
         UpdatePreview();
-		Managers.Audio.PlayClickSound ();
+        Managers.Audio.PlayClickSound();
     }
 
     private void OnNext()
@@ -92,6 +92,7 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         else
             Index++;
 
+        Debug.Log($"Index: {Index}");
         UpdatePreview();
         Managers.Audio.PlayClickSound();
     }
@@ -105,12 +106,14 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         else
             Index = Database.Characters.Count - 1;
 
+        Debug.Log($"Index: {Index}");
         UpdatePreview();
-		Managers.Audio.PlayClickSound ();
+        Managers.Audio.PlayClickSound();
     }
 
     private void UpdatePreview()
     {
+        StatusText.text = GetCharacter.IsSelected ? "EQUIPPED" : "";
         StatusText.gameObject.SetActive(GetCharacter.IsSelected);
         SelectButton.gameObject.SetActive(!GetCharacter.IsSelected);
         Preview.runtimeAnimatorController = GetCharacter.AnimatorController;

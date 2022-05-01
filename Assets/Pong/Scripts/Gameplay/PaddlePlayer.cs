@@ -12,7 +12,7 @@ public class PaddlePlayer : BasePaddle
 
     [DllImport("__Internal")]
     private static extern bool IsMobile();
-    private CharactersDatabase Database;
+    private CharactersDatabase Database => Databases.CharactersDatabase;
 
     public bool isMobile()
     {
@@ -31,9 +31,7 @@ public class PaddlePlayer : BasePaddle
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (!Database)
-            Database = Resources.Load<CharactersDatabase>(nameof(CharactersDatabase));
-            
+
         if (base.Animator)
             base.Animator.runtimeAnimatorController = Database.GetSelectedCharacter.AnimatorController;
         else

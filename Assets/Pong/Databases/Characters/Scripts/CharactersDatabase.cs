@@ -46,6 +46,7 @@ public class CharactersDatabase : ScriptableObject
             PlayerPrefs.SetInt(StatusKey, (int)state);
             PlayerPrefs.Save();
 
+            Debug.Log($"{Name} ---> {state}");
             return UnlockStatus;
         }
 
@@ -60,34 +61,31 @@ public class CharactersDatabase : ScriptableObject
     public Character GetSelectedCharacter => Characters.Find(x => x.IsSelected);
     public int GetSelectedCharacterIndex => Characters.FindIndex(x => x.IsSelected);
 
-    private void OnValidate()
+    public void Init()
     {
         for (var i = 0; i < Characters.Count; i++)
         {
             var character = Characters[i];
             character.Key = BasePrefix + i;
         }
+
+        Debug.Log("Init ---> Completed.");
     }
 
     public void Select(string key)
     {
-        for (int i = 0; i < Characters.Count; i++)
+        try
         {
-            var character = Characters[i];
+            var character = Characters.Find(x => x.Key == key);
             if (character != null)
             {
-                if (character.Key == key)
-                {
-                    character.Select();
-                }
-                else
-                {
-                    if (character.IsSelected)
-                    {
-                        character.Unlock();
-                    }
-                }
+                GetSelectedCharacter.Unlock();
+                character.Select();
             }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 
