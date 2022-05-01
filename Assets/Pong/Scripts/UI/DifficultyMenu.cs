@@ -40,5 +40,7 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
         Managers.Match.ResetSavedGame();
         Managers.Game.SetState(typeof(KickOffState));
         Managers.UI.ActivateUI(Menus.INGAME);
+        Managers.Score.playerScore = Managers.Score.aiScore = 0;
+        Managers.UI.inGameUI.UpdateScore();
     }
 }

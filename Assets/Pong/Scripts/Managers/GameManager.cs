@@ -57,6 +57,4 @@ public class GameManager : MonoBehaviour
 	{
 		SetState(typeof(MenuState));
 	}
-
-
 }

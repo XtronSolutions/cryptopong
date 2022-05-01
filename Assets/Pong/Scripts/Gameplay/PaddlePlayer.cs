@@ -26,13 +26,18 @@ public class PaddlePlayer : BasePaddle
     protected override void Start()
     {
         base.Start();
-        Database = Resources.Load<CharactersDatabase>(nameof(CharactersDatabase));
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        base.Animator.runtimeAnimatorController = Database.GetSelectedCharacter.AnimatorController;
+        if (!Database)
+            Database = Resources.Load<CharactersDatabase>(nameof(CharactersDatabase));
+            
+        if (base.Animator)
+            base.Animator.runtimeAnimatorController = Database.GetSelectedCharacter.AnimatorController;
+        else
+            Debug.LogError("Animator not assigned.");
     }
 
     private void OnCollisionEnter2D(Collision2D other)

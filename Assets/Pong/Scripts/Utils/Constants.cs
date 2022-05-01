@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class Constants
 {
-    public static readonly Vector2 PLAYER = new Vector3(8, 10, -10);
+    public static readonly Vector2 PLAYER = new Vector3(8, 0, -10);
     public static readonly Vector2 AI = new Vector3(-8, 0, -10);
     public static readonly Vector3 PADDLE_SCALE = new Vector3(1f, 1f, 1f);
     public static readonly float PADDLE_SPEED = 15f;
