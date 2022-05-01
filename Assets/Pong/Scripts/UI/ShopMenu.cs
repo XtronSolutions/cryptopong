@@ -39,7 +39,6 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         {
             var character = Instantiate(CharacterPrefab, CharacterContainer);
             character.sprite = Database.Characters[i].GetIcon;
-            // character.gameObject.SetActive(Database.Characters[i].IsSelected);
             character.gameObject.SetActive(true);
         }
     }
@@ -76,7 +75,6 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
     private void OnSelect()
     {
         var character = Database.Characters[Index];
-        Debug.Log($"Character ---> {character.Key}");
         Database.Select(character.Key);
 
         UpdatePreview();
@@ -92,7 +90,6 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         else
             Index++;
 
-        Debug.Log($"Index: {Index}");
         UpdatePreview();
         Managers.Audio.PlayClickSound();
     }
@@ -106,7 +103,6 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         else
             Index = Database.Characters.Count - 1;
 
-        Debug.Log($"Index: {Index}");
         UpdatePreview();
         Managers.Audio.PlayClickSound();
     }
