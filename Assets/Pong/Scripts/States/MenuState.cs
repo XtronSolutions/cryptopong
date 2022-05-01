@@ -15,7 +15,7 @@ public class MenuState : _StatesBase {
 
 		if (Managers.Game.isGameActive)
 		{
-			Managers.UI.mainMenu.continueButton.SetActive (true);
+			// Managers.UI.mainMenu.continueButton.SetActive (true);
 		} 
 		else
 		{

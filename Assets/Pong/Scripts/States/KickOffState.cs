@@ -7,7 +7,7 @@ public class KickOffState : _StatesBase
 
     private int countdown;
     private Vector2 _ballVelocity;
-
+    private Tween ActiveTween;
     #region implemented abstract members of _StatesBase
 
     public override void OnActivate()
@@ -31,14 +31,13 @@ public class KickOffState : _StatesBase
 
     public override void OnDeactivate()
     {
-        // Debug.Log("<color=red>KickOff State</color> OnDeactivate");
-
+        Debug.Log("<color=red>KickOff State</color> OnDeactivate");
+        DOTween.Kill(ActiveTween);
     }
 
     public override void OnUpdate()
     {
         // Debug.Log("<color=yellow>KickOff State</color> OnUpdate");
-
     }
 
     #endregion
@@ -49,24 +48,23 @@ public class KickOffState : _StatesBase
         Managers.UI.inGameUI.info.enabled = true;
         Color initColor = Managers.UI.inGameUI.info.color;
         Managers.UI.inGameUI.score.enabled = false;
-        DOTween.To(() => initColor, x => Managers.UI.inGameUI.info.color = x, new Color(initColor.r, initColor.g, initColor.b, 0), 1f).SetLoops(4)
-            .OnStepComplete(() =>
-               {
-                   countdown--;
-                   Managers.Audio.PlayCollisionSound();
-                   Managers.UI.inGameUI.SetInfoText(countdown.ToString(), true);
-               })
-            .OnComplete(() =>
-               {
-                   Managers.UI.inGameUI.SetInfoText("", false);
-                   KickOff();
-                   Managers.Audio.PlayClickSound();
-                   Managers.UI.inGameUI.score.enabled = true;
-                   Managers.PowUps.canSpawnPowerup = true;
-                   Managers.Match.ball.ballBody.velocity = _ballVelocity;
-                   //StartCoroutine(Managers.PowUps.SpawnPowerup());
-
-               });
+        ActiveTween = DOTween.To(() => initColor, x => Managers.UI.inGameUI.info.color = x, new Color(initColor.r, initColor.g, initColor.b, 0), 1f).SetLoops(4)
+             .OnStepComplete(() =>
+                {
+                    countdown--;
+                    Managers.Audio.PlayCollisionSound();
+                    Managers.UI.inGameUI.SetInfoText(countdown.ToString(), true);
+                })
+             .OnComplete(() =>
+                {
+                    Managers.UI.inGameUI.SetInfoText("", false);
+                    KickOff();
+                    Managers.Audio.PlayClickSound();
+                    Managers.UI.inGameUI.score.enabled = true;
+                    Managers.PowUps.canSpawnPowerup = true;
+                    Managers.Match.ball.ballBody.velocity = _ballVelocity;
+                    //StartCoroutine(Managers.PowUps.SpawnPowerup());
+                });
     }
 
 

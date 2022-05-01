@@ -35,11 +35,12 @@ public class BasePaddle : MonoBehaviour
     {
         _ball = Managers.Match.ball;
         _rigidBody = GetComponent<Rigidbody2D>();
-        Animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void OnEnable()
     {
+        if(!Animator)
+        Animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void Update()
