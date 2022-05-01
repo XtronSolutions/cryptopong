@@ -138,14 +138,16 @@ public class WalletManager : MonoBehaviour
     private const int mutatedNFTsLimit = 20000;
 
     private int tempNFTCounter = 0;
-    [HideInInspector] public List<List<int>> NFTTokens = new List<List<int>>()
+    [HideInInspector]
+    public List<List<int>> NFTTokens = new List<List<int>>()
     {
         new List<int>(),
         new List<int>(),
         new List<int>()
     };
-    [HideInInspector] public List<List<string>> metaDataURL = new List<List<string>>() 
-    { 
+    [HideInInspector]
+    public List<List<string>> metaDataURL = new List<List<string>>()
+    {
         new List<string>(),
         new List<string>(),
         new List<string>()
@@ -232,7 +234,8 @@ public class WalletManager : MonoBehaviour
         {
             StoredWallet = info;
             ConnectWallet();
-        } else
+        }
+        else
         {
             StoredWallet = "null";
         }
@@ -307,17 +310,17 @@ public class WalletManager : MonoBehaviour
         MainUI.ConnectBtn.SetActive(false); //disable connect button
         MainUI.ConnectedBtn.SetActive(true);// enable connected button
         PrintWalletAddress(); // print wallet address on connected button
-        //if (!IsGamePlay)
-        //{
-        //    //bool _isapproved = await CheckPongApproval(0);
-        //    ////if (!_isapproved)
-        //   // {
-        //        //if (MainMenuViewController.Instance)
-        //        //{
-        //        //    MainMenuViewController.Instance.LoadingScreen.SetActive(false);
-        //        //    MainMenuViewController.Instance.ToogleScreen_CraceUI(true);
-        //        //}
-        //   // }
+                              //if (!IsGamePlay)
+                              //{
+                              //    //bool _isapproved = await CheckPongApproval(0);
+                              //    ////if (!_isapproved)
+                              //   // {
+                              //        //if (MainMenuViewController.Instance)
+                              //        //{
+                              //        //    MainMenuViewController.Instance.LoadingScreen.SetActive(false);
+                              //        //    MainMenuViewController.Instance.ToogleScreen_CraceUI(true);
+                              //        //}
+                              //   // }
 
         //    MainUI.ConnectBtn.SetActive(false); //disable connect button
         //    MainUI.ConnectedBtn.SetActive(true);// enable connected button
@@ -331,7 +334,7 @@ public class WalletManager : MonoBehaviour
         //    //EndRace(Constants.StoredPID);
         //}
 
-       // GetHashEncoded();
+        // GetHashEncoded();
     }
 
     /// <summary>
@@ -341,7 +344,7 @@ public class WalletManager : MonoBehaviour
     {
         char[] charArr = account.ToCharArray();//convert connected wallet address to character array
         string FirstPart = "";
-        string MidPart = "********";
+        string MidPart = "*****";// "********";
         string EndPart = "";
 
         for (int i = 0; i < 4; i++)
@@ -372,7 +375,7 @@ public class WalletManager : MonoBehaviour
     {
         decimalValue = (BigInteger)Math.Pow(10, (double)decimals);
         actualBalance = mainbalanceOf / decimalValue;
-        MainUI.CoinText.text = "Coins : "+actualBalance.ToString();
+        MainUI.CoinText.text = "Coins : " + actualBalance.ToString();
         Debug.Log("Totat Balance : " + actualBalance);
     }
 
@@ -507,7 +510,7 @@ public class WalletManager : MonoBehaviour
         {
             switch (StoredMethodName)
             {
-                
+
                 case "BuyingPass":
                     //Constants.BuyingPass = false;
                     Constants.PrintLog("pass bought was success");
@@ -529,8 +532,8 @@ public class WalletManager : MonoBehaviour
                     //{
                     //    MainMenuViewController.Instance.StartTournament(true);
                     //}
-                       break;
-             
+                    break;
+
             }
         }
         else if (txStatus == "fail")
@@ -546,7 +549,7 @@ public class WalletManager : MonoBehaviour
                     Constants.PrintLog("transaction was failed for tournament TX");
                     // MainMenuViewController.Instance.StartTournament(false);
                     break;
-             
+
             }
         }
         else if (txStatus == "pending")
@@ -559,7 +562,7 @@ public class WalletManager : MonoBehaviour
     /// Called to check amount of  BEP20 (crace) before entering tournament
     /// </summary>
     /// <returns></returns>
-    public bool CheckBalanceTournament(bool _checkBalance, bool _checkDiscountBalance, bool _checkPassBalance, bool _checkMultiplayerAmount, bool _CheckGrimacePass,bool _checkGrimaceTournament)
+    public bool CheckBalanceTournament(bool _checkBalance, bool _checkDiscountBalance, bool _checkPassBalance, bool _checkMultiplayerAmount, bool _CheckGrimacePass, bool _checkGrimaceTournament)
     {
         bool _havebalance = false;
         int _amountToCheck = 0;
