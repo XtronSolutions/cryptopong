@@ -34,6 +34,7 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
     private void Init()
     {
         Index = Database.GetSelectedCharacterIndex;
+        Pagination.OnSelectionPageChangedEvent.AddListener(OnSelectionPageChangedEvent);
 
         for (int i = 0; i < Database.Characters.Count; i++)
         {
@@ -41,6 +42,12 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
             character.sprite = Database.Characters[i].GetIcon;
             character.gameObject.SetActive(true);
         }
+    }
+
+    private void OnSelectionPageChangedEvent(int value)
+    {
+        Index = value;
+        UpdatePreview();
     }
 
     private void OnEnable()
@@ -83,27 +90,27 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
 
     private void OnNext()
     {
-        if (Index + 1 >= Database.Characters.Count)
-        {
-            Index = 0;
-        }
-        else
-            Index++;
+        // if (Index + 1 >= Database.Characters.Count)
+        // {
+        //     Index = 0;
+        // }
+        // else
+        //     Index++;
 
-        UpdatePreview();
+        // UpdatePreview();
         Managers.Audio.PlayClickSound();
     }
 
     private void OnPrev()
     {
-        if (Index - 1 >= 0)
-        {
-            Index--;
-        }
-        else
-            Index = Database.Characters.Count - 1;
+        // if (Index - 1 >= 0)
+        // {
+        //     Index--;
+        // }
+        // else
+        //     Index = Database.Characters.Count - 1;
 
-        UpdatePreview();
+        // UpdatePreview();
         Managers.Audio.PlayClickSound();
     }
 
