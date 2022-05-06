@@ -49,7 +49,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
 		Managers.Audio.PlayClickSound ();
 		// Managers.Match.ResetSavedGame ();
 		// Managers.Game.SetState(typeof(KickOffState));
-		Managers.UI.ActivateUI (Menus.DIFFICULTY);
+		Managers.UI.ActivateUI (Menus.LEVELS);
 	}
 
 	public void Settings ()
