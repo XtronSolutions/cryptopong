@@ -50,6 +50,14 @@ public class _tween : MonoBehaviour
             _tweenParameters._host = this.transform;
     }
 
+    protected virtual void OnEnable()
+    {
+        if (_myTween != null)
+        {
+            Play();
+        }
+    }
+
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -62,7 +70,7 @@ public class _tween : MonoBehaviour
 
         _myTween.OnComplete(delegate
         {
-            _tweenParameters. _OnTweenCompleted.Invoke();
+            _tweenParameters._OnTweenCompleted.Invoke();
         });
 
         _myTween.OnStepComplete(delegate
@@ -75,7 +83,7 @@ public class _tween : MonoBehaviour
             _tweenParameters._OnTweenUpdate.Invoke();
         });
 
-        if(_tweenParameters._autoplay)
+        if (_tweenParameters._autoplay)
             _myTween.Play();
     }
 

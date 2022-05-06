@@ -19,8 +19,8 @@ public class GoalState : _StatesBase
     public override void OnDeactivate()
     {
         Debug.Log("<color=red>Goal State</color> OnDeactivate");
-        var tweensCount = DOTween.KillAll();
-        Debug.Log("Tweens Killed: " + tweensCount);
+        ActiveTween.Kill();
+        Debug.Log("Tweens Killed: " + !ActiveTween.IsPlaying());
     }
 
     public override void OnUpdate()

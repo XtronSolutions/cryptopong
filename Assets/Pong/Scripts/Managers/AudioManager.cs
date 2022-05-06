@@ -25,8 +25,8 @@ public class AudioManager : MonoBehaviour {
 
 	void Awake()
 	{
-		soundSource.volume = PlayerPrefs.GetFloat ("Sound", 0.5f);
-		musicSource.volume = PlayerPrefs.GetFloat ("Music", 0.5f);
+		soundSource.volume = PlayerPrefs.GetFloat ("Sound", 1f);
+		musicSource.volume = PlayerPrefs.GetFloat ("Music", 1f);
 	}
 
 	public float GetSoundVolume => soundSource.volume;
