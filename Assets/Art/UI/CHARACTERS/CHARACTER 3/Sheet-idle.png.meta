@@ -148,12 +148,12 @@ TextureImporter:
       name: Sheet-idle_0
       rect:
         serializedVersion: 2
-        x: 20
+        x: 0
         y: 0
-        width: 220
-        height: 270
+        width: 270
+        height: 280
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -169,12 +169,12 @@ TextureImporter:
       name: Sheet-idle_1
       rect:
         serializedVersion: 2
-        x: 300
+        x: 270
         y: 0
-        width: 200
-        height: 250
+        width: 270
+        height: 280
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

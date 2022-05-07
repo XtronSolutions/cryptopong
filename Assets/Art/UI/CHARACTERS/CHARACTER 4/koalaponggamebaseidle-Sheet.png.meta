@@ -151,9 +151,9 @@ TextureImporter:
         x: 0
         y: 0
         width: 270
-        height: 220
+        height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -169,12 +169,12 @@ TextureImporter:
       name: koalaponggamebaseidle-Sheet_1
       rect:
         serializedVersion: 2
-        x: 280
+        x: 270
         y: 0
-        width: 250
-        height: 210
+        width: 270
+        height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
