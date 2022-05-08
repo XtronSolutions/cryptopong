@@ -11,6 +11,11 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
     [SerializeField] private Button PrevButton;
     [SerializeField] private Button SelectButton;
     [SerializeField] private GameObject[] Levels;
+    [SerializeField] private Sprite[] Previews;
+
+    [SerializeField] private Transform ButtonsContainer;
+    [SerializeField] private LevelButton LevelButtonPrefab;
+    private List<LevelButton> LevelButtons = new List<LevelButton>();
 
     private int Index;
 
@@ -20,7 +25,7 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
         PlayerPrefs.Save();
 
         Managers.Audio.PlayClickSound();
-		Managers.UI.ActivateUI (Menus.DIFFICULTY);
+        Managers.UI.ActivateUI(Menus.DIFFICULTY);
     }
 
     private void OnNext()
@@ -66,7 +71,33 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
         SelectButton.onClick.AddListener(OnSelect);
 
         Index = PlayerPrefs.GetInt("Level", Index);
+
         UpdateView();
+        GenerateButtons();
+    }
+
+    private void GenerateButtons()
+    {
+        for (int i = 0; i < LevelButtons.Count; i++)
+        {
+            Destroy(LevelButtons[i].gameObject);
+        }
+
+        for (int i = 0; i < Levels.Length; i++)
+        {
+            var LevelButton = Instantiate<LevelButton>(LevelButtonPrefab, ButtonsContainer);
+            LevelButtons.Add(LevelButton);
+
+            LevelButton.Init(Previews[i], i, Index == i, (ind) =>
+            {
+                Managers.Audio.PlayClickSound();
+                LevelButtons[Index].UpdateView(ind);
+                Levels[Index].SetActive(false);
+                LevelButton.UpdateView(ind);
+                Index = ind;
+                UpdateView();
+            });
+        }
     }
 
     // Update is called once per frame

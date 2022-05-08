@@ -47,7 +47,7 @@ public class KickOffState : _StatesBase
     {
         Managers.UI.inGameUI.info.enabled = true;
         Color initColor = Managers.UI.inGameUI.info.color;
-        Managers.UI.inGameUI.score.enabled = false;
+        Managers.UI.inGameUI.score_bot.enabled = false;
         ActiveTween = DOTween.To(() => initColor, x => Managers.UI.inGameUI.info.color = x, new Color(initColor.r, initColor.g, initColor.b, 0), 1f).SetLoops(4)
              .OnStepComplete(() =>
                 {
@@ -60,7 +60,7 @@ public class KickOffState : _StatesBase
                     Managers.UI.inGameUI.SetInfoText("", false);
                     KickOff();
                     Managers.Audio.PlayClickSound();
-                    Managers.UI.inGameUI.score.enabled = true;
+                    Managers.UI.inGameUI.score_bot.enabled = true;
                     Managers.PowUps.canSpawnPowerup = true;
                     Managers.Match.ball.ballBody.velocity = _ballVelocity;
                     //StartCoroutine(Managers.PowUps.SpawnPowerup());
