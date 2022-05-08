@@ -17,7 +17,8 @@ public class InGameUI : MonoBehaviour
 {
 
     public Text info;
-    public Text score;
+    public Text score_bot;
+    public Text score_player;
     public Button gameBackButton;
 
     [HideInInspector]
@@ -28,12 +29,13 @@ public class InGameUI : MonoBehaviour
     void Start()
     {
         infoInitColor = info.color;
-        scoreInitColor = score.color;
+        scoreInitColor = score_bot.color;
     }
 
     public void UpdateScore()
     {
-        score.text = Managers.Score.aiScore + "-" + Managers.Score.playerScore;
+        score_bot.text = Managers.Score.aiScore.ToString("0");
+        score_player.text = Managers.Score.playerScore.ToString("0");
     }
 
     public void GameInfo(string txt)
