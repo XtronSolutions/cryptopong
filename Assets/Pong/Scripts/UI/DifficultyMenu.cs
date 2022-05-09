@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
 {
-    [SerializeField] private Button Easy, Medium, Hard;
-
+    [SerializeField] private Button Easy, Medium, Hard, BackButton;
     public override void Awake()
     {
         base.Awake();
@@ -14,6 +13,7 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
         Easy.onClick.AddListener(OnEasyPressed);
         Medium.onClick.AddListener(OnMediumPressed);
         Hard.onClick.AddListener(OnHardPressed);
+        BackButton.onClick.AddListener(OnBackButtonPressed);
     }
 
     private void OnEasyPressed()
@@ -32,6 +32,12 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
     {
         StartGame();
         Events.DoChangeIntelligence(3);
+    }
+
+    private void OnBackButtonPressed()
+    {
+        Managers.Audio.PlayClickSound ();
+		Managers.UI.ActivateUI (Menus.LEVELS);
     }
 
     private void StartGame()

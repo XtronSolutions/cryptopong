@@ -47,7 +47,7 @@ public class KickOffState : _StatesBase
     {
         Managers.UI.inGameUI.info.enabled = true;
         Color initColor = Managers.UI.inGameUI.info.color;
-        Managers.UI.inGameUI.score_bot.enabled = false;
+        // Managers.UI.inGameUI.score_bot.enabled = false;
         ActiveTween = DOTween.To(() => initColor, x => Managers.UI.inGameUI.info.color = x, new Color(initColor.r, initColor.g, initColor.b, 0), 1f).SetLoops(4)
              .OnStepComplete(() =>
                 {

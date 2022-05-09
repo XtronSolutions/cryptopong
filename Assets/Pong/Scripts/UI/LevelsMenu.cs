@@ -17,6 +17,14 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
     [SerializeField] private LevelButton LevelButtonPrefab;
     private List<LevelButton> LevelButtons = new List<LevelButton>();
 
+    [SerializeField] private Button BackButton;
+
+    private void OnBackButtonPressed()
+    {
+        Managers.Audio.PlayClickSound();
+        Managers.UI.ActivateUI(Menus.MAIN);
+    }
+
     private int Index;
 
     private void OnSelect()
@@ -69,6 +77,7 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
         NextButton.onClick.AddListener(OnNext);
         PrevButton.onClick.AddListener(OnPrev);
         SelectButton.onClick.AddListener(OnSelect);
+        BackButton.onClick.AddListener(OnBackButtonPressed);
 
         Index = PlayerPrefs.GetInt("Level", Index);
 
