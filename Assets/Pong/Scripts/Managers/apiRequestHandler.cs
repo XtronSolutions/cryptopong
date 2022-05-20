@@ -78,16 +78,16 @@ public class apiRequestHandler : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
 
-        if (Constants.IsStagging)
+        // if (Constants.IsStagging)
         {
-            BaseURL = "https://us-central1-coinracer-stagging.cloudfunctions.net/";
-            firebaseApiKey = "AIzaSyBpdWOUj1_7iN3F3YBYetCONjMwVCVAIGE";
+            BaseURL = "https://us-central1-pong-tournaments.cloudfunctions.net/";
+            firebaseApiKey = "AIzaSyDG7C0sHN4-hXhjOyTdyaBpQc3BArIBVsU";//"AIzaSyBpdWOUj1_7iN3F3YBYetCONjMwVCVAIGE";
         }
-        else //Production
-        {
-            BaseURL = "https://us-central1-coinracer-alpha-tournaments.cloudfunctions.net/";
-            firebaseApiKey = "AIzaSyDcLz0eTFpmf7pksItUB_AQ6YA2SNErx_8";
-        }
+        // else //Production
+        // {
+        //     BaseURL = "https://us-central1-coinracer-alpha-tournaments.cloudfunctions.net/";
+        //     firebaseApiKey = "AIzaSyDcLz0eTFpmf7pksItUB_AQ6YA2SNErx_8";
+        // }
 
         loginURL = BaseURL + "Login";
         signupBOUserURL = BaseURL + "SignUp";
