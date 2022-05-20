@@ -19,7 +19,8 @@ public enum Menus
     INGAME,
     GAMEOVER,
     DIFFICULTY,
-    LEVELS
+    LEVELS,
+    LOGIN,
 }
 
 public class UIManager : MonoBehaviour
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
     public InGameUI inGameUI;
     public DifficultyMenu DifficultyMenu;
     public LevelsMenu LevelsMenu;
+    public LoginMenu LoginMenu;
 
     public void ActivateUI(Menus menutype)
     {
@@ -36,5 +38,6 @@ public class UIManager : MonoBehaviour
         mainMenu.gameObject.SetActive(menutype.Equals(Menus.MAIN));
         DifficultyMenu.gameObject.SetActive(menutype.Equals(Menus.DIFFICULTY));
         LevelsMenu.gameObject.SetActive(menutype.Equals(Menus.LEVELS));
+        LoginMenu.gameObject.SetActive(menutype.Equals(Menus.LOGIN));
     }
 }

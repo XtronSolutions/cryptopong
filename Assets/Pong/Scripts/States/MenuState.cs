@@ -8,7 +8,7 @@ public class MenuState : _StatesBase {
 	public override void OnActivate ()
 	{		
 		Debug.Log ("<color=green>Menu State</color> OnActive");	
-		Managers.UI.ActivateUI (Menus.MAIN);
+		Managers.UI.ActivateUI (Menus.LOGIN);
 		Managers.Audio.PlayGameMusic ();
 		Managers.PowUps.canSpawnPowerup = false;
 		Managers.UI.inGameUI.gameBackButton.gameObject.SetActive (false);
