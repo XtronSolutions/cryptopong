@@ -12,6 +12,7 @@ public class UserDataBO
 
     public string email { get; set; }
     public string walletAddress { get; set; }
+    public int AvatarID { get; set; }
 }
 public class userDataPayload
 {
@@ -114,6 +115,7 @@ public class apiRequestHandler : MonoBehaviour
         FirebaseManager.Instance.Credentails.Email = _email;
         FirebaseManager.Instance.Credentails.Password = _pwd;
         FirebaseManager.Instance.Credentails.UserName = _username;
+        FirebaseManager.Instance.Credentails.AvatarID = 0;
         Debug.Log("In Signup Email");
         StartCoroutine(processSignUpRequest(_email, _pwd, _username));
         Debug.Log(_email);
@@ -154,7 +156,7 @@ public class apiRequestHandler : MonoBehaviour
             Debug.Log(request.downloadHandler.text);
             JToken token = JObject.Parse(request.downloadHandler.text);
             string tID = (string)token.SelectToken("idToken");
-            StartCoroutine(signupBORequest(_email, _username, _pwd, tID));
+            StartCoroutine(signupBORequest(_email, _username, _pwd, tID,Constants.FlagSelectedIndex));
             Events.DoFireRegsiterationSuccess();
             Debug.Log(tID);
         }
@@ -180,7 +182,7 @@ public class apiRequestHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator signupBORequest(string _email, string _username, string _pwd, string _BOtoken)
+    private IEnumerator signupBORequest(string _email, string _username, string _pwd, string _BOtoken, int _avatar)
     {
         string _walletAddress = "";
         Debug.Log(WalletManager.Instance.GetAccount());
@@ -195,6 +197,7 @@ public class apiRequestHandler : MonoBehaviour
         userDataObj.userName = _username;
         userDataObj.email = _email;
         userDataObj.walletAddress = _walletAddress;
+        userDataObj.AvatarID = _avatar;
 
         userDataPayload obj = new userDataPayload();
         obj.data = userDataObj;

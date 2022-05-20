@@ -28,6 +28,7 @@ public class AuthCredentials
     public string UserName { get; set; }
 
     public string WalletAddress { get; set; }
+    public int AvatarID { get; set; }
 }
 public class updateDataPayload
 {
