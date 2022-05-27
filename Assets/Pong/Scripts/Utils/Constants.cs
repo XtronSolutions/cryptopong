@@ -22,7 +22,7 @@ public static class Constants
 
     public static bool IsTest = true; //bool to test wallet functionality inside editor
     public static bool IsTestNet = false;//bool to test code on testnet chain
-    public static bool IsStagging = true;
+    public static bool IsStagging = false;
     public static bool IsDebugBuild = false;
 
 
@@ -56,6 +56,8 @@ public static class Constants
     public static int DiscountPercentage = 0;
     public static int DiscountForPong = 0;
     public static bool ApprovePong = false;
+
+    public static string TestWalletAddress = "0xD4d844C5A1cFAB13A8Ab252E466188d"; //0x9D3FB13A0ba2c4985a8816182e0c3D30DA328Bb3
 
     public static int LeaderboardCount = 200;//top player count for leaderboard
 
