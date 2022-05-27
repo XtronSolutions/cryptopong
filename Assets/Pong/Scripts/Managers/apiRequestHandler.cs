@@ -145,9 +145,9 @@ public class apiRequestHandler : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
             //MainMenuViewController.Instance.SomethingWentWrongMessage();
+            Events.DoReportMessage(new messageInfo(request.error));
             Debug.LogError(request.result);
             Debug.Log(request.error);
-            Events.DoFireRegsiterationFailed("Connection error.");
         }
         else if (request.result == UnityWebRequest.Result.Success)
         {
@@ -156,8 +156,7 @@ public class apiRequestHandler : MonoBehaviour
             Debug.Log(request.downloadHandler.text);
             JToken token = JObject.Parse(request.downloadHandler.text);
             string tID = (string)token.SelectToken("idToken");
-            StartCoroutine(signupBORequest(_email, _username, _pwd, tID,Constants.FlagSelectedIndex));
-            Events.DoFireRegsiterationSuccess();
+            StartCoroutine(signupBORequest(_email, _username, _pwd, tID, Constants.FlagSelectedIndex));
             Debug.Log(tID);
         }
         else
@@ -165,19 +164,20 @@ public class apiRequestHandler : MonoBehaviour
             Debug.Log("Result is: ");
             Debug.Log(request.result);
             JToken res = JObject.Parse(request.downloadHandler.text);
+            Events.DoReportMessage(new messageInfo((string)res.SelectToken("error").SelectToken("message")));
             Debug.Log((string)res.SelectToken("error").SelectToken("message"));
-            if ((string)res.SelectToken("error").SelectToken("message") == "EMAIL_EXISTS")
-            {
-                Events.DoFireRegsiterationFailed("email already exist.");
-            }
-            else if ((string)res.SelectToken("error").SelectToken("message") == "EMAIL_NOT_FOUND")//2nd error
-            {
-                Events.DoFireRegsiterationFailed("email not found.");
-            }
-            else
-            {
-                Events.DoFireRegsiterationFailed("something went wrong, please retry.");
-            }
+            // if ((string)res.SelectToken("error").SelectToken("message") == "EMAIL_EXISTS")
+            // {
+            //     Events.DoFireRegsiterationFailed("email already exist.");
+            // }
+            // else if ((string)res.SelectToken("error").SelectToken("message") == "EMAIL_NOT_FOUND")//2nd error
+            // {
+            //     Events.DoFireRegsiterationFailed("email not found.");
+            // }
+            // else
+            // {
+            //     Events.DoFireRegsiterationFailed("something went wrong, please retry.");
+            // }
 
         }
     }
@@ -188,7 +188,8 @@ public class apiRequestHandler : MonoBehaviour
         Debug.Log(WalletManager.Instance.GetAccount());
         if (Constants.IsTest)
         {
-            _walletAddress = "0xD4d844C5A1cFAB13A8Ab252E466188d";
+            // _walletAddress = "0xD4d844C5A1cFAB13A8Ab252E466188d";
+            _walletAddress = "0x9D3FB13A0ba2c4985a8816182e0c3D30DA328Bb3";
         }
         else
             _walletAddress = Constants.WalletAddress;
@@ -215,6 +216,7 @@ public class apiRequestHandler : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
             Debug.Log(request.error);
+            Events.DoReportMessage(new messageInfo(request.error));
         }
         else
         {
@@ -229,33 +231,37 @@ public class apiRequestHandler : MonoBehaviour
                 //StartCoroutine(processTokenRequest(_email,_pwd,false));
                 Debug.Log(_BOtoken);
                 StartCoroutine(sendVerificationLink(_BOtoken));
-                Events.DoFireRegsiterationSuccess();
-            }
-            else if ((string)res.SelectToken("message") == "Same WalletAddress already in Use")
-            {
-                Events.DoFireRegsiterationFailed("Same WalletAddress already in Use");
-            }
-
-            else if ((string)res.SelectToken("message") == "No User Found.")
-            {
-                Events.DoFireRegsiterationFailed("No User Found.");
-            }
-            else if ((string)res.SelectToken("message") == "Unauthorized")
-            {
-                Events.DoFireRegsiterationFailed("Unauthorized.");
-            }
-            else if ((string)res.SelectToken("message") == "Required parameters are missing")
-            {
-                Events.DoFireRegsiterationFailed("Required parameters are missing.");
-            }
-            else if ((string)res.SelectToken("message") == "Invalid request.")
-            {
-                Events.DoFireRegsiterationFailed("Invalid request.");
+                Events.DoReportMessage(new messageInfo((string)res.SelectToken("message") + " Please verify your email."));
             }
             else
             {
-                Events.DoFireRegsiterationFailed("ERROR.");
+                Events.DoReportMessage(new messageInfo((string)res.SelectToken("message")));
             }
+            // else if ((string)res.SelectToken("message") == "Same WalletAddress already in Use")
+            // {
+            //     Events.DoFireRegsiterationFailed("Same WalletAddress already in Use");
+            // }
+
+            // else if ((string)res.SelectToken("message") == "No User Found.")
+            // {
+            //     Events.DoFireRegsiterationFailed("No User Found.");
+            // }
+            // else if ((string)res.SelectToken("message") == "Unauthorized")
+            // {
+            //     Events.DoFireRegsiterationFailed("Unauthorized.");
+            // }
+            // else if ((string)res.SelectToken("message") == "Required parameters are missing")
+            // {
+            //     Events.DoFireRegsiterationFailed("Required parameters are missing.");
+            // }
+            // else if ((string)res.SelectToken("message") == "Invalid request.")
+            // {
+            //     Events.DoFireRegsiterationFailed("Invalid request.");
+            // }
+            // else
+            // {
+            //     Events.DoFireRegsiterationFailed("ERROR.");
+            // }
 
 
 
@@ -279,6 +285,7 @@ public class apiRequestHandler : MonoBehaviour
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
+            Events.DoReportMessage(new messageInfo(request.error));
             //MainMenuViewController.Instance.SomethingWentWrongMessage();
             //Debug.Log(request.error);
         }
@@ -288,12 +295,15 @@ public class apiRequestHandler : MonoBehaviour
             if (resendAgain)
             {
                 FirebaseManager.Instance.ResendEmailSent("");
+                Events.DoReportMessage(new messageInfo("Verification link sent at provided email."));
             }
             else
             {
+                Events.DoReportMessage(new messageInfo("Verification link sent at provided email."));
                 // MainMenuViewController.Instance.ErrorMessage("Verification link sent to Email");
-
             }
+
+            Events.DoFireVerificationSent();
         }
         else
         {
@@ -315,7 +325,7 @@ public class apiRequestHandler : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
-            //MainMenuViewController.Instance.SomethingWentWrongMessage();
+            Events.DoReportMessage(new messageInfo(request.error));
             Debug.Log(request.error);
         }
         else if (request.result == UnityWebRequest.Result.Success)
@@ -325,7 +335,6 @@ public class apiRequestHandler : MonoBehaviour
             Debug.Log(request.downloadHandler.text);
             JToken token = JObject.Parse(request.downloadHandler.text);
             string tID = (string)token.SelectToken("idToken");
-            Events.DoFireLoginSuccess();
             if (flag)
             {
                 //TODO: Update Request
@@ -343,18 +352,19 @@ public class apiRequestHandler : MonoBehaviour
             Debug.Log(request.result);
             JToken res = JObject.Parse(request.downloadHandler.text);
             Debug.Log((string)res.SelectToken("error").SelectToken("message"));
-            if ((string)res.SelectToken("error").SelectToken("message") == "INVALID_PASSWORD")
-            {
-                Events.DoFireLoginFailed("INVALID_PASSWORD");
-            }
-            else if ((string)res.SelectToken("error").SelectToken("message") == "EMAIL_NOT_FOUND")
-            {
-                Events.DoFireLoginFailed("EMAIL_NOT_FOUND");
-            }
-            else
-            {
-                Events.DoFireLoginFailed("SOMETHING_WENT_WRONG");
-            }
+            Events.DoReportMessage(new messageInfo((string)res.SelectToken("error").SelectToken("message")));
+            // if ((string)res.SelectToken("error").SelectToken("message") == "INVALID_PASSWORD")
+            // {
+            //     Events.DoFireLoginFailed("INVALID_PASSWORD");
+            // }
+            // else if ((string)res.SelectToken("error").SelectToken("message") == "EMAIL_NOT_FOUND")
+            // {
+            //     Events.DoFireLoginFailed("EMAIL_NOT_FOUND");
+            // }
+            // else
+            // {
+            //     Events.DoFireLoginFailed("SOMETHING_WENT_WRONG");
+            // }
         }
     }
 
@@ -373,8 +383,9 @@ public class apiRequestHandler : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
+            Events.DoReportMessage(new messageInfo(request.error));
             // MainMenuViewController.Instance.SomethingWentWrongMessage();
-            //Debug.Log(request.error);
+            Debug.Log(request.error);
         }
         else
         {
@@ -389,28 +400,33 @@ public class apiRequestHandler : MonoBehaviour
             // //Debug.Log((string)res.SelectToken("error").SelectToken("message"));
             if (request.result == UnityWebRequest.Result.Success)
             {
+                Events.DoFireLoginSuccess();
                 FirebaseManager.Instance.OnDocUpdate("");
-            }
-            else if ((string)res.SelectToken("message") == "No User Found.")
-            {
-                // MainMenuViewController.Instance.SomethingWentWrong();
-            }
-            else if ((string)res.SelectToken("message") == "Unauthorized")
-            {
-                // MainMenuViewController.Instance.SomethingWentWrongMessage();
-            }
-            else if ((string)res.SelectToken("message") == "Required parameters are missing")
-            {
-                // MainMenuViewController.Instance.SomethingWentWrongMessage();
-            }
-            else if ((string)res.SelectToken("message") == "Invalid request.")
-            {
-                //MainMenuViewController.Instance.SomethingWentWrongMessage();
             }
             else
             {
-                //MainMenuViewController.Instance.SomethingWentWrongMessage();
+                Events.DoReportMessage(new messageInfo((string)res.SelectToken("error").SelectToken("message")));
             }
+            // else if ((string)res.SelectToken("message") == "No User Found.")
+            // {
+            //     // MainMenuViewController.Instance.SomethingWentWrong();
+            // }
+            // else if ((string)res.SelectToken("message") == "Unauthorized")
+            // {
+            //     // MainMenuViewController.Instance.SomethingWentWrongMessage();
+            // }
+            // else if ((string)res.SelectToken("message") == "Required parameters are missing")
+            // {
+            //     // MainMenuViewController.Instance.SomethingWentWrongMessage();
+            // }
+            // else if ((string)res.SelectToken("message") == "Invalid request.")
+            // {
+            //     //MainMenuViewController.Instance.SomethingWentWrongMessage();
+            // }
+            // else
+            // {
+            //     //MainMenuViewController.Instance.SomethingWentWrongMessage();
+            // }
             //JToken token = JObject.Parse(request.downloadHandler.text);
             // string tID = (string)token.SelectToken("idToken");
             // //Debug.Log(tID);
@@ -464,7 +480,7 @@ public class apiRequestHandler : MonoBehaviour
             {
                 Constants.ResendTokenID = _token;
                 FirebaseManager.Instance.showVerificationScreen();
-                Events.DoFireLoginFailed("Email is not verified.");
+                Events.DoReportMessage(new messageInfo("Email is not verified, please verify your email address and try again."));
 
                 //MainMenuViewController.Instance.ErrorMessage("Email is not verified");
 
@@ -472,19 +488,20 @@ public class apiRequestHandler : MonoBehaviour
             }
             else if ((string)res.SelectToken("message") == "No User Found.")
             {
-                Events.DoFireLoginFailed("No User Found.");
+                Events.DoReportMessage(new messageInfo("No User Found"));
+
             }
             else if ((string)res.SelectToken("message") == "Unauthorized")
             {
-                Events.DoFireLoginFailed("Unauthorized.");
+                Events.DoReportMessage(new messageInfo("Unauthorized"));
             }
             else if ((string)res.SelectToken("message") == "Required parameters are missing")
             {
-                Events.DoFireLoginFailed("Required parameters are missing.");
+                Events.DoReportMessage(new messageInfo("Required parameters are missing"));
             }
             else if ((string)res.SelectToken("message") == "Invalid request.")
             {
-                Events.DoFireLoginFailed("Invalid request.");
+                Events.DoReportMessage(new messageInfo("Invalid request"));
             }
             else
             {

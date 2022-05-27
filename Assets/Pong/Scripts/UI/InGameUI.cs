@@ -45,6 +45,7 @@ public class InGameUI : MonoBehaviour
 
     public void GameBackButtonClicked()
     {
+        Events.DoFireGameStart(false);
         Managers.Audio.PlayClickSound();
         Managers.UI.ActivateUI(Menus.MAIN);
         Managers.Game.SetState(typeof(MenuState));

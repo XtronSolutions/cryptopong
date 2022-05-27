@@ -42,6 +42,7 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
 
     private void StartGame()
     {
+        Events.DoFireGameStart(true);
         Managers.Audio.PlayClickSound();
         Managers.Match.ResetSavedGame();
         Managers.Game.SetState(typeof(KickOffState));
