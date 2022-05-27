@@ -54,7 +54,8 @@ public class _tween : MonoBehaviour
     {
         if (_myTween != null)
         {
-            Play();
+            if (_tweenParameters._autoplay)
+                Play();
         }
     }
 

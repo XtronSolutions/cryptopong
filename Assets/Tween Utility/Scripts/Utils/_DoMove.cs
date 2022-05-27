@@ -11,7 +11,23 @@ public class _DoMove : _tween
     // Start is called before the first frame update
     public override void Start()
     {
-        _myTween = this.transform.DOMove(_target.position, _tweenParameters._duration);
+        Sequence seq = DOTween.Sequence();
+        seq.Pause();
+
+        seq.Append(this.transform.DOMove(_target.position, _tweenParameters._duration));
+        _myTween = seq;
         base.Start();
+
+        Events.OnGameStart += (value) =>
+        {
+            if(value)
+            {
+                seq.Play();
+            }else
+            {
+                seq.Restart();
+                seq.Pause();
+            }
+        };
     }
 }

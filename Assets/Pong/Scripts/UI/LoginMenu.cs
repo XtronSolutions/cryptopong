@@ -11,11 +11,6 @@ public static partial class Events
     public static void DoFireLoginSuccess() => OnLoginSuccess?.Invoke();
     public static Action<string> OnLoginFailed = null;
     public static void DoFireLoginFailed(string reason) => OnLoginFailed?.Invoke(reason);
-
-    public static Action OnRegisterationSuccess = null;
-    public static void DoFireRegsiterationSuccess() => OnRegisterationSuccess?.Invoke();
-    public static Action<string> OnRegisterationFailed = null;
-    public static void DoFireRegsiterationFailed(string reason) => OnRegisterationFailed?.Invoke(reason);
 }
 
 public class LoginMenu : MonoBehaviour
@@ -50,7 +45,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnRegisterButtonClicked()
     {
-        apiRequestHandler.Instance.signUpWithEmail(EmailField.text, PasswordField.text, "");
+        Managers.UI.ActivateUI(Menus.REGISTER);
     }
 
     // Update is called once per frame
