@@ -13,12 +13,11 @@ public class UserData
     public double NumberOfTries { get; set; }
     public string Email { get; set; }
     public int AvatarID { get; set; }
-    public Timestamp ProfileCreated { get; set; }
+    public long SignupTime { get; set; }
     public int TotalWins { get; set; }
     public int TotalHits { get; set; }
     public int TotalScore { get; set; }
 }
-
 
 public class AuthCredentials
 {
@@ -102,10 +101,7 @@ public class FirebaseManager : MonoBehaviour
         Constants.TotalHits = PlayerData.TotalHits;
         Constants.TotalScore = PlayerData.TotalScore;
 
-        PlayerData.ProfileCreated = new Timestamp();
-        PlayerData.ProfileCreated.nanoseconds = (double)response.SelectToken("data").SelectToken("ProfileCreated").SelectToken("nanoseconds");
-        PlayerData.ProfileCreated.seconds = (double)response.SelectToken("data").SelectToken("ProfileCreated").SelectToken("seconds");
-
+        PlayerData.SignupTime = (long)response.SelectToken("data").SelectToken("SignupTime");
 
         Constants.UserName = PlayerData.UserName;
         Constants.FlagSelectedIndex = PlayerData.AvatarID;
