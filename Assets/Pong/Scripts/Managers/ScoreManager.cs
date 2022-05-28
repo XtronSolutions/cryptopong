@@ -19,11 +19,39 @@ public class ScoreManager : MonoBehaviour
     public int aiScore;
     public int scoreLimit;
 
+    public int TotalHits;
+    public int TotalWins;
+    public int TotalScore => TotalHits + TotalWins;
+
     public PaddleOwner Winner
     {
         get
         {
-            return (playerScore > aiScore) ? PaddleOwner.PLAYER : PaddleOwner.AI;
+            var playerWon = playerScore > aiScore;
+
+            if (playerWon)
+            {
+                var email = FirebaseManager.Instance.Credentails.Email;
+                var password = FirebaseManager.Instance.Credentails.Password;
+                var data = FirebaseManager.Instance.PlayerData;
+
+                TotalWins += data.TotalWins;
+                TotalHits += data.TotalHits;
+
+                data.TotalHits = TotalHits;
+                data.TotalWins = TotalWins;
+
+                if (data.TotalScore < TotalScore)
+                {
+                    data.TotalScore = TotalScore;
+                }
+
+                apiRequestHandler.Instance.ProccessDataUpdate(email, password);
+            }
+
+            TotalWins = 0;
+            TotalHits = 0;
+            return playerWon ? PaddleOwner.PLAYER : PaddleOwner.AI;
         }
     }
 

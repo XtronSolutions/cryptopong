@@ -57,7 +57,7 @@ public static class Constants
     public static int DiscountForPong = 0;
     public static bool ApprovePong = false;
 
-    public static string TestWalletAddress = "0xD4d844C5A1cFAB13A8Ab252E466188d"; //0x9D3FB13A0ba2c4985a8816182e0c3D30DA328Bb3
+    public static string TestWalletAddress = "0x9D3FB13A0ba2c4985a8816182e0c3D30DA328Bb3"; //"0xD4d844C5A1cFAB13A8Ab252E466188d";
 
     public static int LeaderboardCount = 200;//top player count for leaderboard
 
