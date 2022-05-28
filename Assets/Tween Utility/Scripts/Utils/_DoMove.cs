@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class _DoMove : _tween
 {
+    [SerializeField] private Image _image;
     public Transform _target;
 
     // Start is called before the first frame update
@@ -20,13 +22,16 @@ public class _DoMove : _tween
 
         Events.OnGameStart += (value) =>
         {
-            if(value)
+            if (value)
             {
                 seq.Play();
-            }else
+                _image.enabled = true;
+            }
+            else
             {
                 seq.Restart();
                 seq.Pause();
+                _image.enabled = false;
             }
         };
     }
