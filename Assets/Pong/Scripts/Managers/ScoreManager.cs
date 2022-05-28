@@ -27,6 +27,7 @@ public class ScoreManager : MonoBehaviour
     {
         get
         {
+            Debug.Log("Winner");
             var playerWon = playerScore > aiScore;
 
             if (playerWon)
@@ -35,6 +36,7 @@ public class ScoreManager : MonoBehaviour
                 var password = FirebaseManager.Instance.Credentails.Password;
                 var data = FirebaseManager.Instance.PlayerData;
 
+                data.TotalWins += 1;
                 TotalWins += data.TotalWins;
                 TotalHits += data.TotalHits;
 

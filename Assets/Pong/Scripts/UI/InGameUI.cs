@@ -19,12 +19,19 @@ public class InGameUI : MonoBehaviour
     public Text info;
     public Text score_bot;
     public Text score_player;
+    public Text player_text;
     public Button gameBackButton;
 
     [HideInInspector]
     public Color infoInitColor;
     [HideInInspector]
     public Color scoreInitColor;
+
+    private void OnEnable()
+    {
+        var username = FirebaseManager.Instance.PlayerData.UserName;
+        player_text.text = username;
+    }
 
     void Start()
     {

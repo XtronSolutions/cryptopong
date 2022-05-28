@@ -40,12 +40,12 @@ public class FirebaseManager : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void SetStorage(string key, string val);
 
-    private int key=129;
+    private int key = 129;
     private string UID = "";
     public UserData PlayerData;
     public updateDataPayload PlayerDataPayload;
-    
-    
+
+
     public UserData[] PlayerDataArray;
     public static FirebaseManager Instance;
 
@@ -60,7 +60,7 @@ public class FirebaseManager : MonoBehaviour
     bool DataFetchError = false;
     bool FetchUserData = false;
     bool UserDataFetched = false;
-    void Start()
+    void Awake()
     {
         Credentails = new AuthCredentials();
 
@@ -71,7 +71,7 @@ public class FirebaseManager : MonoBehaviour
         }
 
         //AuthenticateFirebase();
-        if(Constants.isUsingFirebaseSDK)
+        if (Constants.isUsingFirebaseSDK)
             OnAuthChanged();
     }
     public void updatePlayerDataPayload()
@@ -79,13 +79,13 @@ public class FirebaseManager : MonoBehaviour
         PlayerDataPayload = new updateDataPayload();
         PlayerDataPayload.data = PlayerData;
     }
-    
-     //Setting playerData got from Login API
-     //Call this Function if Constants.isUsingSDK is false
+
+    //Setting playerData got from Login API
+    //Call this Function if Constants.isUsingSDK is false
     public void SetPlayerData(string _response)
     {
         JToken response = JObject.Parse(_response);
-//        Debug.Log(response);
+        //        Debug.Log(response);
         PlayerData = new UserData();
         PlayerData.Email = (string)response.SelectToken("data").SelectToken("Email");
         PlayerData.UserName = (string)response.SelectToken("data").SelectToken("UserName");
@@ -106,21 +106,21 @@ public class FirebaseManager : MonoBehaviour
         Constants.UserName = PlayerData.UserName;
         Constants.FlagSelectedIndex = PlayerData.AvatarID;
         //if (MainMenuViewController.Instance)
-            //MainMenuViewController.Instance.ChangeUserNameText(Constants.UserName);
+        //MainMenuViewController.Instance.ChangeUserNameText(Constants.UserName);
         //if (Constants.PushingTime)
-       //{
-            //Constants.PushingTime = false;
-            //GamePlayUIHandler.Instance.SubmitTime();
+        //{
+        //Constants.PushingTime = false;
+        //GamePlayUIHandler.Instance.SubmitTime();
         //}
         string message = (string)response.SelectToken("message");
         if (message == "User BO")
         {
             //if (MainMenuViewController.Instance)
-                //MainMenuViewController.Instance.OnLoginSuccess(false);
+            //MainMenuViewController.Instance.OnLoginSuccess(false);
         }
     }
-    
-    public void SetLocalStorage(string key,string data)
+
+    public void SetLocalStorage(string key, string data)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         SetStorage(key, data);
@@ -138,7 +138,7 @@ public class FirebaseManager : MonoBehaviour
         Debug.LogError(error);
     }
 
-    public void CheckEmailForAuth(string _email,string _pass,string _username)
+    public void CheckEmailForAuth(string _email, string _pass, string _username)
     {
         Credentails.Email = _email;
         Credentails.Password = _pass;
@@ -148,25 +148,26 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnEmailCheck(string info)
     {
-       // Debug.Log("Checked email : email existed");
+        // Debug.Log("Checked email : email existed");
 
         //if (MainMenuViewController.Instance)
-            //MainMenuViewController.Instance.EmailAlreadyExisted();
+        //MainMenuViewController.Instance.EmailAlreadyExisted();
     }
 
     public void OnEmailCheckError(string error)
     {
         if (error.Contains("Email Not Registered"))
         {
-           // Debug.Log("Checked email : email does not exist, creating one.");
+            // Debug.Log("Checked email : email does not exist, creating one.");
             CreateNewUser(Constants.SavedEmail, Constants.SavedPass);
-        }else
+        }
+        else
         {
-            Debug.LogError("Email check error : "+error);
+            Debug.LogError("Email check error : " + error);
         }
     }
 
-    public void CreateNewUser(string _email,string _pass)
+    public void CreateNewUser(string _email, string _pass)
     {
         //FirebaseAuth.CreateUserWithEmailAndPassword(_email,_pass, gameObject.name, "OnCreateUser", "OnCreateUserError");
     }
@@ -190,10 +191,10 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnCreateUserError(string error)
     {
-        Debug.LogError("Create user error : "+error);
+        Debug.LogError("Create user error : " + error);
     }
 
-    public void LoginUser(string _email, string _pass,string _username)
+    public void LoginUser(string _email, string _pass, string _username)
     {
         Credentails.Email = _email;
         Credentails.Password = _pass;
@@ -219,7 +220,7 @@ public class FirebaseManager : MonoBehaviour
         if (info == "true")
         {
             //if (MainMenuViewController.Instance)
-                //MainMenuViewController.Instance.OnLoginSuccess(false);
+            //MainMenuViewController.Instance.OnLoginSuccess(false);
         }
         else
         {
@@ -231,15 +232,15 @@ public class FirebaseManager : MonoBehaviour
     }
 
     public void OnLoginUser(string info)
-    { 
+    {
         CheckVerification();
     }
 
     public void OnLoginUserError(string error)
     {
-        Debug.LogError("Login User error: "+error);
+        Debug.LogError("Login User error: " + error);
         //if (MainMenuViewController.Instance)
-            //MainMenuViewController.Instance.SomethingWentWrong();
+        //MainMenuViewController.Instance.SomethingWentWrong();
     }
 
     public void LogoutUser()
@@ -271,14 +272,14 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnSignOutError(string info)
     {
-        Debug.LogError("Logout User error : "+info);
+        Debug.LogError("Logout User error : " + info);
     }
 
     public void OnAuthChanged()
     {
-        #if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR
         //FirebaseAuth.OnAuthStateChanged(gameObject.name, "OnAuthChangedSuccess", "OnAuthChangedError");
-        #endif
+#endif
     }
 
     public void OnAuthChangedSuccess(string user)
@@ -291,7 +292,7 @@ public class FirebaseManager : MonoBehaviour
     public void OnAuthChangedError(string info)
     {
         UID = "";
-        Debug.LogError("Auth change error : "+info);
+        Debug.LogError("Auth change error : " + info);
     }
 
     public void AddFireStoreData(UserData _data)
@@ -301,25 +302,25 @@ public class FirebaseManager : MonoBehaviour
     }
     public void OnAddData(string info)
     {
-       // Debug.Log("Data successfully added on firestore");
+        // Debug.Log("Data successfully added on firestore");
     }
 
     public void OnAddDataError(string error)
     {
-        Debug.LogError("firestore data add error: "+error);
+        Debug.LogError("firestore data add error: " + error);
     }
 
-    public void GetFireStoreData(string _collectionID,string _docID)
+    public void GetFireStoreData(string _collectionID, string _docID)
     {
         DataFetchError = false;
         DocFetched = false;
         ResultFetched = false;
-       // FirebaseFirestore.GetDocument(_collectionID, _docID, gameObject.name, "OnDocGet", "OnDocGetError");
+        // FirebaseFirestore.GetDocument(_collectionID, _docID, gameObject.name, "OnDocGet", "OnDocGetError");
     }
 
     public void OnDocGet(string info)
     {
-        if (info == null || info=="null")
+        if (info == null || info == "null")
         {
             UserDataFetched = false;
             DataFetchError = true;
@@ -347,7 +348,7 @@ public class FirebaseManager : MonoBehaviour
         DocFetched = false;
         ResultFetched = true;
         FetchUserData = true;
-        Debug.Log("Doc fetching error : "+error);
+        Debug.Log("Doc fetching error : " + error);
     }
 
     public IEnumerator FetchUserDB(string _walletID, string _username)
@@ -383,7 +384,7 @@ public class FirebaseManager : MonoBehaviour
             Constants.TotalScore = PlayerData.TotalScore;
 
             //if (MainMenuViewController.Instance)
-                //MainMenuViewController.Instance.ChangeUserNameText(Constants.UserName);
+            //MainMenuViewController.Instance.ChangeUserNameText(Constants.UserName);
 
             //if (Constants.PushingTime)
             //{
@@ -399,7 +400,7 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public IEnumerator CheckCreateUserDB(string _walletID,string _username)
+    public IEnumerator CheckCreateUserDB(string _walletID, string _username)
     {
         DataFetchError = false;
         DocFetched = false;
@@ -408,7 +409,7 @@ public class FirebaseManager : MonoBehaviour
         if (TournamentManager.Instance)
             TournamentManager.Instance.GetTournamentDataDB();
 
-        if(Constants.isUsingFirebaseSDK)
+        if (Constants.isUsingFirebaseSDK)
             GetFireStoreData(DocPath, _walletID);
         yield return new WaitUntil(() => ResultFetched == true);
 
@@ -444,7 +445,7 @@ public class FirebaseManager : MonoBehaviour
             PlayerData.Email = Constants.SavedEmail;
             PlayerData.AvatarID = Constants.FlagSelectedIndex;
 
-            if(Constants.isUsingFirebaseSDK)
+            if (Constants.isUsingFirebaseSDK)
                 AddFireStoreData(PlayerData);
         }
 
@@ -464,12 +465,12 @@ public class FirebaseManager : MonoBehaviour
     }
 
     public void OnEmailSent(string info)
-    {  
+    {
     }
 
     public void OnEmailSentError(string info)
     {
-        Debug.LogError("Sending Verfication email error: "+info);
+        Debug.LogError("Sending Verfication email error: " + info);
         //Invoke("SendVerEmail", 1f);
     }
 
@@ -505,7 +506,7 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnDocUpdate(string info)
     {
-        if(Constants.PushingTries)
+        if (Constants.PushingTries)
         {
             Constants.PushingTries = false;
             return;
@@ -523,16 +524,16 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnDocUpdateError(string error)
     {
-        Debug.LogError("Doc update error : "+error);
+        Debug.LogError("Doc update error : " + error);
     }
 
     public void QueryDB(string _field, string _type)
     {
         if (Constants.isUsingFirebaseSDK)
         {
-        #if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_WEBGL && !UNITY_EDITOR
             //FirebaseFirestore.QueryDB(DocPath, _field, _type, gameObject.name, "OnQueryUpdate", "OnQueryUpdateError");
-        #endif
+#endif
         }
         else
         {
@@ -544,12 +545,13 @@ public class FirebaseManager : MonoBehaviour
     public void OnQueryUpdate(string info)
     {
         PlayerDataArray = JsonConvert.DeserializeObject<UserData[]>(info);
+        Events.DoFireGetUserData(PlayerDataArray);
         //LeaderboardManager.Instance.PopulateLeaderboardData(PlayerDataArray, IsGrimace);
     }
 
     public void OnQueryUpdateError(string error)
     {
-        Debug.LogError("Leaderboard query error : "+error);
+        Debug.LogError("Leaderboard query error : " + error);
     }
 
     public string EncryptDecrypt(string textToEncrypt)
@@ -587,7 +589,7 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnPassEmailSentError(string info)
     {
-        Debug.LogError("Password resent sending error : "+info);
+        Debug.LogError("Password resent sending error : " + info);
         //MainMenuViewController.Instance.LoadingScreen.SetActive(false);
         //MainMenuViewController.Instance.BackClicked_PasswordReset();
         //MainMenuViewController.Instance.ShowToast(4f, "Something went wrong while sending password reset link, please try again later.");
@@ -627,7 +629,7 @@ public class FirebaseManager : MonoBehaviour
 
     public void ResendEmailSentError(string info)
     {
-        Debug.LogError("Resend verification email error : "+info);
+        Debug.LogError("Resend verification email error : " + info);
         //MainMenuViewController.Instance.LoadingScreen.SetActive(false);
         //MainMenuViewController.Instance.DisableResendScreen();
         //MainMenuViewController.Instance.ShowToast(4f, "Something went wrong while sending confirmation link, please try again later.");

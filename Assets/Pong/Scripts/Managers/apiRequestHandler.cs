@@ -99,7 +99,7 @@ public class apiRequestHandler : MonoBehaviour
     {
         StartCoroutine(processForgetRequest(_email));
     }
-    async public Task<string> GetBearerToken(string _email, string _pwd,bool _isRegister=false)
+    async public Task<string> GetBearerToken(string _email, string _pwd, bool _isRegister = false)
     {
         WWWForm form = new WWWForm();
         form.AddField("email", _email);
@@ -113,11 +113,11 @@ public class apiRequestHandler : MonoBehaviour
         using UnityWebRequest request = UnityWebRequest.Post(URL, form);
         await request.SendWebRequest();
 
-        
+
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
             Events.DoReportMessage(new messageInfo(request.error));
-            return "error_"+ request.error;
+            return "error_" + request.error;
         }
         else if (request.result == UnityWebRequest.Result.Success)
         {
@@ -129,7 +129,7 @@ public class apiRequestHandler : MonoBehaviour
         {
             JToken res = JObject.Parse(request.downloadHandler.text);
             Events.DoReportMessage(new messageInfo((string)res.SelectToken("error").SelectToken("message")));
-            return "error_"+(string)res.SelectToken("error").SelectToken("message");
+            return "error_" + (string)res.SelectToken("error").SelectToken("message");
         }
 
     }
@@ -137,9 +137,10 @@ public class apiRequestHandler : MonoBehaviour
     {
         string TokenResult = await GetBearerToken(_email, _pwd);
 
-        if(TokenResult.Contains("error"))
+        if (TokenResult.Contains("error"))
         {
-            Debug.Log("somthing went wrong while fetching bearer token : "+TokenResult);
+            Events.DoFireLoginFailed("");
+            Debug.Log("somthing went wrong while fetching bearer token : " + TokenResult);
             return;
         }
 
@@ -157,11 +158,12 @@ public class apiRequestHandler : MonoBehaviour
         request.SetRequestHeader("Content-Type", "application/json");
         string _reqToken = "Bearer " + TokenResult;
         request.SetRequestHeader("Authorization", _reqToken);
-        
+
         await request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
+            Events.DoFireLoginFailed("");
             Debug.Log(request.error);
         }
         else
@@ -182,22 +184,27 @@ public class apiRequestHandler : MonoBehaviour
             {
                 Constants.ResendTokenID = TokenResult;
                 FirebaseManager.Instance.showVerificationScreen();
-                Events.DoReportMessage(new messageInfo("Email is not verified, please verify your email address and try again."));
+                Events.DoFireLoginFailed("");
+                Events.DoReportMessage(new messageInfo("Email is not verified, please verify your email address and try again.", null, true));
             }
             else if ((string)res.SelectToken("message") == "No User Found.")
             {
+                Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("No User Found"));
             }
             else if ((string)res.SelectToken("message") == "Unauthorized")
             {
+                Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Unauthorized"));
             }
             else if ((string)res.SelectToken("message") == "Required parameters are missing")
             {
+                Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Required parameters are missing"));
             }
             else if ((string)res.SelectToken("message") == "Invalid request..")
             {
+                Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Invalid request"));
             }
             else
@@ -213,10 +220,11 @@ public class apiRequestHandler : MonoBehaviour
         FirebaseManager.Instance.Credentails.UserName = _username;
         FirebaseManager.Instance.Credentails.AvatarID = Constants.FlagSelectedIndex;
 
-        string TokenResult = await GetBearerToken(_email, _pwd,true);
+        string TokenResult = await GetBearerToken(_email, _pwd, true);
 
         if (TokenResult.Contains("error"))
         {
+            Events.DoFireRegsiterationFailed("");
             Debug.Log("somthing went wrong while fetching bearer token : " + TokenResult);
             return;
         }
@@ -247,6 +255,7 @@ public class apiRequestHandler : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
             Debug.Log(request.error);
+            Events.DoFireRegsiterationFailed("");
             Events.DoReportMessage(new messageInfo(request.error));
         }
         else
@@ -264,6 +273,7 @@ public class apiRequestHandler : MonoBehaviour
             }
             else
             {
+                Events.DoFireRegsiterationFailed("");
                 Events.DoReportMessage(new messageInfo((string)res.SelectToken("message")));
             }
         }
@@ -333,7 +343,7 @@ public class apiRequestHandler : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
-           Debug.Log(request.error);
+            Debug.Log(request.error);
         }
         else
         {
@@ -366,6 +376,7 @@ public class apiRequestHandler : MonoBehaviour
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
+            Events.DoFireRegsiterationFailed("");
             Events.DoReportMessage(new messageInfo(request.error));
         }
         else if (request.result == UnityWebRequest.Result.Success)
@@ -384,6 +395,7 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
+            Events.DoFireRegsiterationFailed("");
             // MainMenuViewController.Instance.SomethingWentWrongMessage();
             // if (resendAgain)
             // MainMenuViewController.Instance.LoadingScreen.SetActive(false);
