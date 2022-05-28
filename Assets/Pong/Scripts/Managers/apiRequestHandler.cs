@@ -275,7 +275,7 @@ public class apiRequestHandler : MonoBehaviour
 
         FirebaseManager.Instance.updatePlayerDataPayload();
         string req = JsonConvert.SerializeObject(FirebaseManager.Instance.PlayerDataPayload);
-        using UnityWebRequest request = UnityWebRequest.Put(BaseURL + "GUpdateUserBO", req);//GUpdateUserBO//UpdateUserBO
+        using UnityWebRequest request = UnityWebRequest.Put(BaseURL + "UpdateUserBO", req);
         request.SetRequestHeader("Content-Type", "application/json");
         string _reqToken = "Bearer " + TokenResult;
         request.SetRequestHeader("Authorization", _reqToken);
