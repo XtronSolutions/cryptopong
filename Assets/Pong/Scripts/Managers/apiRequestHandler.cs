@@ -79,6 +79,8 @@ public class apiRequestHandler : MonoBehaviour
     }
     public void updatePlayerData()
     {
+        Debug.Log(FirebaseManager.Instance.Credentails.Email);
+        Debug.Log(FirebaseManager.Instance.Credentails.Password);
         ProccessDataUpdate(FirebaseManager.Instance.Credentails.Email, FirebaseManager.Instance.Credentails.Password);
     }
     public void signInWithEmail(string _email, string _pwd)
@@ -170,6 +172,9 @@ public class apiRequestHandler : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                FirebaseManager.Instance.Credentails.Email = _email;
+                FirebaseManager.Instance.Credentails.Password = _pwd;
+
                 Events.DoFireLoginSuccess();
                 FirebaseManager.Instance.SetPlayerData(request.downloadHandler.text);
             }
