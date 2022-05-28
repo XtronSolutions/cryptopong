@@ -41,7 +41,7 @@ public class Ball : MonoBehaviour
         Events.OnImpactMultiplierChanged -= OnImpactMultiplierChanged;
     }
 
-    private void OnBallSpeedChanged(float value) 
+    private void OnBallSpeedChanged(float value)
     {
         speed = value;
         ballBody.velocity = Vector3.ClampMagnitude(ballBody.velocity, speed);
@@ -72,6 +72,11 @@ public class Ball : MonoBehaviour
             Vector2 dir = new Vector2(temp, x).normalized;
             ballBody.velocity = dir * velocity.magnitude * speedMultiplier;
             lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
+
+            if (lastTouchedPaddle.GetType().Name.Equals(nameof(PaddlePlayer)))
+            {
+                Managers.Score.TotalHits += 1;
+            }
         }
     }
 

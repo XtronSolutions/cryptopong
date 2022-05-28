@@ -289,12 +289,11 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log(request.result);
-            //Debug.Log(request.downloadHandler.text);
+            Debug.Log(request.result);
+            Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
             if (request.result == UnityWebRequest.Result.Success)
             {
-                Events.DoFireLoginSuccess(); // this condition not needed as update data could be called anywhere from inside game after login, shahzaib check logic (not removing it)
                 FirebaseManager.Instance.OnDocUpdate("");
             }
             else
