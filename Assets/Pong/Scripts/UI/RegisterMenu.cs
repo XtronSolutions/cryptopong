@@ -24,7 +24,8 @@ public class RegisterMenu : MonoBehaviour
 
     [SerializeField] private TMP_InputField EmailField, PasswordField, ConfirmPasswordField, UsernameField, WalletField;
     [SerializeField] private TMP_Text ResendTimerText;
-    [SerializeField] private TMP_Text ErrorText;
+    [SerializeField] private TMP_Text StatusText;
+    private Coroutine animateRoutine;
 
     private const float MaxResendTimer = 120;
     private float ResendTimer;
@@ -32,14 +33,21 @@ public class RegisterMenu : MonoBehaviour
     private void OnEnable()
     {
         EmailField.text = PasswordField.text = ConfirmPasswordField.text = UsernameField.text = WalletField.text = "";
-        EmailField.interactable = PasswordField.interactable = ConfirmPasswordField.interactable = UsernameField.interactable = true;
+        MakeInteractable(true);
 
         ResendTimer = 120;
         ResendTimerText.text = "Resend";
         SubmitButton.gameObject.SetActive(true);
         ResendButton.gameObject.SetActive(false);
     }
-
+    private void MakeInteractable(bool value)
+    {
+        EmailField.interactable =
+        PasswordField.interactable =
+        ConfirmPasswordField.interactable =
+        UsernameField.interactable =
+        SubmitButton.interactable = value;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -58,12 +66,25 @@ public class RegisterMenu : MonoBehaviour
         ResendButton.interactable = false;
         SubmitButton.gameObject.SetActive(false);
         ResendButton.gameObject.SetActive(true);
+        StopCoroutine(animateRoutine);
+        this.StatusText.text = $"";
 
         EmailField.interactable = PasswordField.interactable = ConfirmPasswordField.interactable = UsernameField.interactable = false;
     }
 
-    private void OnFailure(string error) => this.ErrorText.text = $"Error: {error}";
-    private void OnRegisterationSuccess() => Managers.UI.ActivateUI(Menus.MAIN);
+    private void OnFailure(string error)
+    {
+        MakeInteractable(true);
+        this.StatusText.text = $"";
+        StopCoroutine(animateRoutine);
+    }
+    private void OnRegisterationSuccess()
+    {
+        MakeInteractable(true);
+        this.StatusText.text = $"";
+        StopCoroutine(animateRoutine);
+        Managers.UI.ActivateUI(Menus.MAIN);
+    }
 
     private void OnCloseButtonClicked()
     {
@@ -72,9 +93,24 @@ public class RegisterMenu : MonoBehaviour
 
     private void OnSubmitButtonClicked()
     {
+        MakeInteractable(false);
+        animateRoutine = StartCoroutine(AnimateStatus());
         apiRequestHandler.Instance.signUpWithEmail(EmailField.text, PasswordField.text, UsernameField.text);
     }
+    IEnumerator AnimateStatus()
+    {
+        var delay = 0.5f;
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait.";
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait..";
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait...";
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait";
 
+        animateRoutine = StartCoroutine(AnimateStatus());
+    }
     private void OnResendButtonClicked()
     {
         apiRequestHandler.Instance.sendVerificationAgain();

@@ -1,37 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MenuState : _StatesBase {
-	
-	#region implemented abstract members of GameState
+public class MenuState : _StatesBase
+{
 
-	public override void OnActivate ()
-	{		
-		Debug.Log ("<color=green>Menu State</color> OnActive");	
-		Managers.UI.ActivateUI (Menus.LOGIN);
-		Managers.Audio.PlayGameMusic ();
-		Managers.PowUps.canSpawnPowerup = false;
-		Managers.UI.inGameUI.gameBackButton.gameObject.SetActive (false);
+    #region implemented abstract members of GameState
 
-		if (Managers.Game.isGameActive)
-		{
-			// Managers.UI.mainMenu.continueButton.SetActive (true);
-		} 
-		else
-		{
-			Managers.UI.mainMenu.continueButton.SetActive (false);
-		}
-	}
+    public override void OnActivate()
+    {
+        Debug.Log("<color=green>Menu State</color> OnActive");
+        var isLoggedIn = FirebaseManager.Instance.Credentails.Email != null;
+        Managers.UI.ActivateUI(isLoggedIn ? Menus.MAIN : Menus.LOGIN);
+        Managers.Audio.PlayGameMusic();
+        Managers.PowUps.canSpawnPowerup = false;
+        Managers.UI.inGameUI.gameBackButton.gameObject.SetActive(false);
 
-	public override void OnDeactivate ()
-	{
-		// Debug.Log ("<color=red>Menu State</color> OnDeactivate");
-	}
+        if (Managers.Game.isGameActive)
+        {
+            // Managers.UI.mainMenu.continueButton.SetActive (true);
+        }
+        else
+        {
+            Managers.UI.mainMenu.continueButton.SetActive(false);
+        }
+    }
 
-	public override void OnUpdate ()
-	{
-		// Debug.Log ("<color=yellow>Menu State</color> OnUpdate");
-	}
+    public override void OnDeactivate()
+    {
+        // Debug.Log ("<color=red>Menu State</color> OnDeactivate");
+    }
 
-	#endregion
+    public override void OnUpdate()
+    {
+        // Debug.Log ("<color=yellow>Menu State</color> OnUpdate");
+    }
+
+    #endregion
 }

@@ -18,8 +18,8 @@ public class LoginMenu : MonoBehaviour
     [SerializeField] private Button LoginButton;
     [SerializeField] private Button RegisterButton;
     [SerializeField] private TMP_InputField EmailField, PasswordField;
-    [SerializeField] private TMP_Text ErrorText;
-
+    [SerializeField] private TMP_Text StatusText;
+    private Coroutine animateRoutine;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,19 +27,52 @@ public class LoginMenu : MonoBehaviour
         this.RegisterButton.onClick.AddListener(OnRegisterButtonClicked);
 
         Events.OnLoginFailed += OnFailure;
-        Events.OnRegisterationFailed += OnFailure;
-
         Events.OnLoginSuccess += OnLoginSuccess;
-        Events.OnRegisterationSuccess += OnRegisterationSuccess;
     }
 
-    private void OnFailure(string error) => this.ErrorText.text = $"Error: {error}";
+    private void OnFailure(string error)
+    {
+        MakeInteractable(true);
+        this.StatusText.text = $"";
+        StopCoroutine(animateRoutine);
+        Events.DoReportMessage(new messageInfo($"Error: {error}"));
+    }
 
-    private void OnLoginSuccess() => Managers.UI.ActivateUI(Menus.MAIN);
-    private void OnRegisterationSuccess() => Managers.UI.ActivateUI(Menus.MAIN);
+    private void OnLoginSuccess()
+    {
+        MakeInteractable(true);
+        this.StatusText.text = $"";
+        StopCoroutine(animateRoutine);
+        Managers.UI.ActivateUI(Menus.MAIN);
+    }
+    
+    private void MakeInteractable(bool value)
+    {
+        LoginButton.interactable = value;
+        RegisterButton.interactable = value;
+        EmailField.interactable = value;
+        PasswordField.interactable = value;
+    }
+
+    IEnumerator AnimateStatus()
+    {
+        var delay = 0.5f;
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait.";
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait..";
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait...";
+        yield return new WaitForSeconds(delay);
+        this.StatusText.text = $"please wait";
+
+        animateRoutine = StartCoroutine(AnimateStatus());
+    }
 
     private void OnLoginButtonClicked()
     {
+        MakeInteractable(false);
+        animateRoutine = StartCoroutine(AnimateStatus());
         apiRequestHandler.Instance.signInWithEmail(EmailField.text, PasswordField.text);
     }
 
