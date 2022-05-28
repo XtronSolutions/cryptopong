@@ -289,8 +289,8 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log(request.result);
-            //Debug.Log(request.downloadHandler.text);
+            Debug.Log(request.result);
+            Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
             if (request.result == UnityWebRequest.Result.Success)
             {
