@@ -139,9 +139,10 @@ public class apiRequestHandler : MonoBehaviour
 
         if (TokenResult.Contains("error"))
         {
+            Events.DoFireLoginFailed("");
+            
             if (TokenResult.Contains("INVALID_PASSWORD"))
             {
-                Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Incorrect password.", null, false, true));
             }else if (TokenResult.Contains("INVALID_EMAIL"))
             {

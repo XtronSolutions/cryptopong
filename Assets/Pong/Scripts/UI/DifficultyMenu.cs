@@ -19,25 +19,28 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
     private void OnEasyPressed()
     {
         StartGame();
+        GA_AnalyticsManager.Instance.StoredProgression.Difficulty = "Beginner";
         Events.DoChangeIntelligence(1);
     }
 
     private void OnMediumPressed()
     {
         StartGame();
+        GA_AnalyticsManager.Instance.StoredProgression.Difficulty = "Intermediate";
         Events.DoChangeIntelligence(2);
     }
 
     private void OnHardPressed()
     {
         StartGame();
+        GA_AnalyticsManager.Instance.StoredProgression.Difficulty = "Expert";
         Events.DoChangeIntelligence(3);
     }
 
     private void OnBackButtonPressed()
     {
-        Managers.Audio.PlayClickSound ();
-		Managers.UI.ActivateUI (Menus.LEVELS);
+        Managers.Audio.PlayClickSound();
+        Managers.UI.ActivateUI(Menus.LEVELS);
     }
 
     private void StartGame()
