@@ -102,10 +102,4 @@ public class LoginMenu : MonoBehaviour
         
         Managers.UI.ActivateUI(Menus.REGISTER);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

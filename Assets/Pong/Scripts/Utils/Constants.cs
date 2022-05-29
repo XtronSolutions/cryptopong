@@ -12,6 +12,7 @@ public static class Constants
     public static string APP_VERSION = "V1.0";
     public static string WalletAccountKey = "Account";
     public static string NameCurrency = "$Pong";
+    public static string VirtualNameCurrency = "USD";
     public static string SoundKey = "Sound";
     public static string MusicKey = "Music";
     public static string CredKey = "Credentails";
@@ -57,7 +58,7 @@ public static class Constants
     public static int DiscountForPong = 0;
     public static bool ApprovePong = false;
 
-    public static string TestWalletAddress = "0x9D3FB13A0ba2c4985a8816182e0c3D30DA328Bb3"; //"0xD4d844C5A1cFAB13A8Ab252E466188d";
+    public static string TestWalletAddress = "0x5ae0d51FA54C70d731a4d5940Aef216F3fCbEd10"; //"0xD4d844C5A1cFAB13A8Ab252E466188d";
 
     public static int LeaderboardCount = 200;//top player count for leaderboard
 

@@ -32,8 +32,6 @@ public class ScoreManager : MonoBehaviour
 
             if (playerWon)
             {
-                var email = FirebaseManager.Instance.Credentails.Email;
-                var password = FirebaseManager.Instance.Credentails.Password;
                 var data = FirebaseManager.Instance.PlayerData;
 
                 data.TotalWins += 1;
@@ -48,7 +46,7 @@ public class ScoreManager : MonoBehaviour
                     data.TotalScore = TotalScore;
                 }
 
-                apiRequestHandler.Instance.ProccessDataUpdate(email, password);
+                apiRequestHandler.Instance.updatePlayerData();
             }
 
             TotalWins = 0;

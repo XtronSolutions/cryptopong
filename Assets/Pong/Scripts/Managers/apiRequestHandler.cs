@@ -144,6 +144,14 @@ public class apiRequestHandler : MonoBehaviour
             if (TokenResult.Contains("INVALID_PASSWORD"))
             {
                 Events.DoReportMessage(new messageInfo("Incorrect password.", null, false, true));
+            }else if (TokenResult.Contains("INVALID_EMAIL"))
+            {
+                Events.DoFireLoginFailed("");
+                Events.DoReportMessage(new messageInfo("Email is invalid.", null, false, false));
+            }else
+            {
+                Events.DoFireLoginFailed("");
+                Events.DoReportMessage(new messageInfo("Something went wrong, please try again.", null, false, false));
             }
 
             Debug.Log("somthing went wrong while fetching bearer token : " + TokenResult);
@@ -215,7 +223,7 @@ public class apiRequestHandler : MonoBehaviour
             }
             else
             {
-
+                Events.DoFireLoginFailed("");
             }
         }
     }

@@ -303,38 +303,10 @@ public class WalletManager : MonoBehaviour
             //SetStorage("Account", PlayerPrefs.GetString(Constants.WalletAccountKey));
 #endif
         Constants.WalletConnected = true;
-        //FirebaseManager.Instance.DocFetched = false;
-        //FirebaseManager.Instance.ResultFetched = true;
-
 
         MainUI.ConnectBtn.SetActive(false); //disable connect button
         MainUI.ConnectedBtn.SetActive(true);// enable connected button
-        PrintWalletAddress(); // print wallet address on connected button
-                              //if (!IsGamePlay)
-                              //{
-                              //    //bool _isapproved = await CheckPongApproval(0);
-                              //    ////if (!_isapproved)
-                              //   // {
-                              //        //if (MainMenuViewController.Instance)
-                              //        //{
-                              //        //    MainMenuViewController.Instance.LoadingScreen.SetActive(false);
-                              //        //    MainMenuViewController.Instance.ToogleScreen_CraceUI(true);
-                              //        //}
-                              //   // }
-
-        //    MainUI.ConnectBtn.SetActive(false); //disable connect button
-        //    MainUI.ConnectedBtn.SetActive(true);// enable connected button
-        //    PrintWalletAddress(); // print wallet address on connected button
-        //    //InvokeRepeating("getNftsData", 0.1f, 10f);
-        //    //InvokeRepeating("CheckNFTBalance", 0.1f, 10f);//check number of NFT purchased after every 10 seconds of interval
-        //}
-        //else
-        //{
-        //    isConnected = true;
-        //    //EndRace(Constants.StoredPID);
-        //}
-
-        // GetHashEncoded();
+        PrintWalletAddress(); 
     }
 
     /// <summary>
