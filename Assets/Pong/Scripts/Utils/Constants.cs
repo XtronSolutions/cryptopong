@@ -21,7 +21,7 @@ public static class Constants
     public static bool IsTournament = false;
     public static bool TournamentActive = false;
 
-    public static bool IsTest = true; //bool to test wallet functionality inside editor
+    public static bool IsTest = false; //bool to test wallet functionality inside editor
     public static bool IsTestNet = false;//bool to test code on testnet chain
     public static bool IsStagging = false;
     public static bool IsDebugBuild = false;
@@ -61,6 +61,21 @@ public static class Constants
 
     public static int LeaderboardCount = 200;//top player count for leaderboard
 
+    public static string GetShortWalletAddress(string _acc)
+    {
+        char[] charArr = _acc.ToCharArray();//convert connected wallet address to character array
+        string FirstPart = "";
+        string MidPart = "*****";// "********";
+        string EndPart = "";
+
+        for (int i = 0; i < 4; i++)
+            FirstPart += charArr[i];
+
+        for (int j = charArr.Length - 4; j < charArr.Length; j++)
+            EndPart += charArr[j];
+
+        return FirstPart + MidPart + EndPart;
+    }
     public static void PrintLog(string Txt)
     {
         Debug.Log(Txt);

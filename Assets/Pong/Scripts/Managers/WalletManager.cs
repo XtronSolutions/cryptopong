@@ -299,19 +299,7 @@ public class WalletManager : MonoBehaviour
     /// </summary>
     public void PrintWalletAddress()
     {
-        char[] charArr = account.ToCharArray();//convert connected wallet address to character array
-        string FirstPart = "";
-        string MidPart = "*****";// "********";
-        string EndPart = "";
-
-        for (int i = 0; i < 4; i++)
-            FirstPart += charArr[i];
-
-        for (int j = charArr.Length - 4; j < charArr.Length; j++)
-            EndPart += charArr[j];
-
-        Debug.Log(FirstPart + MidPart + EndPart);
-        MainUI.ConnectedBtn.transform.GetChild(0).gameObject.GetComponent<Text>().text = FirstPart + MidPart + EndPart;
+        MainUI.ConnectedBtn.transform.GetChild(0).gameObject.GetComponent<Text>().text = Constants.GetShortWalletAddress(account);
     }
 
     /// <summary>

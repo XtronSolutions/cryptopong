@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 47ae3aa637bbf40d58b3c71eda712a7c
+guid: 0683b20eb25df464b8f46d93396af7f6
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -23,7 +23,7 @@ PluginImporter:
       settings:
         DefaultValueInitialized: true
   - first:
-      iPhone: iOS
+      Standalone: Linux64
     second:
       enabled: 1
       settings: {}

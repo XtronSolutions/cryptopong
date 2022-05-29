@@ -30,9 +30,11 @@ public class RegisterMenu : MonoBehaviour
     private const float MaxResendTimer = 120;
     private float ResendTimer;
 
+   
     private void OnEnable()
     {
-        EmailField.text = PasswordField.text = ConfirmPasswordField.text = UsernameField.text = WalletField.text = "";
+        EmailField.text = PasswordField.text = ConfirmPasswordField.text = UsernameField.text = "";
+        WalletField.text = Constants.GetShortWalletAddress(Constants.WalletAddress);
         MakeInteractable(true);
 
         ResendTimer = 120;
