@@ -7,10 +7,13 @@ using System.Collections.Generic;
 
 public static partial class Events
 {
-    public static Action OnLoginSuccess = null;
+    public static event Action OnLoginSuccess = null;
     public static void DoFireLoginSuccess() => OnLoginSuccess?.Invoke();
-    public static Action<string> OnLoginFailed = null;
+    public static event Action<string> OnLoginFailed = null;
     public static void DoFireLoginFailed(string reason) => OnLoginFailed?.Invoke(reason);
+
+    public static event Action OnForgetPassword = null;
+    public static void DoFireForgetPassword() => OnForgetPassword?.Invoke();
 }
 
 public class LoginMenu : MonoBehaviour
@@ -28,6 +31,13 @@ public class LoginMenu : MonoBehaviour
 
         Events.OnLoginFailed += OnFailure;
         Events.OnLoginSuccess += OnLoginSuccess;
+        Events.OnForgetPassword += OnForgetPassword;
+    }
+
+    private void OnForgetPassword()
+    {
+        apiRequestHandler.Instance.onForgetPassword(EmailField.text);
+        Events.DoReportMessage(new messageInfo("Instructions have been sent, please check your email."));
     }
 
     private void OnFailure(string error)
@@ -45,7 +55,7 @@ public class LoginMenu : MonoBehaviour
         StopCoroutine(animateRoutine);
         Managers.UI.ActivateUI(Menus.MAIN);
     }
-    
+
     private void MakeInteractable(bool value)
     {
         LoginButton.interactable = value;

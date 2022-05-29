@@ -29,6 +29,9 @@ public class InGameUI : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!FirebaseManager.Instance)
+            return;
+            
         var username = FirebaseManager.Instance.PlayerData.UserName;
         player_text.text = username;
     }

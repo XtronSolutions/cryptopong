@@ -9,13 +9,15 @@ public static partial class Events
 public struct messageInfo
 {
     public bool Resend;
+    public bool Forget;
     public string message;
     public Action Callback;
 
-    public messageInfo(string msg, Action callback = null, bool resend = false)
+    public messageInfo(string msg, Action callback = null, bool resend = false, bool forget = false)
     {
         message = msg;
         Resend = resend;
+        Forget = forget;
         Callback = callback;
     }
 }
