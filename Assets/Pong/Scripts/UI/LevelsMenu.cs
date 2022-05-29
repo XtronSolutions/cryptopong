@@ -34,6 +34,7 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
 
         Managers.Audio.PlayClickSound();
         Managers.UI.ActivateUI(Menus.DIFFICULTY);
+        GA_AnalyticsManager.Instance.StoredProgression.MapUsed = $"Level_{Index}";
     }
 
     private void OnNext()

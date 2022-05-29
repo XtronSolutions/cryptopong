@@ -81,7 +81,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnLoginButtonClicked()
     {
-        if (!Constants.WalletConnected)
+        if (!Constants.WalletConnected && !Constants.IsTest)
         {
             Events.DoReportMessage(new messageInfo($"Error: Please connect your wallet first."));
             return;
@@ -94,12 +94,12 @@ public class LoginMenu : MonoBehaviour
 
     private void OnRegisterButtonClicked()
     {
-        if (!Constants.WalletConnected)
+        if (!Constants.WalletConnected && !Constants.IsTest)
         {
             Events.DoReportMessage(new messageInfo($"Error: Please connect your wallet first."));
             return;
         }
-        
+
         Managers.UI.ActivateUI(Menus.REGISTER);
     }
 }
