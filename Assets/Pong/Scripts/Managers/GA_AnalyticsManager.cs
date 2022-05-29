@@ -16,9 +16,9 @@ public class BusinessEventPayload
 public class ProgressionEventPayload
 {
     public GAProgressionStatus ProgressionStatus; //Status of added progression (start, complete, fail). //0=undfeiund,1=start,2=complete,3=fail
-    public string Mode;//will represent either mode is practice/tournament/Multiplayer
-    public string MapUsed;//represents Map level1, level2, Level3, Level4, Level5 
-    public string CarName;//will represent Car name
+    public string Mode;//will represent either mode is practice or any other
+    public string MapUsed;//represents Map
+    public string Difficulty;//will represent Car name
     public int TimeSeconds;
     public Dictionary<string, object> fields = new Dictionary<string, object>();
 }
@@ -103,19 +103,19 @@ public class GA_AnalyticsManager : MonoBehaviour
         PayloadProgressionEvent.ProgressionStatus = status;
         PayloadProgressionEvent.Mode = prog1;
         PayloadProgressionEvent.MapUsed = prog2;
-        PayloadProgressionEvent.CarName = prog3;
-        PayloadProgressionEvent.TimeSeconds = time;
+        PayloadProgressionEvent.Difficulty = prog3;
+        PayloadProgressionEvent.TimeSeconds = time; //can be 0 if there is no logic of time
         PayloadProgressionEvent.fields = _fields;
     }
 
     public void ProgressionEvents(ProgressionEventPayload Obj)
     {
-        GameAnalytics.NewProgressionEvent(Obj.ProgressionStatus, Obj.Mode, Obj.MapUsed, Obj.CarName, Obj.TimeSeconds,Obj.fields);
+        GameAnalytics.NewProgressionEvent(Obj.ProgressionStatus, Obj.Mode, Obj.MapUsed, Obj.Difficulty, Obj.TimeSeconds,Obj.fields);
     }
 
     public void PushProgressionEvent(bool isStart,bool isWon, bool isFail)
     {
-        GameProgressionEvent(StoredProgression.Mode, StoredProgression.MapUsed, StoredProgression.CarName, StoredProgression.TimeSeconds, StoredProgression.fields,isStart, isWon,isFail);
+        GameProgressionEvent(StoredProgression.Mode, StoredProgression.MapUsed, StoredProgression.Difficulty, StoredProgression.TimeSeconds, StoredProgression.fields,isStart, isWon,isFail);
     }
 
     public void GameProgressionEvent(string _mode,string _map,string _carName,int _time, Dictionary<string, object> Optionsfields, bool isStart, bool isWon, bool isFail)
