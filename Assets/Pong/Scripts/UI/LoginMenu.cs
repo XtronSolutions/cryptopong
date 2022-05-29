@@ -81,6 +81,12 @@ public class LoginMenu : MonoBehaviour
 
     private void OnLoginButtonClicked()
     {
+        if (!Constants.WalletConnected)
+        {
+            Events.DoReportMessage(new messageInfo($"Error: Please connect your wallet first."));
+            return;
+        }
+
         MakeInteractable(false);
         animateRoutine = StartCoroutine(AnimateStatus());
         apiRequestHandler.Instance.signInWithEmail(EmailField.text, PasswordField.text);
@@ -88,6 +94,12 @@ public class LoginMenu : MonoBehaviour
 
     private void OnRegisterButtonClicked()
     {
+        if (!Constants.WalletConnected)
+        {
+            Events.DoReportMessage(new messageInfo($"Error: Please connect your wallet first."));
+            return;
+        }
+        
         Managers.UI.ActivateUI(Menus.REGISTER);
     }
 
