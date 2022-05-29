@@ -27,7 +27,7 @@ public class ScoreManager : MonoBehaviour
     {
         get
         {
-            Debug.Log("Winner");
+            //Debug.Log("Winner");
             var playerWon = playerScore > aiScore;
 
             if (playerWon)

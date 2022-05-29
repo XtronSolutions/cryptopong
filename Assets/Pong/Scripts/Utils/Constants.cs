@@ -26,7 +26,6 @@ public static class Constants
     public static bool IsStagging = false;
     public static bool IsDebugBuild = false;
 
-
     public static string UserName = "";//name of the user
     public static int FlagSelectedIndex = 0;//flag selected index for avatar
     public static int TotalWins = 0; //variable to store total wins of the player
