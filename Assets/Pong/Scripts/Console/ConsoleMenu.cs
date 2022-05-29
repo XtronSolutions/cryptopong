@@ -11,6 +11,7 @@ public class ConsoleMenu : MonoBehaviour
     [SerializeField] private GameObject Parent;
     [SerializeField] private Button CloseButton;
     [SerializeField] private Button ResendButton;
+    [SerializeField] private Button ForgotButton;
     private Action Callback;
 
     // Start is called before the first frame update
@@ -19,6 +20,7 @@ public class ConsoleMenu : MonoBehaviour
         Events.OnReportMessage += OnReportMessage;
         CloseButton.onClick.AddListener(OnCloseButtonClicked);
         ResendButton.onClick.AddListener(OnResendButtonClicked);
+        ForgotButton.onClick.AddListener(OnForgotButtonClicked);
     }
 
     private void OnReportMessage(messageInfo info)
@@ -27,7 +29,13 @@ public class ConsoleMenu : MonoBehaviour
         Text.text = info.message;
         Callback = info.Callback;
 
+        this.ForgotButton.gameObject.SetActive(info.Forget);
         this.ResendButton.gameObject.SetActive(info.Resend);
+    }
+
+    private void OnForgotButtonClicked()
+    {
+        Events.DoFireForgetPassword();
     }
 
     private void OnCloseButtonClicked()

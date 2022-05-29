@@ -139,7 +139,12 @@ public class apiRequestHandler : MonoBehaviour
 
         if (TokenResult.Contains("error"))
         {
-            Events.DoFireLoginFailed("");
+            if (TokenResult.Contains("INVALID_PASSWORD"))
+            {
+                Events.DoFireLoginFailed("");
+                Events.DoReportMessage(new messageInfo("Incorrect password.", null, false, true));
+            }
+
             Debug.Log("somthing went wrong while fetching bearer token : " + TokenResult);
             return;
         }
@@ -171,7 +176,7 @@ public class apiRequestHandler : MonoBehaviour
             Debug.Log(request.result);
             Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
-
+            Debug.Log((string)res.SelectToken("message"));
             if (request.result == UnityWebRequest.Result.Success)
             {
                 FirebaseManager.Instance.Credentails.Email = _email;
