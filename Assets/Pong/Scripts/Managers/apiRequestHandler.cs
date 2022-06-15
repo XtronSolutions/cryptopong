@@ -79,8 +79,9 @@ public class apiRequestHandler : MonoBehaviour
     }
     public void updatePlayerData()
     {
-        Debug.Log(FirebaseManager.Instance.Credentails.Email);
-        Debug.Log(FirebaseManager.Instance.Credentails.Password);
+        if (Constants.PlayingAsGuest)
+            return;
+
         ProccessDataUpdate(FirebaseManager.Instance.Credentails.Email, FirebaseManager.Instance.Credentails.Password);
     }
     public void signInWithEmail(string _email, string _pwd)
@@ -182,10 +183,10 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log(request.result);
-            Debug.Log(request.downloadHandler.text);
+            //Debug.Log(request.result);
+            //Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
-            Debug.Log((string)res.SelectToken("message"));
+            //Debug.Log((string)res.SelectToken("message"));
             if (request.result == UnityWebRequest.Result.Success)
             {
                 FirebaseManager.Instance.Credentails.Email = _email;
@@ -318,8 +319,8 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log(request.result);
-            Debug.Log(request.downloadHandler.text);
+            //Debug.Log(request.result);
+            //Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
             if (request.result == UnityWebRequest.Result.Success)
             {
@@ -333,6 +334,11 @@ public class apiRequestHandler : MonoBehaviour
     }
     async public void ProccessLeaderboard(string _email, string _pwd)
     {
+        if(Constants.PlayingAsGuest)
+        {
+            Events.DoReportMessage(new messageInfo("Leaderboard cannot be accessed in guest mode."));
+            return;
+        }
         string TokenResult = await GetBearerToken(_email, _pwd);
 
         if (TokenResult.Contains("error"))

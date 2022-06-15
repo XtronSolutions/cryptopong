@@ -20,6 +20,7 @@ public class LoginMenu : MonoBehaviour
 {
     [SerializeField] private Button LoginButton;
     [SerializeField] private Button RegisterButton;
+    [SerializeField] private Button PlayAsGuestButton;
     [SerializeField] private TMP_InputField EmailField, PasswordField;
     [SerializeField] private TMP_Text StatusText;
     private Coroutine animateRoutine;
@@ -28,6 +29,7 @@ public class LoginMenu : MonoBehaviour
     {
         this.LoginButton.onClick.AddListener(OnLoginButtonClicked);
         this.RegisterButton.onClick.AddListener(OnRegisterButtonClicked);
+        this.PlayAsGuestButton.onClick.AddListener(OnPlayAsGuest);
 
         Events.OnLoginFailed += OnFailure;
         Events.OnLoginSuccess += OnLoginSuccess;
@@ -50,9 +52,27 @@ public class LoginMenu : MonoBehaviour
 
     private void OnLoginSuccess()
     {
+        Constants.PlayingAsGuest = false;
         MakeInteractable(true);
         this.StatusText.text = $"";
         StopCoroutine(animateRoutine);
+        Managers.UI.ActivateUI(Menus.MAIN);
+    }
+
+    private void OnPlayAsGuest()
+    {
+        Constants.PlayingAsGuest = true;
+
+        if (FirebaseManager.Instance)
+        {
+            FirebaseManager.Instance.PlayerData = new UserData();
+            FirebaseManager.Instance.PlayerData.UserName = "USER_" + UnityEngine.Random.Range(111, 999).ToString();
+        }
+        else
+            Debug.LogError("FM instance is null");
+
+        MakeInteractable(true);
+        this.StatusText.text = $"";
         Managers.UI.ActivateUI(Menus.MAIN);
     }
 

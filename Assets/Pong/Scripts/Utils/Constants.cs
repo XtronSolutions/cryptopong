@@ -20,6 +20,7 @@ public static class Constants
     public static bool IsPractice = false;
     public static bool IsTournament = false;
     public static bool TournamentActive = false;
+    public static bool PlayingAsGuest = false;
 
     public static bool IsTest = false; //bool to test wallet functionality inside editor
     public static bool IsTestNet = false;//bool to test code on testnet chain
