@@ -15,6 +15,7 @@ public class KickOffState : _StatesBase
         Debug.Log("<color=green>KickOff State</color> OnActive");
         Managers.Game.isGameActive = true;
 
+        Managers.UI.inGameUI.SetInfoText("", false);
         countdown = 4;
         Managers.Input.isActive = false;
         Managers.UI.inGameUI.gameBackButton.gameObject.SetActive(false);

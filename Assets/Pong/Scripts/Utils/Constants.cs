@@ -1,6 +1,12 @@
 using System;
 using UnityEngine;
 
+public enum GameMode
+{
+    PRACTICE = 1,
+    FREESTYLE = 2
+}
+
 public static class Constants
 {
     public static readonly Vector2 PLAYER = new Vector3(8, 0, -10);
@@ -9,6 +15,7 @@ public static class Constants
     public static readonly float PADDLE_SPEED = 15f;
     public static readonly float PADDLE_SPEED_AI = 5f;
 
+    public static GameMode Mode;
     public static string APP_VERSION = "V1.0";
     public static string WalletAccountKey = "Account";
     public static string NameCurrency = "$Pong";

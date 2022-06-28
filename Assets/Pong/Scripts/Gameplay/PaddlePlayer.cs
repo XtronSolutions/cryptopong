@@ -8,11 +8,21 @@ public class PaddlePlayer : BasePaddle
 {
     public Vector2 DefaultPosition;
     public RectTransform YBoundsRef;
+    public Transform[] XBoundsRef;
     public float diff;
 
     [DllImport("__Internal")]
     private static extern bool IsMobile();
     private CharactersDatabase Database => Databases.CharactersDatabase;
+
+    private float deltaY;
+    private float deltaX;
+    private float directionX = 0;
+    private float directionY = 0;
+    private Vector3 pos = Vector3.zero;
+    private float storedXCursor;
+    private Vector3 lastMousePos;
+    private bool[] isKeyboard=new bool[2];
 
     public bool isMobile()
     {
@@ -76,40 +86,66 @@ public class PaddlePlayer : BasePaddle
         float direction = 0;
 
         if (ControlFreak2.CF2Input.GetMouseButton(0))
-        {
             direction = (ControlFreak2.CF2Input.mousePosition.y > Screen.width / 2) ? 1 : -1;
-        }
-        CheckMovementBlock(direction);
+        
+        //CheckMovementBlock(direction);
     }
 
-    private float deltaY;
-    private Vector3 lastMousePos;
+    
     void DragInput()
     {
-        Vector3 curScreenPoint = new Vector3(0, Input.mousePosition.y, 0);
+        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
+        storedXCursor = curPosition.x;
         curPosition.x = transform.position.x;
         curPosition.z = transform.position.z;
 
-        var isKeyboard = Mathf.RoundToInt(Input.GetAxis("Vertical")) != 0;
-        if (isKeyboard)
+        isKeyboard[0] = Mathf.RoundToInt(Input.GetAxisRaw("Vertical")) != 0;
+        isKeyboard[1] = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal")) != 0;
+        if (isKeyboard[0] || isKeyboard[1])
         {
             if (!lastMousePos.Equals(curPosition))
                 lastMousePos = curPosition;
 
-            float direction = Mathf.Clamp((Input.GetAxis("Vertical")), -1, 1);
-            CheckMovementBlock(direction);
+             directionX = 0;
+             directionY = 0;
+
+            switch (Constants.Mode)
+            {
+                case GameMode.PRACTICE:
+                    directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
+                    break;
+                case GameMode.FREESTYLE:
+                    directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
+                    directionX = Mathf.Clamp((Input.GetAxisRaw("Horizontal")), -1, 1);
+                    break;
+            }
+
+            Debug.Log(directionX+" "+directionY);
+            CheckMovementBlock(directionX, directionY);
         }
         else
         {
             if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 if (Input.GetMouseButtonDown(0))
+                {
                     deltaY = (transform.position.y - curPosition.y);
+                    deltaX = (transform.position.x - storedXCursor);
+                }
 
                 if (Input.GetMouseButton(0))
                 {
-                    curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                    switch (Constants.Mode)
+                    {
+                        case GameMode.PRACTICE:
+                            curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                            break;
+                        case GameMode.FREESTYLE:
+                            curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                            curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
+                            break;
+                    }
                     transform.position = curPosition;
                 }
             }
@@ -120,19 +156,41 @@ public class PaddlePlayer : BasePaddle
                     return;
 
                 lastMousePos = Vector3.zero;
-                curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+
+                switch (Constants.Mode)
+                {
+                    case GameMode.PRACTICE:
+                        curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                        break;
+                    case GameMode.FREESTYLE:
+                        curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                        curPosition.x = Mathf.Clamp(storedXCursor, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
+                        break;
+                }
+
                 transform.position = curPosition;
             }
         }
     }
 
-    void CheckMovementBlock(float dir)
+    void CheckMovementBlock(float dirX, float dirY)
     {
-        transform.Translate(new Vector2(0, dir) * speed * Time.deltaTime);
+        transform.Translate(new Vector2(dirX, dirY) * speed * Time.deltaTime);
+        pos = transform.position;
 
-        var pos = transform.position;
-        diff = YBoundsRef.position.y;
-        pos.y = Mathf.Clamp(pos.y, -diff, diff);
+        switch (Constants.Mode)
+        {
+            case GameMode.PRACTICE:
+                diff = YBoundsRef.position.y;
+                pos.y = Mathf.Clamp(pos.y, -diff, diff);
+                break;
+            case GameMode.FREESTYLE:
+                diff = YBoundsRef.position.y;
+                pos.y = Mathf.Clamp(pos.y, -diff, diff);
+                pos.x= Mathf.Clamp(pos.x, XBoundsRef[1].position.x, XBoundsRef[0].position.x); 
+                break;
+        }
+
         transform.position = pos;
     }
 }

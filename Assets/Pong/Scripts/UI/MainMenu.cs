@@ -1,15 +1,4 @@
-﻿//  /*********************************************************************************
-//   *********************************************************************************
-//   *********************************************************************************
-//   * Produced by Skard Games										                 *
-//   * Facebook: https://goo.gl/5YSrKw											     *
-//   * Contact me: https://goo.gl/y5awt4								             *
-//   * Developed by Cavit Baturalp Gürdin: https://tr.linkedin.com/in/baturalpgurdin *
-//   *********************************************************************************
-//   *********************************************************************************
-//   *********************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -46,13 +35,25 @@ public class MainMenu : PersistentSingleton<MainMenu>
 
     public void NewGame()
     {
+        Constants.Mode = GameMode.PRACTICE;
         Managers.Audio.PlayClickSound();
+        Managers.Match.Reset();
         // Managers.Match.ResetSavedGame ();
         // Managers.Game.SetState(typeof(KickOffState));
         Managers.UI.ActivateUI(Menus.LEVELS);
         GA_AnalyticsManager.Instance.StoredProgression.Mode = "Practice";
     }
 
+    public void FreeStyle_NewGame()
+    {
+        Constants.Mode = GameMode.FREESTYLE;
+        Managers.Audio.PlayClickSound();
+        Managers.Match.Reset();
+        // Managers.Match.ResetSavedGame ();
+        // Managers.Game.SetState(typeof(KickOffState));
+        Managers.UI.ActivateUI(Menus.LEVELS);
+        GA_AnalyticsManager.Instance.StoredProgression.Mode = "FreeStyle";
+    }
     public void Settings()
     {
         Managers.Audio.PlayClickSound();
