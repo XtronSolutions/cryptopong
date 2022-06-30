@@ -39,7 +39,16 @@ public class GameOverState : _StatesBase
     IEnumerator WaitIntervalGameOver()
     {
         yield return new WaitForSeconds(3);
-        Managers.Game.SetState(typeof(MenuState));
+
+        if (PlayerPrefs.GetString("CommunityMenu", "false") == "false")
+        {
+            Managers.UI.ActivateUI(Menus.COMMUNITY);
+            PlayerPrefs.SetString("CommunityMenu", "true");
+        }
+        else
+        {
+            Managers.Game.SetState(typeof(MenuState));
+        }
     }
 
 

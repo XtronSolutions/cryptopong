@@ -53,6 +53,12 @@ public class Managers : MonoBehaviour
 		get { return _audioManager; }
 	}
 
+	public static CommunityMenu _communityMenu;
+	public static CommunityMenu communityMenu
+	{
+		get { return _communityMenu; }
+	}
+
 	private static ScoreManager _scoreManager;
 	public static ScoreManager Score
 	{

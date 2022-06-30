@@ -8,6 +8,7 @@ public class MenuState : _StatesBase
 
     public override void OnActivate()
     {
+
         Debug.Log("<color=green>Menu State</color> OnActive");
         //PlayerPrefs.DeleteAll();
         var isLoggedIn = FirebaseManager.Instance.Credentails.Email != null;
