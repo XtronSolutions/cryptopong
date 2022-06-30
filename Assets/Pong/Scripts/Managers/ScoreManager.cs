@@ -60,10 +60,12 @@ public class ScoreManager : MonoBehaviour
         if (scorer == PaddleOwner.PLAYER)
         {
             playerScore++;
+            Managers.Audio.PlayPointWinSound();
         }
         else if (scorer == PaddleOwner.AI)
         {
             aiScore++;
+            Managers.Audio.PlayPointLoseSound();
         }
 
         Managers.UI.inGameUI.UpdateScore();

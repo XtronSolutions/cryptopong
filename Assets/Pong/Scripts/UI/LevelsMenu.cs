@@ -110,9 +110,4 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

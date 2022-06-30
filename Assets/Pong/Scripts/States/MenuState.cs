@@ -9,9 +9,10 @@ public class MenuState : _StatesBase
     public override void OnActivate()
     {
         Debug.Log("<color=green>Menu State</color> OnActive");
+        //PlayerPrefs.DeleteAll();
         var isLoggedIn = FirebaseManager.Instance.Credentails.Email != null;
         Managers.UI.ActivateUI(isLoggedIn ? Menus.MAIN : Menus.LOGIN);
-        Managers.Audio.PlayGameMusic();
+        Managers.Audio.PlayLoginMusic();
         Managers.PowUps.canSpawnPowerup = false;
         Managers.UI.inGameUI.gameBackButton.gameObject.SetActive(false);
 

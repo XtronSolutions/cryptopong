@@ -86,6 +86,7 @@ public class RegisterMenu : MonoBehaviour
         this.StatusText.text = $"";
         StopCoroutine(animateRoutine);
         Managers.UI.ActivateUI(Menus.MAIN);
+        Managers.Audio.PlayLobbyMusic();
     }
 
     private void OnCloseButtonClicked()

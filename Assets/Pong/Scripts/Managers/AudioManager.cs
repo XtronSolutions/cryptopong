@@ -1,16 +1,7 @@
-﻿//  /*********************************************************************************
-//   *********************************************************************************
-//   *********************************************************************************
-//   * Produced by Skard Games										                  *
-//   * Facebook: https://goo.gl/5YSrKw											      *
-//   * Contact me: https://goo.gl/y5awt4								              *											
-//   * Developed by Cavit Baturalp Gürdin: https://tr.linkedin.com/in/baturalpgurdin *
-//   *********************************************************************************
-//   *********************************************************************************
-//   *********************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class AudioManager : MonoBehaviour {
 
@@ -18,32 +9,62 @@ public class AudioManager : MonoBehaviour {
 	public AudioSource soundSource;
 
 	public AudioClip gameMusic;
+	public AudioClip loginScreenMusic;
+	public AudioClip LobbyMusic;
 	public AudioClip menuClickSound;
+	public AudioClip hoverSound;
 	public AudioClip collisionSound;
 	public AudioClip loseSound;
 	public AudioClip winSound;
+	public AudioClip losePointSound;
+	public AudioClip winPointSound;
+	public AudioClip CyberpunkMap;
+	public AudioClip forestMap;
+	public AudioClip spaceMap;
 
+	public static float MaxMusic = 0.2f;
+	public static float MaxSound = 1f;
+	private int soundIndex=0;
 	void Awake()
 	{
-		soundSource.volume = PlayerPrefs.GetFloat ("Sound", 1f);
-		musicSource.volume = PlayerPrefs.GetFloat ("Music", 1f);
+		soundSource.volume = PlayerPrefs.GetFloat ("Sound", MaxSound);
+		musicSource.volume = PlayerPrefs.GetFloat ("Music", MaxMusic);
 	}
 
 	public float GetSoundVolume => soundSource.volume;
 	public float GetMusicVolume => musicSource.volume;
 
 	#region Sound FX
+
 	public void PlayLoseSound()
 	{
-		StopGameMusic ();
+		StopGameMusic();
 		soundSource.clip = loseSound;
-		soundSource.Play ();
+		soundSource.Play();
 	}
 
 	public void PlayClickSound()
 	{
 		soundSource.clip = menuClickSound;
 		soundSource.Play ();
+	}
+
+	public void PlayHoverSound()
+	{
+		soundSource.clip = hoverSound;
+		soundSource.Play();
+	}
+
+	public void PlayPointLoseSound()
+	{
+		soundSource.clip = losePointSound;
+		soundSource.Play();
+	}
+
+	public void PlayPointWinSound()
+	{
+		soundSource.clip = winPointSound;
+		soundSource.Play();
 	}
 
 	public void PlayWinSound()
@@ -66,7 +87,37 @@ public class AudioManager : MonoBehaviour {
 	}
 	#endregion
 
-	#region Music 
+	#region Music
+	public void PlayCyberpunkMusic()
+	{
+		musicSource.clip = CyberpunkMap;
+		musicSource.Play();
+	}
+
+	public void PlayForestMusic()
+	{
+		musicSource.clip = forestMap;
+		musicSource.Play();
+	}
+
+	public void PlaySpaceMusic()
+	{
+		musicSource.clip = spaceMap;
+		musicSource.Play();
+	}
+
+	public void PlayLoginMusic()
+	{
+		musicSource.clip = loginScreenMusic;
+		musicSource.Play();
+	}
+
+	public void PlayLobbyMusic()
+	{
+		musicSource.clip = LobbyMusic;
+		musicSource.Play();
+	}
+
 	public void PlayGameMusic()
 	{
 		musicSource.clip = gameMusic;
@@ -78,10 +129,12 @@ public class AudioManager : MonoBehaviour {
 		musicSource.Stop ();
 	}
 
-	public void SetSoundMusicVolume(float value)
+	public void SetSoundMusicVolume(float value,bool setDirect=false)
 	{
-		float temp = Mathf.Clamp(value + musicSource.volume,0,1);		
-		musicSource.volume += value;
+		if (!setDirect)
+			musicSource.volume += value;
+		else
+			musicSource.volume = value;
 	}
 	#endregion
 

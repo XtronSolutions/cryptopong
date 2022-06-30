@@ -57,6 +57,7 @@ public class LoginMenu : MonoBehaviour
         this.StatusText.text = $"";
         StopCoroutine(animateRoutine);
         Managers.UI.ActivateUI(Menus.MAIN);
+        Managers.Audio.PlayLobbyMusic();
     }
 
     private void OnPlayAsGuest()
@@ -71,9 +72,11 @@ public class LoginMenu : MonoBehaviour
         else
             Debug.LogError("FM instance is null");
 
+        Managers.Audio.PlayClickSound();
         MakeInteractable(true);
         this.StatusText.text = $"";
         Managers.UI.ActivateUI(Menus.MAIN);
+        Managers.Audio.PlayLobbyMusic();
     }
 
     private void MakeInteractable(bool value)
@@ -101,6 +104,8 @@ public class LoginMenu : MonoBehaviour
 
     private void OnLoginButtonClicked()
     {
+        Managers.Audio.PlayClickSound();
+
         if (!Constants.WalletConnected && !Constants.IsTest)
         {
             Events.DoReportMessage(new messageInfo($"Error: Please connect your wallet first."));
@@ -114,6 +119,8 @@ public class LoginMenu : MonoBehaviour
 
     private void OnRegisterButtonClicked()
     {
+        Managers.Audio.PlayClickSound();
+
         if (!Constants.WalletConnected && !Constants.IsTest)
         {
             Events.DoReportMessage(new messageInfo($"Error: Please connect your wallet first."));

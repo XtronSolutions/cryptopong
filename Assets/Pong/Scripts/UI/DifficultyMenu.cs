@@ -52,5 +52,20 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
         Managers.UI.ActivateUI(Menus.INGAME);
         Managers.Score.playerScore = Managers.Score.aiScore = 0;
         Managers.UI.inGameUI.UpdateScore();
+
+        int levelIndex = PlayerPrefs.GetInt("Level");
+
+        switch (levelIndex)
+        {
+            case 0:
+                Managers.Audio.PlayCyberpunkMusic();
+                break;
+            case 1:
+                Managers.Audio.PlaySpaceMusic();
+                break;
+            case 2:
+                Managers.Audio.PlayForestMusic();
+                break;
+        }
     }
 }
