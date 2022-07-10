@@ -37,7 +37,7 @@ public class GA_AnalyticsManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            // DontDestroyOnLoad(this.gameObject);
 
             PayloadBusinessEvent = new BusinessEventPayload();
             PayloadProgressionEvent = new ProgressionEventPayload();
@@ -179,7 +179,7 @@ public class GA_AnalyticsManager : MonoBehaviour
     #region DesignEvents
     public void RegisterDesignEvents(string eventName, float eventValue)
     {
-        //eventName : The event string can have 1 to 5 parts.The parts are separated by ‘:’ with a max length of 64 each.e.g. “world1:kill:robot:laser”. The parts can be written only with a-zA-Z, 0-9, -_.,:()!? characters.
+        //eventName : The event string can have 1 to 5 parts.The parts are separated by ï¿½:ï¿½ with a max length of 64 each.e.g. ï¿½world1:kill:robot:laserï¿½. The parts can be written only with a-zA-Z, 0-9, -_.,:()!? characters.
         //eventValue : Number value of event
         GameAnalytics.NewDesignEvent(eventName, eventValue);
     }

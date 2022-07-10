@@ -19,7 +19,7 @@ public class PaddleBot : BasePaddle
         Events.OnIntelligenceChanged += OnIntelligenceChanged;
     }
 
-    protected override void OnEnable()
+    public override void OnEnable()
     {
         base.Animator.runtimeAnimatorController = Characters[Random.Range(0, Characters.Length)];
 

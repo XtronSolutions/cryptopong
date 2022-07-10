@@ -89,7 +89,7 @@ namespace GameAnalyticsSDK
             }
             _instance = this;
 
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         }
 
         void OnDestroy()

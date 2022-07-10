@@ -102,6 +102,6 @@ public class Managers : MonoBehaviour
 		_powerupManager = GetComponent<PowerupManager> ();
 		_cameraManager = GetComponent<CameraManager> ();
 
-		DontDestroyOnLoad(gameObject);
+		// DontDestroyOnLoad(gameObject);
 	}
 }

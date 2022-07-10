@@ -67,7 +67,7 @@ public class FirebaseManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            // DontDestroyOnLoad(this.gameObject);
         }
 
         //AuthenticateFirebase();

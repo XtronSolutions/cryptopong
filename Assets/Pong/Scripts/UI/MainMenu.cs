@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : PersistentSingleton<MainMenu>
 {
@@ -54,6 +55,12 @@ public class MainMenu : PersistentSingleton<MainMenu>
         Managers.UI.ActivateUI(Menus.LEVELS);
         GA_AnalyticsManager.Instance.StoredProgression.Mode = "FreeStyle";
     }
+
+    public void Multiplayer()
+    {
+        SceneManager.LoadScene("PhotonLauncher");
+    }
+
     public void Settings()
     {
         Managers.Audio.PlayClickSound();
