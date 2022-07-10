@@ -38,7 +38,7 @@ public class PaddlePlayer : BasePaddle
         base.Start();
     }
 
-    protected override void OnEnable()
+    public override void OnEnable()
     {
         base.OnEnable();
 

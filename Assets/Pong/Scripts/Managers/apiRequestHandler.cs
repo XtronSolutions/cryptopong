@@ -62,7 +62,7 @@ public class apiRequestHandler : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            // DontDestroyOnLoad(this.gameObject);
         }
 
 

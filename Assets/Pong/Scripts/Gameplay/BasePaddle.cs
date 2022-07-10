@@ -11,14 +11,14 @@
 
 using UnityEngine;
 using System.Collections;
-
+using Photon.Pun;
 public enum PaddleOwner
 {
     PLAYER,
     AI
 }
 
-public class BasePaddle : MonoBehaviour
+public class BasePaddle : MonoBehaviourPunCallbacks
 {
     public float speed;
     [HideInInspector]
@@ -37,10 +37,10 @@ public class BasePaddle : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    protected virtual void OnEnable()
+    public override void OnEnable()
     {
-        if(!Animator)
-        Animator = GetComponentInChildren<Animator>();
+        if (!Animator)
+            Animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void Update()

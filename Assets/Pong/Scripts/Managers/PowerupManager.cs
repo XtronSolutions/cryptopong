@@ -48,8 +48,6 @@ public class PowerupManager : MonoBehaviour {
 		foreach (Powerup p in spawnedPowerupList.ToList())
 		{
 			p.DisablePowerup ();
-
 		}
 	}
-
 }
