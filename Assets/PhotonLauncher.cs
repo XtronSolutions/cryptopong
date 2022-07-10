@@ -211,7 +211,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
 
             // #Critical
             // Load the Room Level. 
-            Invoke(nameof(LoadArena), 1.5f);
+            if (PhotonNetwork.IsMasterClient)
+                Invoke(nameof(LoadArena), 1.5f);
         }
         else
         {
