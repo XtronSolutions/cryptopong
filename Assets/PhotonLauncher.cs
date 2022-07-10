@@ -205,15 +205,23 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running.");
 
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            Debug.Log("starting game...");
+            feedbackText.text += System.Environment.NewLine + " Starting game...";
 
             // #Critical
             // Load the Room Level. 
-            PhotonNetwork.LoadLevel("PhotonGamePlay");
-
+            Invoke(nameof(LoadArena), 1.5f);
         }
+        else
+        {
+            feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
+        }
+    }
+
+    private void LoadArena()
+    {
+        PhotonNetwork.LoadLevel("PhotonGamePlay");
     }
 
     #endregion
