@@ -170,6 +170,26 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom });
     }
 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+
+        // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
+        if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
+        {
+            feedbackText.text += System.Environment.NewLine + " Starting game...";
+
+            // #Critical
+            // Load the Room Level. 
+            if (PhotonNetwork.IsMasterClient)
+                Invoke(nameof(LoadArena), 1.5f);
+        }
+        else
+        {
+            feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
+        }
+
+    }
 
     /// <summary>
     /// Called after disconnecting from the Photon server.
@@ -205,18 +225,12 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running.");
 
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
-        {
-            feedbackText.text += System.Environment.NewLine + " Starting game...";
-
-            // #Critical
-            // Load the Room Level. 
-            if (PhotonNetwork.IsMasterClient)
-                Invoke(nameof(LoadArena), 1.5f);
-        }
-        else
+        if (PhotonNetwork.CurrentRoom.PlayerCount < maxPlayersPerRoom)
         {
             feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
+        }else
+        {
+            feedbackText.text += System.Environment.NewLine + " Starting Game...";
         }
     }
 
