@@ -54,7 +54,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                PhotonNetwork.Instantiate(this.PlayerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity);
+                PhotonNetwork.Instantiate(this.PlayerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
             }
             else
             {
@@ -64,7 +64,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            var ball = PhotonNetwork.Instantiate(this.BallPrefab.name, BallSpawnPoint.position, Quaternion.identity);
+            var ball = PhotonNetwork.Instantiate(this.BallPrefab.name, BallSpawnPoint.position, Quaternion.identity, 0);
             ball.transform.parent = BallSpawnPoint;
             ball.transform.localScale = Vector3.one;
             ball.transform.localPosition = Vector3.zero;
