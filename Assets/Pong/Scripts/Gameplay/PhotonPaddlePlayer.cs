@@ -41,7 +41,6 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
     {
         base.Start();
         this.YBoundsRef = PhotonGameManager.Instance.YBounds;
-        this.charNameText.text = PhotonNetwork.NickName;
     }
 
     public override void OnEnable()
@@ -136,7 +135,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                             curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
                             break;
                     }
-                 
+
                     curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                     transform.position = curPosition;
                 }
@@ -194,7 +193,8 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        if (info.photonView.IsMine)
+        Debug.Log("ID: " + info.photonView.CreatorActorNr);
+        if (info.photonView.CreatorActorNr == 1)
         {
             info.photonView.transform.SetParent(PhotonGameManager.Instance.PlayerSpawnPointA);
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointA.position, PhotonGameManager.Instance.PlayerSpawnPointA.rotation);
@@ -209,5 +209,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             this.charContainer.localScale = Vector3.one;
             this.textContainer.localScale = Vector3.one;
         }
+
+        this.charNameText.text = info.photonView.Owner.NickName;
     }
 }

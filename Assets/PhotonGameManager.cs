@@ -60,14 +60,11 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
             {
                 Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
-        }
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            var ball = PhotonNetwork.Instantiate(this.BallPrefab.name, BallSpawnPoint.position, Quaternion.identity, 0);
-            ball.transform.parent = BallSpawnPoint;
-            ball.transform.localScale = Vector3.one;
-            ball.transform.localPosition = Vector3.zero;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var ball = PhotonNetwork.InstantiateRoomObject(this.BallPrefab.name, BallSpawnPoint.position, Quaternion.identity, 0);
+            }
         }
     }
 
@@ -94,19 +91,6 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player other)
     {
         Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            // if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
-            // {
-            //     Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-            //     LoadArena();
-            // }
-            // else
-            // {
-            //     Debug.LogFormat("Waiting 1 more player to join.");
-            // }
-        }
     }
 
     /// <summary>

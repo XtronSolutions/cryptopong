@@ -145,10 +145,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            // this.transform.localScale = Vector3.one;
-            // this.transform.localPosition = Vector3.zero;
-        }
+        this.transform.parent = PhotonGameManager.Instance.BallSpawnPoint;
+        this.transform.localScale = Vector3.one;
+        this.transform.localPosition = Vector3.zero;
     }
 }
