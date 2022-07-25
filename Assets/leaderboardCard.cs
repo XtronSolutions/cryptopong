@@ -1,9 +1,6 @@
-using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class leaderboardCard : MonoBehaviour, IPointerClickHandler
@@ -29,9 +26,11 @@ public class leaderboardCard : MonoBehaviour, IPointerClickHandler
         this.avatarId = avatarId;
         this.callback = callback;
 
-        Ranks[rank].SetActive(true);
+        if(rank<Ranks.Length)
+            Ranks[rank].SetActive(true);
+
         UsernameText.text = $"{rank + 1}. {username}";
-        WalletAddressText.text = wallet;
+        WalletAddressText.text =Constants.GetShortWalletAddress(wallet);
         ScoresText.text = score.ToString();
         this.gameObject.SetActive(true);
     }

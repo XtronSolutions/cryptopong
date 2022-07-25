@@ -67,7 +67,7 @@ public static class Constants
 
     public static string TestWalletAddress = "0x5ae0d51FA54C70d731a4d5940Aef216F3fCbEd10"; //"0xD4d844C5A1cFAB13A8Ab252E466188d";
 
-    public static int LeaderboardCount = 200;//top player count for leaderboard
+    public static int LeaderboardCount = 100;//top player count for leaderboard
 
     public static string GetShortWalletAddress(string _acc)
     {
