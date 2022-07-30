@@ -85,6 +85,7 @@ public class LoginMenu : MonoBehaviour
         RegisterButton.interactable = value;
         EmailField.interactable = value;
         PasswordField.interactable = value;
+        this.PlayAsGuestButton.interactable = value;
     }
 
     IEnumerator AnimateStatus()
