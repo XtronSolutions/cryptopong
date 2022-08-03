@@ -126,7 +126,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         }
 
         // add new messages as a new line and at the bottom of the log.
-        feedbackText.text += System.Environment.NewLine + message;
+        //feedbackText.text += System.Environment.NewLine + message;
+        feedbackText.text = message;
     }
 
     #endregion
@@ -147,7 +148,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         // we don't want to do anything.
         if (isConnecting)
         {
-            LogFeedback("OnConnectedToMaster: Next -> try to Join Random Room");
+            LogFeedback("Connected with master");
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRandomRoom(); Operation will fail if no room found");
 
             // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
@@ -163,7 +164,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     /// </remarks>
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        LogFeedback("<Color=Red>OnJoinRandomFailed</Color>: Next -> Create a new Room");
+        //LogFeedback("<Color=Red>OnJoinRandomFailed</Color>: Next -> Create a new Room");
         Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
@@ -177,7 +178,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
         if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
         {
-            feedbackText.text += System.Environment.NewLine + " Starting game...";
+            feedbackText.text = " Starting game...";
+            //feedbackText.text += System.Environment.NewLine + " Starting game...";
 
             // #Critical
             // Load the Room Level. 
@@ -186,7 +188,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         }
         else
         {
-            feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
+            feedbackText.text =" Waiting for 1 more player to join.";
+            //feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
         }
 
     }
@@ -227,10 +230,12 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
         if (PhotonNetwork.CurrentRoom.PlayerCount < maxPlayersPerRoom)
         {
-            feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
+            feedbackText.text =" Waiting for 1 more player to join.";
+            //feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
         }else
         {
-            feedbackText.text += System.Environment.NewLine + " Starting Game...";
+            feedbackText.text =" Starting Game...";
+            //feedbackText.text += System.Environment.NewLine + " Starting Game...";
         }
     }
 

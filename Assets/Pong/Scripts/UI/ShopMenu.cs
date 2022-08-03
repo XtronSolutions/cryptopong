@@ -85,7 +85,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         Database.Select(character.Key);
 
         UpdatePreview();
-        Managers.Audio.PlayClickSound();
+        if(Managers.Audio)
+            Managers.Audio.PlayClickSound();
     }
 
     private void OnNext()
@@ -98,7 +99,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         //     Index++;
 
         // UpdatePreview();
-        Managers.Audio.PlayClickSound();
+        if(Managers.Audio)
+            Managers.Audio.PlayClickSound();
     }
 
     private void OnPrev()
@@ -111,7 +113,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         //     Index = Database.Characters.Count - 1;
 
         // UpdatePreview();
-        Managers.Audio.PlayClickSound();
+        if(Managers.Audio)
+            Managers.Audio.PlayClickSound();
     }
 
     private void UpdatePreview()
