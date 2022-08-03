@@ -3,9 +3,10 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
-
+using ExitGames.Client.Photon;
 public class PhotonLauncher : MonoBehaviourPunCallbacks
 {
+    private static PhotonLauncher instance;
 
     #region Private Serializable Fields
 
@@ -25,6 +26,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     [SerializeField]
     private LoaderAnime loaderAnime;
 
+    [SerializeField] private CharacterInfo[] CharactersLobby;
+
     #endregion
 
     #region Private Fields
@@ -40,6 +43,21 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     /// </summary>
     string gameVersion = "1";
 
+    public static Hashtable GetCustomProperties()
+    {
+        var customProperties = new Hashtable();
+        customProperties["maxScores"] = 5;
+        customProperties["mode"] = Constants.ModeIndex;
+        customProperties["level"] = Constants.LevelIndex;
+        customProperties["controller"] = Constants.ControllerIndex;
+        customProperties["bet"] = Constants.BetAmount;
+        Debug.Log(customProperties.ToStringFull());
+        return customProperties;
+    }
+
+    public static void ConnectMaster() => instance.Connect();
+    public static void DisconnectMaster() => PhotonNetwork.Disconnect();
+
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -53,6 +71,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         {
             Debug.LogError("<Color=Red><b>Missing</b></Color> loaderAnime Reference.", this);
         }
+
+        instance = this;
 
         // #Critical
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
@@ -108,7 +128,10 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     public void Return()
     {
         if (PhotonNetwork.IsConnected)
+        {
             PhotonNetwork.Disconnect();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
+        }
         else
             UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
     }
@@ -151,8 +174,9 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             LogFeedback("Connected with master");
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRandomRoom(); Operation will fail if no room found");
 
+            var customProperties = GetCustomProperties();
             // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
-            PhotonNetwork.JoinRandomRoom();
+            PhotonNetwork.JoinRandomRoom();//customProperties, (byte)maxPlayersPerRoom);
         }
     }
 
@@ -168,7 +192,12 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom });
+        var options = new RoomOptions();
+        options.MaxPlayers = this.maxPlayersPerRoom;
+
+        options.CustomRoomProperties = GetCustomProperties();
+
+        PhotonNetwork.CreateRoom("", options);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -184,11 +213,11 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             // #Critical
             // Load the Room Level. 
             if (PhotonNetwork.IsMasterClient)
-                Invoke(nameof(LoadArena), 1.5f);
+                Invoke(nameof(LoadArena), 3f);
         }
         else
         {
-            feedbackText.text =" Waiting for 1 more player to join.";
+            feedbackText.text = " Waiting for 1 more player to join.";
             //feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
         }
 
@@ -208,7 +237,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         isConnecting = false;
         feedbackText.text = "";
         controlPanel.SetActive(true);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
+        // UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
     }
 
     /// <summary>
@@ -226,15 +255,25 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     {
         LogFeedback("<Color=Green>OnJoinedRoom</Color> with " + PhotonNetwork.CurrentRoom.PlayerCount + " Player(s)");
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running.");
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            // Add a button for each player in the room.
+            // You can use p.NickName to access the player's nick name.
+            CharactersLobby[p.ActorNumber - 1].gameObject.SetActive(true);
+            CharactersLobby[p.ActorNumber - 1].chaarcterName.text = p.NickName;
+            CharactersLobby[p.ActorNumber - 1].winRate.text = "0";//((int)p.CustomProperties["winrate"]).ToString();
+            CharactersLobby[p.ActorNumber - 1].characterImage.runtimeAnimatorController = Databases.CharactersDatabase.GetCharacterOfIndex((int)p.CustomProperties["character"]).AnimatorController;
+        }
 
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
         if (PhotonNetwork.CurrentRoom.PlayerCount < maxPlayersPerRoom)
         {
-            feedbackText.text =" Waiting for 1 more player to join.";
+            feedbackText.text = " Waiting for 1 more player to join.";
             //feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
-        }else
+        }
+        else
         {
-            feedbackText.text =" Starting Game...";
+            feedbackText.text = " Starting Game...";
             //feedbackText.text += System.Environment.NewLine + " Starting Game...";
         }
     }

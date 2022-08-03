@@ -211,5 +211,10 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         }
 
         this.charNameText.text = info.photonView.Owner.NickName;
+
+        if (base.Animator)
+            base.Animator.runtimeAnimatorController = Database.GetCharacterOfIndex((int)info.photonView.Controller.CustomProperties["character"]).AnimatorController;
+        else
+            Debug.LogError("Animator not assigned.");
     }
 }

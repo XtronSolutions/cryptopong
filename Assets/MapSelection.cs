@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class MapSelection : MonoBehaviour
 {
     public Sprite[] mapSprites;
@@ -22,7 +22,7 @@ public class MapSelection : MonoBehaviour
     void SetScreen()
     {
 
-        if (index == mapSprites.Length-1)
+        if (index == mapSprites.Length - 1)
             nextBtn.interactable = false;
         else
             nextBtn.interactable = true;
@@ -46,6 +46,8 @@ public class MapSelection : MonoBehaviour
             bg.SetActive(false);
         }
         levelBgs[index].SetActive(true);
+
+        Constants.LevelIndex = index;
     }
 
     public void NextButton()
@@ -54,7 +56,7 @@ public class MapSelection : MonoBehaviour
         {
             index += 1;
         }
-        
+
         SetScreen();
 
     }
@@ -66,7 +68,7 @@ public class MapSelection : MonoBehaviour
             index -= 1;
         }
 
-        
+
 
         SetScreen();
 

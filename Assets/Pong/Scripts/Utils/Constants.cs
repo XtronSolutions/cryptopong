@@ -69,6 +69,14 @@ public static class Constants
 
     public static int LeaderboardCount = 100;//top player count for leaderboard
 
+    #region Photon Properties
+    public static string SelectedRegion;
+    public static int BetAmount = 0;
+    public static int ModeIndex = 0;
+    public static int LevelIndex = 0;
+    public static int ControllerIndex = 0;
+    #endregion
+
     public static string GetShortWalletAddress(string _acc)
     {
         char[] charArr = _acc.ToCharArray();//convert connected wallet address to character array

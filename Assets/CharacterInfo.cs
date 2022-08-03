@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterInfo : MonoBehaviour
 {
-    public Image characterImage;
+    public Animator characterImage;
     public Text chaarcterName;
     public Text winRate;
 }

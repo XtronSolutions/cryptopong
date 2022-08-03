@@ -25,12 +25,15 @@ public class LauncherSceneUIManager : MonoBehaviour
     {
         modesPanel.SetActive(false);
         mapPanel.SetActive(true);
+
+        Constants.ModeIndex = 0;
     }
-    
+
     public void OnClickP2E()
     {
         modesPanel.SetActive(false);
         wagePanel.SetActive(true);
+        Constants.ModeIndex = 1;
     }
 
     public void OnClickWageButton(int wageAmount)
@@ -38,7 +41,7 @@ public class LauncherSceneUIManager : MonoBehaviour
         // need to use wage amount in its prespective
         wagePanel.SetActive(false);
         mapPanel.SetActive(true);
-
+        Constants.BetAmount = wageAmount;
     }
     public void OnClickWageBackButton()
     {
@@ -50,17 +53,17 @@ public class LauncherSceneUIManager : MonoBehaviour
 
     public void OnCharacterSelectionNextButton()
     {
-        //if (Constants.UserName == "")
-        //{
-        //    namePanel.SetActive(true);
-        //}
-        //else
-        //{
-        //    PhotonNetwork.NickName = Constants.UserName;
+        // if (Constants.UserName == "")
+        // {
+        //     namePanel.SetActive(true);
+        // }
+        // else
+        // {
+            PhotonNetwork.NickName = Constants.UserName;
             shopPanel.SetActive(false);
             roomPanel.SetActive(true);
-        //}
-        
+        // }
+
     }
 
     public void OnClickNamePanelPlayBUtton()
