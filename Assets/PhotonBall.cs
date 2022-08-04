@@ -84,8 +84,10 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             // Player A scores
             ResetBall();
             UpdatePlayerScoresA(1);
+
             photonView.RPC(nameof(ResetBall), RpcTarget.Others);
             photonView.RPC(nameof(UpdatePlayerScoresA), RpcTarget.Others, parameters: 1);
+
             if (PhotonScoresManager.GetPlayerScoresA >= GetMaxScores)
             {
                 Debug.Log("Player A wins.");
@@ -102,9 +104,11 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             // Player B scores
             ResetBall();
             UpdatePlayerScoresB(1);
+
             photonView.RPC(nameof(ResetBall), RpcTarget.Others);
             photonView.RPC(nameof(UpdatePlayerScoresB), RpcTarget.Others, parameters: 1);
-            if (PhotonScoresManager.GetPlayerScoresA >= GetMaxScores)
+
+            if (PhotonScoresManager.GetPlayerScoresB >= GetMaxScores)
             {
                 Debug.Log("Player B wins.");
                 gameObject.SetActive(false);
