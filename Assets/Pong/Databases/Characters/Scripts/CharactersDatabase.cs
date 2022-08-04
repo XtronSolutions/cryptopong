@@ -59,6 +59,7 @@ public class CharactersDatabase : ScriptableObject
 
     public Character GetSelectedCharacter => Characters.Find(x => x.IsSelected);
     public int GetSelectedCharacterIndex => Characters.FindIndex(x => x.IsSelected);
+    public Character GetCharacterOfIndex(int index) => Characters[index];
 
     public void Init()
     {

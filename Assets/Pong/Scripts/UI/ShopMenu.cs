@@ -1,8 +1,10 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI.Extensions;
+using Hash = ExitGames.Client.Photon;
 
 public class ShopMenu : PersistentSingleton<ShopMenu>
 {
@@ -35,6 +37,10 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
     {
         Index = Database.GetSelectedCharacterIndex;
         Pagination.OnSelectionPageChangedEvent.AddListener(OnSelectionPageChangedEvent);
+
+        var properties = new Hash.Hashtable();
+        properties[Constants.CHARACTER_KEY] = Index;
+        PhotonNetwork.SetPlayerCustomProperties(properties);
 
         for (int i = 0; i < Database.Characters.Count; i++)
         {
@@ -84,8 +90,13 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         var character = Database.Characters[Index];
         Database.Select(character.Key);
 
+        var properties = new Hash.Hashtable();
+        properties[Constants.CHARACTER_KEY] = Index;
+        PhotonNetwork.SetPlayerCustomProperties(properties);
+
         UpdatePreview();
-        Managers.Audio.PlayClickSound();
+        if (Managers.Audio)
+            Managers.Audio.PlayClickSound();
     }
 
     private void OnNext()
@@ -98,7 +109,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         //     Index++;
 
         // UpdatePreview();
-        Managers.Audio.PlayClickSound();
+        if (Managers.Audio)
+            Managers.Audio.PlayClickSound();
     }
 
     private void OnPrev()
@@ -111,7 +123,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         //     Index = Database.Characters.Count - 1;
 
         // UpdatePreview();
-        Managers.Audio.PlayClickSound();
+        if (Managers.Audio)
+            Managers.Audio.PlayClickSound();
     }
 
     private void UpdatePreview()
