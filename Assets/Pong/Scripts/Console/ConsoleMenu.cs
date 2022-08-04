@@ -14,10 +14,17 @@ public class ConsoleMenu : MonoBehaviour
     [SerializeField] private Button ForgotButton;
     private Action Callback;
 
+    private void OnEnable() {
+        Events.OnReportMessage += OnReportMessage;
+    }
+
+    private void OnDisable() {
+        Events.OnReportMessage -= OnReportMessage;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        Events.OnReportMessage += OnReportMessage;
         CloseButton.onClick.AddListener(OnCloseButtonClicked);
         ResendButton.onClick.AddListener(OnResendButtonClicked);
         ForgotButton.onClick.AddListener(OnForgotButtonClicked);
