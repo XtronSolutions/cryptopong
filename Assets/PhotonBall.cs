@@ -23,7 +23,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     public Rigidbody2D ballBody;
     [HideInInspector]
     public BasePaddle lastTouchedPaddle;
-
+    private PhotonView lastPhotonView;
+    private int GetMaxScores => (int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.MAXSCORES_KEY];
     void Awake()
     {
 
@@ -80,11 +81,39 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
         if (other.gameObject.name.Equals("RightWall"))
         {
-            // Managers.Score.OnScore(PaddleOwner.AI);
+            // Player A scores
+            ResetBall();
+            UpdatePlayerScoresA(1);
+            photonView.RPC(nameof(ResetBall), RpcTarget.Others);
+            photonView.RPC(nameof(UpdatePlayerScoresA), RpcTarget.Others, parameters: 1);
+            if (PhotonScoresManager.GetPlayerScoresA >= GetMaxScores)
+            {
+                Debug.Log("Player A wins.");
+                gameObject.SetActive(false);
+                photonView.RPC(nameof(ConcludeGame), RpcTarget.All, lastPhotonView.CreatorActorNr);
+            }
+            else
+            {
+                Invoke(nameof(KickOffBall), 3);
+            }
         }
         else if (other.gameObject.name.Equals("LeftWall"))
         {
-            // Managers.Score.OnScore(PaddleOwner.PLAYER);
+            // Player B scores
+            ResetBall();
+            UpdatePlayerScoresB(1);
+            photonView.RPC(nameof(ResetBall), RpcTarget.Others);
+            photonView.RPC(nameof(UpdatePlayerScoresB), RpcTarget.Others, parameters: 1);
+            if (PhotonScoresManager.GetPlayerScoresA >= GetMaxScores)
+            {
+                Debug.Log("Player B wins.");
+                gameObject.SetActive(false);
+                photonView.RPC(nameof(ConcludeGame), RpcTarget.All, lastPhotonView.CreatorActorNr);
+            }
+            else
+            {
+                Invoke(nameof(KickOffBall), 3);
+            }
         }
         else if (other.gameObject.CompareTag("PADDLE"))
         {
@@ -97,7 +126,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             ballBody.velocity = dir * velocity.magnitude * speedMultiplier;
             this.velocity = velocity.magnitude * speedMultiplier;
             lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
-
+            lastPhotonView = other.gameObject.GetComponent<PhotonView>();
             if (lastTouchedPaddle.GetType().Name.Equals(nameof(PaddlePlayer)))
             {
                 // Managers.Score.TotalHits += 1;
@@ -123,7 +152,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         particle.gameObject.SetActive(true);
 
     }
-
+    [PunRPC]
     public void ResetBall()
     {
         ballBody.velocity = Vector2.zero;
@@ -149,4 +178,11 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         this.transform.localScale = Vector3.one;
         this.transform.localPosition = Vector3.zero;
     }
+
+    [PunRPC]
+    private void UpdatePlayerScoresA(int increment) => PhotonScoresManager.UpdatePlayerScoresA(increment);
+    [PunRPC]
+    private void UpdatePlayerScoresB(int increment) => PhotonScoresManager.UpdatePlayerScoresB(increment);
+    [PunRPC]
+    private void ConcludeGame(int winner) => PhotonGameManager.Instance.ConcludeGame(winner);
 }

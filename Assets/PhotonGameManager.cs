@@ -15,8 +15,6 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
     #region Private Fields
 
-    private PhotonGameManager instance;
-
     [Tooltip("The prefab to use for representing the player")]
     [SerializeField]
     private GameObject PlayerPrefab, BallPrefab;
@@ -24,6 +22,9 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     public Transform PlayerSpawnPointA, PlayerSpawnPointB, BallSpawnPoint;
     public RectTransform YBounds;
     public Joint2D PlayerJointA, PlayerJointB;
+
+    public List<PhotonView> Players = new List<PhotonView>();
+    [SerializeField] private GameObject[] Levels;
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -69,6 +70,8 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
                 var ball = PhotonNetwork.InstantiateRoomObject(this.BallPrefab.name, BallSpawnPoint.position, Quaternion.identity, 0);
             }
         }
+
+        Levels[(int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.LEVEL_KEY]].SetActive(true);
     }
 
     /// <summary>
@@ -150,6 +153,32 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
 
         PhotonNetwork.LoadLevel("PunBasics-Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
+    }
+
+    public void ConcludeGame(int winner)
+    {
+        foreach (var p in Players)
+        {
+            if (p.IsMine)
+            {
+                var msg = "";
+                if (p.CreatorActorNr == winner)
+                {
+                    msg = "you win!";
+                    Debug.Log("I am winner");
+                }
+                else
+                {
+                    msg = "you lose!";
+                    Debug.Log("I am loser");
+                }
+
+                Events.DoReportMessage(new messageInfo(msg, new System.Action(() =>
+                {
+                    LeaveRoom();
+                }), false, false));
+            }
+        }
     }
 
     #endregion

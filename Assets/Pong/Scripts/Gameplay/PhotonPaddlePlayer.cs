@@ -197,8 +197,26 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         Debug.Log("ID: " + info.photonView.CreatorActorNr);
         if (info.photonView.CreatorActorNr == 1)
         {
+
             this.joint = PhotonGameManager.Instance.PlayerJointA.transform;
-            PhotonGameManager.Instance.PlayerJointA.connectedBody = this._rigidBody;
+            if (photonView.IsMine)
+            {
+                if (info.photonView.Owner.NickName == "")
+                {
+                    info.photonView.Owner.NickName = "Guest-A [YOU]";
+                }
+                PhotonGameManager.Instance.PlayerJointA.connectedBody = this._rigidBody;
+            }
+            else
+            {
+                this._rigidBody.isKinematic = true;
+                if (info.photonView.Owner.NickName == "")
+                {
+                    info.photonView.Owner.NickName = "Guest-A";
+                }
+            }
+
+            PhotonGameManager.Instance.Players.Add(info.photonView);
             info.photonView.transform.SetParent(PhotonGameManager.Instance.PlayerSpawnPointA);
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointA.position, PhotonGameManager.Instance.PlayerSpawnPointA.rotation);
             info.photonView.transform.localScale = Vector3.one;
@@ -206,7 +224,26 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         else
         {
             this.joint = PhotonGameManager.Instance.PlayerJointB.transform;
-            PhotonGameManager.Instance.PlayerJointB.connectedBody = this._rigidBody;
+            if (photonView.IsMine)
+            {
+                if (info.photonView.Owner.NickName == "")
+                {
+                    info.photonView.Owner.NickName = "Guest-B [YOU]";
+                }
+
+                PhotonGameManager.Instance.PlayerJointB.connectedBody = this._rigidBody;
+            }
+            else
+            {
+                this._rigidBody.isKinematic = true;
+
+                if (info.photonView.Owner.NickName == "")
+                {
+                    info.photonView.Owner.NickName = "Guest-B";
+                }
+            }
+
+            PhotonGameManager.Instance.Players.Add(info.photonView);
             info.photonView.transform.SetParent(PhotonGameManager.Instance.PlayerSpawnPointB);
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointB.position, PhotonGameManager.Instance.PlayerSpawnPointB.rotation);
             info.photonView.transform.localScale = Vector3.one;

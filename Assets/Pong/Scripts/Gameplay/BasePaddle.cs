@@ -26,7 +26,7 @@ public class BasePaddle : MonoBehaviourPunCallbacks
     int cnt = 0;
     #region Private Vars
     protected Ball _ball;
-    protected Rigidbody2D _rigidBody;
+    [SerializeField]protected Rigidbody2D _rigidBody;
     [SerializeField] protected float MaxBound = 2.36f;
     [SerializeField] protected Animator Animator;
     #endregion
@@ -34,7 +34,6 @@ public class BasePaddle : MonoBehaviourPunCallbacks
     protected virtual void Start()
     {
         _ball = Managers.Match.ball;
-        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
     public override void OnEnable()
