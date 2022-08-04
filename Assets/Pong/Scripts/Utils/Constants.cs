@@ -75,6 +75,13 @@ public static class Constants
     public static int ModeIndex = 0;
     public static int LevelIndex = 0;
     public static int ControllerIndex = 0;
+
+    public static string BET_KEY => "bet";
+    public static string MODE_KEY => "mode";
+    public static string LEVEL_KEY => "level";
+    public static string CHARACTER_KEY => "character";
+    public static string CONTROLLER_KEY => "controller";
+    public static string MAXSCORES_KEY => "maxScores";
     #endregion
 
     public static string GetShortWalletAddress(string _acc)

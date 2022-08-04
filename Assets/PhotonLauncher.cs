@@ -45,14 +45,30 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
 
     public static Hashtable GetCustomProperties()
     {
-        var customProperties = new Hashtable();
-        customProperties["maxScores"] = 5;
-        customProperties["mode"] = Constants.ModeIndex;
-        customProperties["level"] = Constants.LevelIndex;
-        customProperties["controller"] = Constants.ControllerIndex;
-        customProperties["bet"] = Constants.BetAmount;
+        var customProperties = new Hashtable
+        {
+            { Constants.MAXSCORES_KEY, 5 },
+            { Constants.MODE_KEY, Constants.ModeIndex },
+            { Constants.LEVEL_KEY, Constants.LevelIndex  },
+            { Constants.CONTROLLER_KEY, Constants.ControllerIndex  },
+            { Constants.BET_KEY, Constants.BetAmount  },
+        };
+
         Debug.Log(customProperties.ToStringFull());
         return customProperties;
+    }
+
+    public static string[] GetCustomLobbyProperties()
+    {
+        string[] keys = new string[5]
+        {
+            Constants.MAXSCORES_KEY,
+            Constants.MODE_KEY,
+            Constants.LEVEL_KEY,
+            Constants.CONTROLLER_KEY,
+            Constants.BET_KEY
+        };
+        return keys;
     }
 
     public static void ConnectMaster() => instance.Connect();
@@ -175,8 +191,18 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRandomRoom(); Operation will fail if no room found");
 
             var customProperties = GetCustomProperties();
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = maxPlayersPerRoom;
+            roomOptions.PublishUserId = true;
+            roomOptions.IsVisible = true;
+            roomOptions.IsOpen = true;
+
+            roomOptions.CustomRoomPropertiesForLobby = GetCustomLobbyProperties();
+            // roomOptions.CustomRoomProperties = GetCustomProperties();
+
+            PhotonNetwork.JoinRandomOrCreateRoom(customProperties, maxPlayersPerRoom, roomOptions: roomOptions, typedLobby: TypedLobby.Default);
             // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
-            PhotonNetwork.JoinRandomRoom();//customProperties, (byte)maxPlayersPerRoom);
+            // PhotonNetwork.JoinRandomRoom(customProperties, (byte)maxPlayersPerRoom, MatchmakingMode.RandomMatching, null, null, null);
         }
     }
 
@@ -193,11 +219,12 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
 
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
         var options = new RoomOptions();
+        options.IsOpen = true;
+        options.IsVisible = true;
         options.MaxPlayers = this.maxPlayersPerRoom;
-
         options.CustomRoomProperties = GetCustomProperties();
 
-        PhotonNetwork.CreateRoom("", options);
+        PhotonNetwork.CreateRoom(null, options);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

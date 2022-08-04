@@ -27,6 +27,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
     [SerializeField] private Transform charContainer, textContainer;
     [SerializeField] private Text charNameText;
+    public Transform joint;
 
     public bool isMobile()
     {
@@ -88,8 +89,8 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
         storedXCursor = curPosition.x;
-        curPosition.x = transform.position.x;
-        curPosition.z = transform.position.z;
+        curPosition.x = joint.position.x;
+        curPosition.z = joint.position.z;
 
         isKeyboard[0] = Mathf.RoundToInt(Input.GetAxisRaw("Vertical")) != 0;
         isKeyboard[1] = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal")) != 0;
@@ -119,8 +120,8 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    deltaY = (transform.position.y - curPosition.y);
-                    deltaX = (transform.position.x - storedXCursor);
+                    deltaY = (joint.position.y - curPosition.y);
+                    deltaX = (joint.position.x - storedXCursor);
                 }
 
                 if (Input.GetMouseButton(0))
@@ -137,7 +138,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                     }
 
                     curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
-                    transform.position = curPosition;
+                    joint.position = curPosition;
                 }
             }
             else
@@ -160,15 +161,15 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 }
 
                 curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
-                transform.position = curPosition;
+                joint.position = curPosition;
             }
         }
     }
 
     void CheckMovementBlock(float dirX, float dirY)
     {
-        transform.Translate(new Vector2(dirX, dirY) * speed * Time.deltaTime);
-        pos = transform.position;
+        joint.Translate(new Vector2(dirX, dirY) * speed * Time.deltaTime);
+        pos = joint.position;
 
         switch (Constants.Mode)
         {
@@ -183,7 +184,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 break;
         }
 
-        transform.position = pos;
+        joint.position = pos;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -196,12 +197,16 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         Debug.Log("ID: " + info.photonView.CreatorActorNr);
         if (info.photonView.CreatorActorNr == 1)
         {
+            this.joint = PhotonGameManager.Instance.PlayerJointA.transform;
+            PhotonGameManager.Instance.PlayerJointA.connectedBody = this._rigidBody;
             info.photonView.transform.SetParent(PhotonGameManager.Instance.PlayerSpawnPointA);
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointA.position, PhotonGameManager.Instance.PlayerSpawnPointA.rotation);
             info.photonView.transform.localScale = Vector3.one;
         }
         else
         {
+            this.joint = PhotonGameManager.Instance.PlayerJointB.transform;
+            PhotonGameManager.Instance.PlayerJointB.connectedBody = this._rigidBody;
             info.photonView.transform.SetParent(PhotonGameManager.Instance.PlayerSpawnPointB);
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointB.position, PhotonGameManager.Instance.PlayerSpawnPointB.rotation);
             info.photonView.transform.localScale = Vector3.one;

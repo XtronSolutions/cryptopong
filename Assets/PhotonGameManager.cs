@@ -23,12 +23,13 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
     public Transform PlayerSpawnPointA, PlayerSpawnPointB, BallSpawnPoint;
     public RectTransform YBounds;
-
+    public Joint2D PlayerJointA, PlayerJointB;
     #endregion
 
     #region MonoBehaviour CallBacks
 
-    private void Awake() {
+    private void Awake()
+    {
         Instance = this;
     }
 

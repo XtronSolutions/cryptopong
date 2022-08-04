@@ -22,6 +22,7 @@ public class PaddlePlayer : BasePaddle
     private Vector3 pos = Vector3.zero;
     private float storedXCursor;
     private Vector3 lastMousePos;
+    public Transform joint;
     private bool[] isKeyboard=new bool[2];
 
     public bool isMobile()
@@ -97,8 +98,8 @@ public class PaddlePlayer : BasePaddle
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
         storedXCursor = curPosition.x;
-        curPosition.x = transform.position.x;
-        curPosition.z = transform.position.z;
+        curPosition.x = joint.position.x;
+        curPosition.z = joint.position.z;
 
         isKeyboard[0] = Mathf.RoundToInt(Input.GetAxisRaw("Vertical")) != 0;
         isKeyboard[1] = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal")) != 0;
@@ -130,8 +131,8 @@ public class PaddlePlayer : BasePaddle
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    deltaY = (transform.position.y - curPosition.y);
-                    deltaX = (transform.position.x - storedXCursor);
+                    deltaY = (joint.position.y - curPosition.y);
+                    deltaX = (joint.position.x - storedXCursor);
                 }
 
                 if (Input.GetMouseButton(0))
@@ -146,7 +147,7 @@ public class PaddlePlayer : BasePaddle
                             curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
                             break;
                     }
-                    transform.position = curPosition;
+                    joint.position = curPosition;
                 }
             }
             else
@@ -168,15 +169,15 @@ public class PaddlePlayer : BasePaddle
                         break;
                 }
 
-                transform.position = curPosition;
+                joint.position = curPosition;
             }
         }
     }
 
     void CheckMovementBlock(float dirX, float dirY)
     {
-        transform.Translate(new Vector2(dirX, dirY) * speed * Time.deltaTime);
-        pos = transform.position;
+        joint.Translate(new Vector2(dirX, dirY) * speed * Time.deltaTime);
+        pos = joint.position;
 
         switch (Constants.Mode)
         {
@@ -191,6 +192,6 @@ public class PaddlePlayer : BasePaddle
                 break;
         }
 
-        transform.position = pos;
+        joint.position = pos;
     }
 }
