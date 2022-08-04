@@ -122,7 +122,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("GamePlay");
+        SceneManager.LoadScene("PhotonLauncher");
     }
 
     #endregion
