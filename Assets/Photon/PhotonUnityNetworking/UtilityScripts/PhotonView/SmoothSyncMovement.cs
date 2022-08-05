@@ -22,6 +22,7 @@ namespace Photon.Pun.UtilityScripts
     public class SmoothSyncMovement : Photon.Pun.MonoBehaviourPun, IPunObservable
     {
         public float SmoothingDelay = 5;
+        private Vector3 velocity;
         public void Awake()
         {
             bool observed = false;
@@ -45,13 +46,13 @@ namespace Photon.Pun.UtilityScripts
             {
                 //We own this player: send the others our data
                 stream.SendNext(transform.position);
-                stream.SendNext(transform.rotation);
+                // stream.SendNext(transform.rotation);
             }
             else
             {
                 //Network player, receive data
                 correctPlayerPos = (Vector3)stream.ReceiveNext();
-                correctPlayerRot = (Quaternion)stream.ReceiveNext();
+                // correctPlayerRot = (Quaternion)stream.ReceiveNext();
             }
         }
 
@@ -63,8 +64,8 @@ namespace Photon.Pun.UtilityScripts
             if (!photonView.IsMine)
             {
                 //Update remote player (smooth this, this looks good, at the cost of some accuracy)
-                transform.position = Vector3.Lerp(transform.position, correctPlayerPos, Time.deltaTime * this.SmoothingDelay);
-                transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * this.SmoothingDelay);
+                transform.position = Vector3.LerpUnclamped(transform.position, correctPlayerPos, this.SmoothingDelay * Time.deltaTime);
+                // transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * this.SmoothingDelay);
             }
         }
 
