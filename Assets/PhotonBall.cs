@@ -74,7 +74,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     void OnCollisionEnter2D(Collision2D other)
     {
         hitParticle.Play();
-        if (PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsMasterClient)
             return;
 
         // Managers.Audio.PlayCollisionSound();
