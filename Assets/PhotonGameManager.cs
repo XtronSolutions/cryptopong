@@ -71,7 +71,8 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
             }
         }
 
-        Levels[(int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.LEVEL_KEY]].SetActive(true);
+        var levelIndex = ((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.LEVEL_KEY]);
+        Levels[levelIndex].SetActive(true);
     }
 
     /// <summary>
