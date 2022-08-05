@@ -13,6 +13,7 @@ public class LauncherSceneUIManager : MonoBehaviour
     public GameObject roomPanel;
     public GameObject namePanel;
     public GameObject shopPanel;
+    public GameObject controllerPanel;
 
 
     public void OnClickMultiplayerButton()
@@ -21,10 +22,17 @@ public class LauncherSceneUIManager : MonoBehaviour
         modesPanel.SetActive(true);
     }
 
+    public void OnClickControllerButton(int type)
+    {
+        Constants.ControllerIndex = type;
+        controllerPanel.SetActive(false);
+        mapPanel.SetActive(true);
+    }
+
     public void OnClickFreeToPlay()
     {
         modesPanel.SetActive(false);
-        mapPanel.SetActive(true);
+        controllerPanel.SetActive(true);
 
         Constants.ModeIndex = 0;
     }
@@ -40,7 +48,7 @@ public class LauncherSceneUIManager : MonoBehaviour
     {
         // need to use wage amount in its prespective
         wagePanel.SetActive(false);
-        mapPanel.SetActive(true);
+        controllerPanel.SetActive(true);
         Constants.BetAmount = (byte)wageAmount;
     }
     public void OnClickWageBackButton()
@@ -59,9 +67,9 @@ public class LauncherSceneUIManager : MonoBehaviour
         // }
         // else
         // {
-            PhotonNetwork.NickName = Constants.UserName;
-            shopPanel.SetActive(false);
-            roomPanel.SetActive(true);
+        PhotonNetwork.NickName = Constants.UserName;
+        shopPanel.SetActive(false);
+        roomPanel.SetActive(true);
         // }
 
     }

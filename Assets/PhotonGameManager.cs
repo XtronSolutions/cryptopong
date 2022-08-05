@@ -25,6 +25,8 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
     public List<PhotonView> Players = new List<PhotonView>();
     [SerializeField] private GameObject[] Levels;
+
+    public Transform[] XboundsPlayerA, XboundsPlayerB;
     #endregion
 
     #region MonoBehaviour CallBacks

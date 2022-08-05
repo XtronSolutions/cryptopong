@@ -113,7 +113,7 @@ public class PaddlePlayer : BasePaddle
 
             switch (Constants.Mode)
             {
-                case GameMode.PRACTICE:
+                case GameMode.CLASSIC:
                     directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
                     break;
                 case GameMode.FREESTYLE:
@@ -139,7 +139,7 @@ public class PaddlePlayer : BasePaddle
                 {
                     switch (Constants.Mode)
                     {
-                        case GameMode.PRACTICE:
+                        case GameMode.CLASSIC:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             break;
                         case GameMode.FREESTYLE:
@@ -160,7 +160,7 @@ public class PaddlePlayer : BasePaddle
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.PRACTICE:
+                    case GameMode.CLASSIC:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         break;
                     case GameMode.FREESTYLE:
@@ -181,7 +181,7 @@ public class PaddlePlayer : BasePaddle
 
         switch (Constants.Mode)
         {
-            case GameMode.PRACTICE:
+            case GameMode.CLASSIC:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
                 break;

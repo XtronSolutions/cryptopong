@@ -36,7 +36,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
 
     public void NewGame()
     {
-        Constants.Mode = GameMode.PRACTICE;
+        Constants.Mode = GameMode.CLASSIC;
         Managers.Audio.PlayClickSound();
         Managers.Match.Reset();
         // Managers.Match.ResetSavedGame ();
