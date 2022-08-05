@@ -41,7 +41,7 @@ public class LauncherSceneUIManager : MonoBehaviour
         // need to use wage amount in its prespective
         wagePanel.SetActive(false);
         mapPanel.SetActive(true);
-        Constants.BetAmount = wageAmount;
+        Constants.BetAmount = (byte)wageAmount;
     }
     public void OnClickWageBackButton()
     {

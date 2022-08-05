@@ -190,7 +190,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         roomOptions.IsOpen = true;
 
         roomOptions.CustomRoomPropertiesForLobby = GetCustomLobbyProperties();
-        roomOptions.CustomRoomProperties = GetCustomProperties();
+        roomOptions.CustomRoomProperties = customProperties;
 
         LogFeedback("Creating room...");
         PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);

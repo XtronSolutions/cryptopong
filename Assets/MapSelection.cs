@@ -47,7 +47,7 @@ public class MapSelection : MonoBehaviour
         }
         levelBgs[index].SetActive(true);
 
-        Constants.LevelIndex = index;
+        Constants.LevelIndex = (byte)index;
     }
 
     public void NextButton()
