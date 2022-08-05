@@ -40,6 +40,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         else
         {
             ballBody.isKinematic = true;
+            particle.gameObject.SetActive(true);
         }
     }
 
@@ -72,10 +73,10 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (!PhotonNetwork.IsMasterClient)
+        hitParticle.Play();
+        if (PhotonNetwork.IsMasterClient)
             return;
 
-        hitParticle.Play();
         // Managers.Audio.PlayCollisionSound();
         // StartCoroutine(Managers.Cam.shaker.Shake());
 
