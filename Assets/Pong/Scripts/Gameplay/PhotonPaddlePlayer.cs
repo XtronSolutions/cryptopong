@@ -128,7 +128,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 {
                     switch (Constants.Mode)
                     {
-                        case GameMode.PRACTICE:
+                        case GameMode.CLASSIC:
                             // curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             break;
                         case GameMode.FREESTYLE:
@@ -151,7 +151,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.PRACTICE:
+                    case GameMode.CLASSIC:
                         // curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         break;
                     case GameMode.FREESTYLE:
@@ -173,7 +173,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
         switch (Constants.Mode)
         {
-            case GameMode.PRACTICE:
+            case GameMode.CLASSIC:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
                 break;
@@ -205,6 +205,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 {
                     info.photonView.Owner.NickName = "Guest-A [YOU]";
                 }
+                XBoundsRef = PhotonGameManager.Instance.XboundsPlayerA;
                 PhotonGameManager.Instance.PlayerJointA.connectedBody = this._rigidBody;
             }
             else
@@ -231,6 +232,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                     info.photonView.Owner.NickName = "Guest-B [YOU]";
                 }
 
+                XBoundsRef = PhotonGameManager.Instance.XboundsPlayerB;
                 PhotonGameManager.Instance.PlayerJointB.connectedBody = this._rigidBody;
             }
             else

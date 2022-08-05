@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum GameMode
 {
-    PRACTICE = 1,
+    CLASSIC = 1,
     FREESTYLE = 2
 }
 

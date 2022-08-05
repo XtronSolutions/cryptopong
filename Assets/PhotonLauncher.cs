@@ -343,6 +343,9 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             CharactersLobby[p.ActorNumber - 1].winRate.text = "0";//((int)p.CustomProperties["winrate"]).ToString();
             CharactersLobby[p.ActorNumber - 1].characterImage.runtimeAnimatorController = Databases.CharactersDatabase.GetCharacterOfIndex((int)p.CustomProperties["character"]).AnimatorController;
         }
+
+        int mode = ((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.CONTROLLER_KEY]);
+        Constants.Mode = ((GameMode)mode);
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
         if (PhotonNetwork.CurrentRoom.PlayerCount < maxPlayersPerRoom)
         {

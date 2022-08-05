@@ -23,7 +23,7 @@ public class PaddleBot : BasePaddle
     {
         base.Animator.runtimeAnimatorController = Characters[Random.Range(0, Characters.Length)];
 
-        if (Constants.Mode == GameMode.PRACTICE)
+        if (Constants.Mode == GameMode.CLASSIC)
             gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         else if (Constants.Mode == GameMode.FREESTYLE)
         {
@@ -67,7 +67,7 @@ public class PaddleBot : BasePaddle
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.PRACTICE:
+                    case GameMode.CLASSIC:
                         _rigidBody.velocity = Vector2.up * ReactionSpeed;
                         break;
                     case GameMode.FREESTYLE:
@@ -86,7 +86,7 @@ public class PaddleBot : BasePaddle
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.PRACTICE:
+                    case GameMode.CLASSIC:
                         _rigidBody.velocity = Vector2.down * ReactionSpeed;
                         break;
                     case GameMode.FREESTYLE:
