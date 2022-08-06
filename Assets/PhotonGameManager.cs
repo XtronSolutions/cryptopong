@@ -72,11 +72,37 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsMasterClient)
             {
                 var ball = PhotonNetwork.InstantiateRoomObject(this.BallPrefab.name, BallSpawnPoint.position, Quaternion.identity, 0);
+
+                StartCoroutine(PopulatePlayers());
             }
         }
 
         var levelIndex = ((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.LEVEL_KEY]);
         Levels[levelIndex].SetActive(true);
+    }
+
+    IEnumerator PopulatePlayers()
+    {
+        yield return new WaitForSeconds(1);
+
+        var views = FindObjectsOfType<PhotonView>();
+
+        foreach (var v in views)
+        {
+            foreach (var p in PhotonNetwork.PlayerList)
+            {
+                if (v.OwnerActorNr == p.ActorNumber)
+                {
+                    if (!Players.Contains(v))
+                    {
+                        Players.Add(v);
+                    }
+                }
+            }
+        }
+
+        foreach (var p in Players)
+            Debug.Log(p.OwnerActorNr);
     }
 
     /// <summary>
@@ -171,7 +197,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
             if (p.IsMine)
             {
                 var msg = "";
-                if (p.CreatorActorNr == winner)
+                if (p.OwnerActorNr == winner)
                 {
                     msg = "you win!";
                     Debug.Log("I am winner");
