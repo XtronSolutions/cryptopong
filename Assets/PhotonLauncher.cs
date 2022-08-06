@@ -7,7 +7,6 @@ using ExitGames.Client.Photon;
 public class PhotonLauncher : MonoBehaviourPunCallbacks
 {
     private static PhotonLauncher instance;
-
     #region Private Serializable Fields
 
     [Tooltip("The Ui Panel to let the user enter name, connect and play")]
@@ -72,7 +71,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     }
 
     public static void ConnectMaster() => instance.Connect();
-    public static void DisconnectMaster() => PhotonNetwork.Disconnect();
+    public static void DisconnectMaster() => instance.DisconnectPhoton();
 
     #endregion
 
@@ -97,7 +96,6 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     }
 
     #endregion
-
 
     #region Public Methods
 
@@ -171,12 +169,9 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
 
     #endregion
 
-
     #region MonoBehaviourPunCallbacks CallBacks
     // below, we implement some callbacks of PUN
     // you can find PUN's callbacks in the class MonoBehaviourPunCallbacks
-
-
     public void CreateRoom()
     {
         var roomCode = Random.Range(10000, 99999);
@@ -184,7 +179,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
 
         var customProperties = GetCustomProperties();
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2;
+        roomOptions.MaxPlayers = maxPlayersPerRoom;
         roomOptions.PublishUserId = true;
         roomOptions.IsVisible = true;
         roomOptions.IsOpen = true;
@@ -207,7 +202,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     {
         base.OnCreateRoomFailed(returnCode, message);
         LogFeedback("ERROR: " + message);
-        Invoke(nameof(CreateRoom), 3);
+        Invoke(nameof(CreateRoom), 1.5f);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -216,58 +211,46 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         Constants.PrintLog("OnJoinRandomFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 6}, null);");
         Invoke(nameof(CreateRoom), 1.5f);
     }
+
+    public void DisconnectPhoton()
+    {
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
+
+        for (int i = 0; i < CharactersLobby.Length; i++)
+        {
+            CharactersLobby[i].gameObject.SetActive(false);
+        }
+    }
+
     /// <summary>
     /// Called after the connection to the master is established and authenticated
     /// </summary>
     public override void OnConnectedToMaster()
     {
-        // we don't want to do anything if we are not attempting to join a room. 
-        // this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case
-        // we don't want to do anything.
         if (isConnecting)
         {
+            Constants.GameStarted = false;
             LogFeedback("Connected with master");
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRandomRoom(); Operation will fail if no room found");
 
 
-            JoinRoomRandom(maxPlayersPerRoom);
-
-            //var customProperties = GetCustomProperties();
-            //RoomOptions roomOptions = new RoomOptions();
-            //roomOptions.MaxPlayers = 2;
-            //roomOptions.PublishUserId = true;
-            //roomOptions.IsVisible = true;
-            //roomOptions.IsOpen = true;
-
-            //roomOptions.CustomRoomPropertiesForLobby = GetCustomLobbyProperties();
-            //// roomOptions.CustomRoomProperties = GetCustomProperties();
-
-            //PhotonNetwork.JoinRandomOrCreateRoom(customProperties, 2, roomOptions: roomOptions, typedLobby: TypedLobby.Default);
-            // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
-            // PhotonNetwork.JoinRandomRoom(customProperties, (byte)maxPlayersPerRoom, MatchmakingMode.RandomMatching, null, null, null);
+            if (PhotonNetwork.InLobby)
+                LobbyConnection();
+            else
+                PhotonNetwork.JoinLobby();
         }
     }
 
-    /// <summary>
-    /// Called when a JoinRandom() call failed. The parameter provides ErrorCode and message.
-    /// </summary>
-    /// <remarks>
-    /// Most likely all rooms are full or no rooms are available. <br/>
-    /// </remarks>
-    //public override void OnJoinRandomFailed(short returnCode, string message)
-    //{
-    //    //LogFeedback("<Color=Red>OnJoinRandomFailed</Color>: Next -> Create a new Room");
-    //    Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
+    public void LobbyConnection()
+    {
+        JoinRoomRandom(maxPlayersPerRoom);
+    }
 
-    //    // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-    //    var options = new RoomOptions();
-    //    options.IsOpen = true;
-    //    options.IsVisible = true;
-    //    options.MaxPlayers = this.maxPlayersPerRoom;
-    //    options.CustomRoomProperties = GetCustomProperties();
-
-    //    PhotonNetwork.CreateRoom(null, options);
-    //}
+    public override void OnJoinedLobby()
+    {
+        LobbyConnection();
+    }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
@@ -288,7 +271,6 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         {
             feedbackText.text = " Starting game...";
             //feedbackText.text += System.Environment.NewLine + " Starting game...";
-
             // #Critical
             // Load the Room Level. 
             if (PhotonNetwork.IsMasterClient)
@@ -299,7 +281,17 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             feedbackText.text = " Waiting for 1 more player to join.";
             //feedbackText.text += System.Environment.NewLine + " Waiting for 1 more player to join.";
         }
+    }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (!Constants.GameStarted)
+        {
+            CancelInvoke(nameof(LoadArena));
+            Events.DoReportMessage(new messageInfo("other player has left."));
+            LauncherSceneUIManager.Instance.GoBackButton_MultiplayerConnection();
+        }
+       
     }
 
     /// <summary>
@@ -365,5 +357,4 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     }
 
     #endregion
-
 }

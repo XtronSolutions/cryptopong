@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LauncherSceneUIManager : MonoBehaviour
 {
-
+    public static LauncherSceneUIManager Instance;
     public GameObject multiplayerButtonPanel;
     public GameObject modesPanel;
     public GameObject mapPanel;
@@ -15,6 +15,10 @@ public class LauncherSceneUIManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject controllerPanel;
 
+    private void OnEnable()
+    {
+        Instance = this;
+    }
 
     public void OnClickMultiplayerButton()
     {
@@ -81,4 +85,28 @@ public class LauncherSceneUIManager : MonoBehaviour
 
     }
 
+    public void GoBackButton_MapSelection()
+    {
+        mapPanel.SetActive(false);
+        controllerPanel.SetActive(true);
+    }
+
+    public void GoBackButton_ControlPanel()
+    {
+        controllerPanel.SetActive(false);
+        modesPanel.SetActive(true);
+    }
+
+    public void GoBackButton_ShopMenu()
+    {
+        shopPanel.SetActive(false);
+        mapPanel.SetActive(true);
+    }
+
+    public void GoBackButton_MultiplayerConnection()
+    {
+        PhotonLauncher.DisconnectMaster();
+        roomPanel.SetActive(false);
+        shopPanel.SetActive(true);
+    }
 }

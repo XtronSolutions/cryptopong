@@ -29,7 +29,7 @@ public static class Constants
     public static bool TournamentActive = false;
     public static bool PlayingAsGuest = false;
 
-    public static bool IsTest = false; //bool to test wallet functionality inside editor
+    public static bool IsTest = true; //bool to test wallet functionality inside editor
     public static bool IsTestNet = false;//bool to test code on testnet chain
     public static bool IsStagging = false;
     public static bool IsDebugBuild = false;
@@ -64,6 +64,8 @@ public static class Constants
     public static int DiscountPercentage = 0;
     public static int DiscountForPong = 0;
     public static bool ApprovePong = false;
+    public static bool GameStarted = false;
+    public static bool GameFinished = false;
 
     public static string TestWalletAddress = "0x5ae0d51FA54C70d731a4d5940Aef216F3fCbEd10"; //"0xD4d844C5A1cFAB13A8Ab252E466188d";
 

@@ -41,6 +41,8 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     /// </summary>
     void Start()
     {
+        Constants.GameFinished = false;
+        Constants.GameStarted = true;
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.IsConnected)
         {
@@ -109,13 +111,16 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player other)
     {
         Debug.Log("OnPlayerLeftRoom() " + other.NickName); // seen when other disconnects
+        if (Constants.GameFinished)
+            return;
 
         if (PhotonNetwork.IsMasterClient)
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-                LeaveRoom();
+                Events.DoReportMessage(new messageInfo("other player has left."));
+                Invoke(nameof(LeaveRoom), 2f);
             }
         }
     }
@@ -160,6 +165,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
     public void ConcludeGame(int winner)
     {
+        Constants.GameFinished = true;
         foreach (var p in Players)
         {
             if (p.IsMine)
