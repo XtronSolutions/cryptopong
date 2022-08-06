@@ -274,7 +274,12 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             // #Critical
             // Load the Room Level. 
             if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                PhotonNetwork.CurrentRoom.IsVisible = false;
+                
                 Invoke(nameof(LoadArena), 3f);
+            }
         }
         else
         {
@@ -291,7 +296,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
             Events.DoReportMessage(new messageInfo("other player has left."));
             LauncherSceneUIManager.Instance.GoBackButton_MultiplayerConnection();
         }
-       
+
     }
 
     /// <summary>

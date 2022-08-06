@@ -251,8 +251,8 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointB.position, PhotonGameManager.Instance.PlayerSpawnPointB.rotation);
             info.photonView.transform.localScale = Vector3.one;
 
-            this.charContainer.localScale = Vector3.one;
-            this.textContainer.localScale = Vector3.one;
+            this.charContainer.localScale = new Vector3(-1,1,1);
+            this.textContainer.localScale = new Vector3(-1,1,1);
         }
 
 
