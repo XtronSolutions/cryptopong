@@ -91,10 +91,9 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
         // Managers.Audio.PlayCollisionSound();
         // StartCoroutine(Managers.Cam.shaker.Shake());
-
-        if (PhotonNetwork.IsMasterClient)
+        if (other.gameObject.name.Equals("RightWall"))
         {
-            if (other.gameObject.name.Equals("RightWall"))
+            if (PhotonNetwork.IsMasterClient)
             {
                 // Player A scores
                 // ResetBall();
@@ -115,7 +114,14 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                     // Invoke(nameof(KickOffBall), 3);
                 }
             }
-            else if (other.gameObject.name.Equals("LeftWall"))
+            else
+            {
+                ResetBall();
+            }
+        }
+        else if (other.gameObject.name.Equals("LeftWall"))
+        {
+            if (PhotonNetwork.IsMasterClient)
             {
                 // Player B scores
                 // ResetBall();
@@ -136,7 +142,14 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                     // Invoke(nameof(KickOffBall), 3);
                 }
             }
-            else if (other.gameObject.CompareTag("PADDLE"))
+            else
+            {
+                ResetBall();
+            }
+        }
+        else if (other.gameObject.CompareTag("PADDLE"))
+        {
+            if (PhotonNetwork.IsMasterClient)
             {
                 Vector2 curVelocity = ballBody.velocity;
 
