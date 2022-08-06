@@ -105,7 +105,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 if (PhotonScoresManager.GetPlayerScoresA >= GetMaxScores)
                 {
                     Debug.Log("Player A wins.");
-                    gameObject.SetActive(false);
                     photonView.RPC(nameof(ConcludeGame), RpcTarget.All, PhotonGameManager.Instance.Players[0].OwnerActorNr);
                 }
                 else
@@ -133,7 +132,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 if (PhotonScoresManager.GetPlayerScoresB >= GetMaxScores)
                 {
                     Debug.Log("Player B wins.");
-                    gameObject.SetActive(false);
                     photonView.RPC(nameof(ConcludeGame), RpcTarget.All, PhotonGameManager.Instance.Players[1].OwnerActorNr);
                 }
                 else
@@ -162,7 +160,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 photonView.RPC(nameof(AssignVelocity), RpcTarget.All, targetVel, curVelocity);
                 lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
                 lastPhotonView = other.gameObject.GetComponent<PhotonView>();
-            }else
+            }
+            else
             {
                 // ballBody.velocity = Vector2.zero;
             }
@@ -229,5 +228,9 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     [PunRPC]
     private void UpdatePlayerScoresB(int increment) => PhotonScoresManager.UpdatePlayerScoresB(increment);
     [PunRPC]
-    private void ConcludeGame(int winner) => PhotonGameManager.Instance.ConcludeGame(winner);
+    private void ConcludeGame(int winner)
+    {
+        ResetBall();
+        PhotonGameManager.Instance.ConcludeGame(winner);
+    }
 }
