@@ -205,6 +205,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 {
                     info.photonView.Owner.NickName = "Guest-A [YOU]";
                 }
+
                 XBoundsRef = PhotonGameManager.Instance.XboundsPlayerA;
                 PhotonGameManager.Instance.PlayerJointA.connectedBody = this._rigidBody;
             }
@@ -253,6 +254,10 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             this.charContainer.localScale = Vector3.one;
             this.textContainer.localScale = Vector3.one;
         }
+
+
+        if (Constants.Mode == GameMode.CLASSIC)
+            _rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
 
         this.charNameText.text = info.photonView.Owner.NickName;
 
