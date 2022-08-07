@@ -51,8 +51,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         }
         else
         {
-            // ballBody.isKinematic = true;
-            // particle.gameObject.SetActive(true);
+            ballBody.isKinematic = true;
+            particle.gameObject.SetActive(true);
         }
     }
 
