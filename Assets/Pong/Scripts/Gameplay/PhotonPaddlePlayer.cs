@@ -70,8 +70,15 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             if (base.Animator)
             {
                 base.Animator.Play("Attack");
+                // photonView.RPC(nameof(OnAttack), RpcTarget.All);
             }
         }
+    }
+
+    [PunRPC]
+    private void OnAttack()
+    {
+        
     }
 
     // Update is called once per frame

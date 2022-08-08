@@ -95,9 +95,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     void OnCollisionEnter2D(Collision2D other)
     {
         hitParticle.Play();
-        // if (!PhotonNetwork.IsMasterClient)
-        //     return;
-
         // Managers.Audio.PlayCollisionSound();
         // StartCoroutine(Managers.Cam.shaker.Shake());
         if (other.gameObject.name.Equals("RightWall"))
@@ -105,8 +102,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             if (PhotonNetwork.IsMasterClient)
             {
                 // Player A scores
-                // ResetBall();
-                // UpdatePlayerScoresA(1);
 
                 photonView.RPC(nameof(ResetBall), RpcTarget.All);
                 photonView.RPC(nameof(UpdatePlayerScoresA), RpcTarget.All, parameters: 1);
@@ -119,7 +114,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 else
                 {
                     photonView.RPC(nameof(_KickOffBall), RpcTarget.All, GetKickDirection);
-                    // Invoke(nameof(KickOffBall), 3);
                 }
             }
             else
@@ -133,8 +127,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             if (PhotonNetwork.IsMasterClient)
             {
                 // Player B scores
-                // ResetBall();
-                // UpdatePlayerScoresB(1);
 
                 photonView.RPC(nameof(ResetBall), RpcTarget.All);
                 photonView.RPC(nameof(UpdatePlayerScoresB), RpcTarget.All, parameters: 1);
@@ -147,7 +139,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 else
                 {
                     photonView.RPC(nameof(_KickOffBall), RpcTarget.All, GetKickDirection);
-                    // Invoke(nameof(KickOffBall), 3);
                 }
             }
             else
@@ -158,7 +149,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         }
         else if (other.gameObject.CompareTag("PADDLE"))
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (photonView.IsMine)
             {
                 Vector2 curVelocity = ballBody.velocity;
 
@@ -174,10 +165,10 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                if (photonView.IsMine)
-                {
-                    ballBody.velocity = Vector2.zero;
-                }
+                // if (photonView.IsMine)
+                // {
+                //     ballBody.velocity = Vector2.zero;
+                // }
             }
         }
     }
@@ -202,7 +193,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         KickOffBall(_direction);
     }
 
-    [PunRPC]
     public void KickOffBall(Vector2 _direction)
     {
         ballBody.angularVelocity = 0.0f;
