@@ -67,18 +67,22 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
     {
         if (other.gameObject.tag == "Ball")
         {
-            if (base.Animator)
-            {
-                base.Animator.Play("Attack");
-                // photonView.RPC(nameof(OnAttack), RpcTarget.All);
-            }
+
+        }
+    }
+
+    public void PlayAttack()
+    {
+        if (base.Animator)
+        {
+            base.Animator.Play("Attack");
         }
     }
 
     [PunRPC]
     private void OnAttack()
     {
-        
+
     }
 
     // Update is called once per frame
