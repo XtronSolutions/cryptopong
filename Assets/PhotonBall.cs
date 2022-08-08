@@ -159,7 +159,12 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 Vector2 dir = new Vector2(temp, x).normalized;
                 Vector2 targetVel = dir * curVelocity.magnitude * speedMultiplier;
 
-                photonView.RPC(nameof(AssignVelocity), RpcTarget.All, targetVel, curVelocity);
+                PlayAttack(photonView.OwnerActorNr);
+                AssignVelocity(targetVel, curVelocity);
+                
+                photonView.RPC(nameof(PlayAttack), RpcTarget.Others, photonView.OwnerActorNr);
+                photonView.RPC(nameof(AssignVelocity), RpcTarget.Others, targetVel, curVelocity);
+
                 lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
                 lastPhotonView = other.gameObject.GetComponent<PhotonView>();
             }
@@ -171,6 +176,14 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 // }
             }
         }
+    }
+
+    [PunRPC]
+    private void PlayAttack(int ownerActorNumber)
+    {
+        var player = PhotonGameManager.Instance.Players.Find(x => x.OwnerActorNr == ownerActorNumber);
+        if (player != null)
+            player.GetComponent<PhotonPaddlePlayer>().PlayAttack();
     }
 
     [PunRPC]
