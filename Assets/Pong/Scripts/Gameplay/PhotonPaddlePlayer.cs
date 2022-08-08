@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Photon.Pun;
+using Smooth;
 
 public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMagicCallback
 {
@@ -28,6 +29,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
     [SerializeField] private Transform charContainer, textContainer;
     [SerializeField] private Text charNameText;
     public Transform joint;
+    SmoothSyncPUN2 smoothSync;
 
     public bool isMobile()
     {
@@ -42,6 +44,13 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
     {
         base.Start();
         this.YBoundsRef = PhotonGameManager.Instance.YBounds;
+
+        smoothSync = GetComponent<SmoothSyncPUN2>();
+        if (smoothSync)
+        {
+            // Set up a validation method to check incoming States to see if cheating may be happening. 
+            smoothSync.validateStateMethod = validateStateOfPlayer;
+        }
     }
 
     public override void OnEnable()
@@ -251,8 +260,8 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             info.photonView.transform.SetPositionAndRotation(PhotonGameManager.Instance.PlayerSpawnPointB.position, PhotonGameManager.Instance.PlayerSpawnPointB.rotation);
             info.photonView.transform.localScale = Vector3.one;
 
-            this.charContainer.localScale = new Vector3(-1,1,1);
-            this.textContainer.localScale = new Vector3(-1,1,1);
+            this.charContainer.localScale = new Vector3(-1, 1, 1);
+            this.textContainer.localScale = new Vector3(-1, 1, 1);
         }
 
 
@@ -265,5 +274,35 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             base.Animator.runtimeAnimatorController = Database.GetCharacterOfIndex((int)info.photonView.Controller.CustomProperties["character"]).AnimatorController;
         else
             Debug.LogError("Animator not assigned.");
+    }
+
+    /// <summary>
+    /// Custom validation method. 
+    /// <remarks>
+    /// Allows you to check variables to see if they are within allowed values. For example, position.
+    /// This is for the server to check client owned objects to look for cheating like your players 
+    /// modifying values beyond the game's intended limits. 
+    /// </remarks>
+    /// </summary>
+    public static bool validateStateOfPlayer(StatePUN2 latestReceivedState, StatePUN2 latestValidatedState)
+    {
+        // Here I do a simple distance check using State.receivedOnServerTimestamp. This variable is updated
+        // by Smooth Sync whenever a State is validated. If the object has gone more than 9000 units 
+        // in less than a half of a second then I ignore the message. You might want to kick 
+        // players here, add them to a ban list, or collect your own data to see if it keeps 
+        // happening. 
+        if (Vector3.Distance(latestReceivedState.position, latestValidatedState.position) > 9000.0f &&
+            (latestReceivedState.ownerTimestamp - latestValidatedState.receivedOnServerTimestamp < .5f))
+        {
+            // Return false and refuse to accept the State. The State will not be added locally
+            // on the server or sent out to other clients.
+            return false;
+        }
+        else
+        {
+            // Return true to accept the State. The State will be added locally on the server and sent out 
+            // to other clients.
+            return true;
+        }
     }
 }
