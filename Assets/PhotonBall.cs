@@ -12,6 +12,7 @@
 using Photon.Pun;
 using UnityEngine;
 using System.Collections;
+using Smooth;
 
 public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
@@ -25,6 +26,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     public BasePaddle lastTouchedPaddle;
     private PhotonView lastPhotonView;
     private int GetMaxScores => (int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.MAXSCORES_KEY];
+    SmoothSyncPUN2 smoothSync;
 
     private Vector2 GetKickDirection
     {
@@ -49,10 +51,17 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             photonView.RPC(nameof(_KickOffBall), RpcTarget.All, GetKickDirection);
             // Invoke(nameof(KickOffBall), 3);
         }
-        else
+        // else
+        // {
+        //     ballBody.isKinematic = true;
+        //     particle.gameObject.SetActive(true);
+        // }
+
+        smoothSync = GetComponent<SmoothSyncPUN2>();
+        if (smoothSync)
         {
-            ballBody.isKinematic = true;
-            particle.gameObject.SetActive(true);
+            // Set up a validation method to check incoming States to see if cheating may be happening. 
+            smoothSync.validateStateMethod = validateStateOfPlayer;
         }
     }
 
@@ -115,7 +124,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                ResetBall();
+                if (photonView.IsMine)
+                    ResetBall();
             }
         }
         else if (other.gameObject.name.Equals("LeftWall"))
@@ -142,7 +152,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                ResetBall();
+                if (photonView.IsMine)
+                    ResetBall();
             }
         }
         else if (other.gameObject.CompareTag("PADDLE"))
@@ -163,7 +174,10 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                // ballBody.velocity = Vector2.zero;
+                if (photonView.IsMine)
+                {
+                    ballBody.velocity = Vector2.zero;
+                }
             }
         }
     }
@@ -232,5 +246,35 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     {
         ResetBall();
         PhotonGameManager.Instance.ConcludeGame(winner);
+    }
+
+    /// <summary>
+    /// Custom validation method. 
+    /// <remarks>
+    /// Allows you to check variables to see if they are within allowed values. For example, position.
+    /// This is for the server to check client owned objects to look for cheating like your players 
+    /// modifying values beyond the game's intended limits. 
+    /// </remarks>
+    /// </summary>
+    public static bool validateStateOfPlayer(StatePUN2 latestReceivedState, StatePUN2 latestValidatedState)
+    {
+        // Here I do a simple distance check using State.receivedOnServerTimestamp. This variable is updated
+        // by Smooth Sync whenever a State is validated. If the object has gone more than 9000 units 
+        // in less than a half of a second then I ignore the message. You might want to kick 
+        // players here, add them to a ban list, or collect your own data to see if it keeps 
+        // happening. 
+        if (Vector3.Distance(latestReceivedState.position, latestValidatedState.position) > 9000.0f &&
+            (latestReceivedState.ownerTimestamp - latestValidatedState.receivedOnServerTimestamp < .5f))
+        {
+            // Return false and refuse to accept the State. The State will not be added locally
+            // on the server or sent out to other clients.
+            return false;
+        }
+        else
+        {
+            // Return true to accept the State. The State will be added locally on the server and sent out 
+            // to other clients.
+            return true;
+        }
     }
 }
