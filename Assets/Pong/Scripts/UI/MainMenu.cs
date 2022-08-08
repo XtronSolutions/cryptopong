@@ -36,7 +36,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
 
     public void NewGame()
     {
-        Constants.Mode = GameMode.CLASSIC;
+        Constants.Mode =  Constants.GameMode.CLASSIC;
         Managers.Audio.PlayClickSound();
         Managers.Match.Reset();
         // Managers.Match.ResetSavedGame ();
@@ -47,7 +47,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
 
     public void FreeStyle_NewGame()
     {
-        Constants.Mode = GameMode.FREESTYLE;
+        Constants.Mode =  Constants.GameMode.FREESTYLE;
         Managers.Audio.PlayClickSound();
         Managers.Match.Reset();
         // Managers.Match.ResetSavedGame ();

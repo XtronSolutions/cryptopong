@@ -12,13 +12,15 @@
 using UnityEngine;
 using System.Collections;
 using Photon.Pun;
+using Fusion;
+
 public enum PaddleOwner
 {
     PLAYER,
     AI
 }
 
-public class BasePaddle : MonoBehaviourPunCallbacks
+public class BasePaddle : NetworkBehaviour
 {
     public float speed;
     [HideInInspector]
@@ -36,7 +38,7 @@ public class BasePaddle : MonoBehaviourPunCallbacks
         _ball = Managers.Match.ball;
     }
 
-    public override void OnEnable()
+    protected virtual void OnEnable()
     {
         if (!Animator)
             Animator = GetComponentInChildren<Animator>();

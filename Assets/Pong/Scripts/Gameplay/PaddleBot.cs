@@ -19,13 +19,13 @@ public class PaddleBot : BasePaddle
         Events.OnIntelligenceChanged += OnIntelligenceChanged;
     }
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
         base.Animator.runtimeAnimatorController = Characters[Random.Range(0, Characters.Length)];
 
-        if (Constants.Mode == GameMode.CLASSIC)
+        if (Constants.Mode ==  Constants.GameMode.CLASSIC)
             gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-        else if (Constants.Mode == GameMode.FREESTYLE)
+        else if (Constants.Mode ==  Constants.GameMode.FREESTYLE)
         {
             gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             gameObject.GetComponent<Rigidbody2D>().mass = 0.001f;
@@ -67,10 +67,10 @@ public class PaddleBot : BasePaddle
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.CLASSIC:
+                    case  Constants.GameMode.CLASSIC:
                         _rigidBody.velocity = Vector2.up * ReactionSpeed;
                         break;
-                    case GameMode.FREESTYLE:
+                    case  Constants.GameMode.FREESTYLE:
                         _rigidBody.velocity = new Vector2(1, 1) * FreeStyleReactionSpeed;
 
                         if (transform.position.x > XBounds[1].position.x)
@@ -86,10 +86,10 @@ public class PaddleBot : BasePaddle
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.CLASSIC:
+                    case  Constants.GameMode.CLASSIC:
                         _rigidBody.velocity = Vector2.down * ReactionSpeed;
                         break;
-                    case GameMode.FREESTYLE:
+                    case  Constants.GameMode.FREESTYLE:
                         _rigidBody.velocity = new Vector2(-1, -1) * FreeStyleReactionSpeed;
 
                         if (transform.position.x < XBounds[0].position.x)

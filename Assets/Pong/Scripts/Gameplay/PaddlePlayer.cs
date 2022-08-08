@@ -113,10 +113,10 @@ public class PaddlePlayer : BasePaddle
 
             switch (Constants.Mode)
             {
-                case GameMode.CLASSIC:
+                case  Constants.GameMode.CLASSIC:
                     directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
                     break;
-                case GameMode.FREESTYLE:
+                case  Constants.GameMode.FREESTYLE:
                     directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
                     directionX = Mathf.Clamp((Input.GetAxisRaw("Horizontal")), -1, 1);
                     break;
@@ -139,10 +139,10 @@ public class PaddlePlayer : BasePaddle
                 {
                     switch (Constants.Mode)
                     {
-                        case GameMode.CLASSIC:
+                        case  Constants.GameMode.CLASSIC:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             break;
-                        case GameMode.FREESTYLE:
+                        case  Constants.GameMode.FREESTYLE:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
                             break;
@@ -160,10 +160,10 @@ public class PaddlePlayer : BasePaddle
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.CLASSIC:
+                    case  Constants.GameMode.CLASSIC:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         break;
-                    case GameMode.FREESTYLE:
+                    case  Constants.GameMode.FREESTYLE:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         curPosition.x = Mathf.Clamp(storedXCursor, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
                         break;
@@ -181,11 +181,11 @@ public class PaddlePlayer : BasePaddle
 
         switch (Constants.Mode)
         {
-            case GameMode.CLASSIC:
+            case  Constants.GameMode.CLASSIC:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
                 break;
-            case GameMode.FREESTYLE:
+            case  Constants.GameMode.FREESTYLE:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
                 pos.x= Mathf.Clamp(pos.x, XBoundsRef[1].position.x, XBoundsRef[0].position.x); 

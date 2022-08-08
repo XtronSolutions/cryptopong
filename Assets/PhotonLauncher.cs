@@ -342,7 +342,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
         }
 
         int mode = ((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.CONTROLLER_KEY]);
-        Constants.Mode = ((GameMode)mode);
+        Constants.Mode = ((Constants.GameMode)mode);
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
         if (PhotonNetwork.CurrentRoom.PlayerCount < maxPlayersPerRoom)
         {

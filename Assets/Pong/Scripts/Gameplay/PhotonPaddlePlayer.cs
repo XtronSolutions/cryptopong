@@ -44,7 +44,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         this.YBoundsRef = PhotonGameManager.Instance.YBounds;
     }
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
 
@@ -104,7 +104,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
             switch (Constants.Mode)
             {
-                case GameMode.FREESTYLE:
+                case Constants.GameMode.FREESTYLE:
                     // directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
                     directionX = Mathf.Clamp((Input.GetAxisRaw("Horizontal")), -1, 1);
                     break;
@@ -128,10 +128,10 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 {
                     switch (Constants.Mode)
                     {
-                        case GameMode.CLASSIC:
+                        case Constants.GameMode.CLASSIC:
                             // curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             break;
-                        case GameMode.FREESTYLE:
+                        case Constants.GameMode.FREESTYLE:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
                             break;
@@ -151,10 +151,10 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
                 switch (Constants.Mode)
                 {
-                    case GameMode.CLASSIC:
+                    case Constants.GameMode.CLASSIC:
                         // curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         break;
-                    case GameMode.FREESTYLE:
+                    case Constants.GameMode.FREESTYLE:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         curPosition.x = Mathf.Clamp(storedXCursor, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
                         break;
@@ -173,11 +173,11 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
 
         switch (Constants.Mode)
         {
-            case GameMode.CLASSIC:
+            case Constants.GameMode.CLASSIC:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
                 break;
-            case GameMode.FREESTYLE:
+            case Constants.GameMode.FREESTYLE:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
                 pos.x = Mathf.Clamp(pos.x, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
@@ -256,7 +256,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         }
 
 
-        if (Constants.Mode == GameMode.CLASSIC)
+        if (Constants.Mode == Constants.GameMode.CLASSIC)
             _rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
 
         this.charNameText.text = info.photonView.Owner.NickName;
