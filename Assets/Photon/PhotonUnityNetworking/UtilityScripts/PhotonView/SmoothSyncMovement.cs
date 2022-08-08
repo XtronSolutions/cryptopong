@@ -64,7 +64,7 @@ namespace Photon.Pun.UtilityScripts
             if (!photonView.IsMine)
             {
                 //Update remote player (smooth this, this looks good, at the cost of some accuracy)
-                transform.position = Vector3.MoveTowards(transform.position, correctPlayerPos, this.SmoothingDelay * Time.deltaTime);
+                transform.position = correctPlayerPos;//Vector3.Lerp(transform.position, correctPlayerPos, this.SmoothingDelay * Time.deltaTime);
                 // transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * this.SmoothingDelay);
             }
         }
