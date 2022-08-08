@@ -51,11 +51,11 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             photonView.RPC(nameof(_KickOffBall), RpcTarget.All, GetKickDirection);
             // Invoke(nameof(KickOffBall), 3);
         }
-        else
-        {
-            ballBody.isKinematic = true;
-            particle.gameObject.SetActive(true);
-        }
+        // else
+        // {
+        //     ballBody.isKinematic = true;
+        //     particle.gameObject.SetActive(true);
+        // }
 
         smoothSync = GetComponent<SmoothSyncPUN2>();
         if (smoothSync)
@@ -124,7 +124,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                ResetBall();
+                if (photonView.IsMine)
+                    ResetBall();
             }
         }
         else if (other.gameObject.name.Equals("LeftWall"))
@@ -151,7 +152,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                ResetBall();
+                if (photonView.IsMine)
+                    ResetBall();
             }
         }
         else if (other.gameObject.CompareTag("PADDLE"))
@@ -170,10 +172,13 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
                 lastPhotonView = other.gameObject.GetComponent<PhotonView>();
             }
-            // else
-            // {
-            //     ballBody.velocity = Vector2.zero;
-            // }
+            else
+            {
+                if (photonView.IsMine)
+                {
+                    ballBody.velocity = Vector2.zero;
+                }
+            }
         }
     }
 
