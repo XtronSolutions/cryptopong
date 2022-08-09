@@ -149,7 +149,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         }
         else if (other.gameObject.CompareTag("PADDLE"))
         {
-            if (PhotonPlayerManager.LocalPlayerInstance.IsMine)
+            if (PhotonNetwork.IsMasterClient)
             {
                 Vector2 curVelocity = ballBody.velocity;
 
@@ -160,12 +160,12 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 Vector2 targetVel = dir * curVelocity.magnitude * speedMultiplier;
 
                 PlayAttack(PhotonPlayerManager.LocalPlayerInstance.OwnerActorNr);
-                // AssignVelocity(targetVel, curVelocity);
+                AssignVelocity(targetVel, curVelocity);
 
                 // ballBody.velocity = Vector2.zero;
                 // photonView.RPC(nameof(PlayAttack), RpcTarget.All, photonView.OwnerActorNr);
                 // PhotonNetwork.RaiseEvent(0, photonView.OwnerActorNr, Photon.Realtime.RaiseEventOptions.Default, ExitGames.Client.Photon.SendOptions.SendReliable);
-                photonView.RPC(nameof(AssignVelocity), RpcTarget.All, targetVel, curVelocity);
+                photonView.RPC(nameof(AssignVelocity), RpcTarget.Others, targetVel, curVelocity);
 
                 lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
                 lastPhotonView = other.gameObject.GetComponent<PhotonView>();
