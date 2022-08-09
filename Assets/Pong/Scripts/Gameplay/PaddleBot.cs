@@ -12,6 +12,7 @@ public class PaddleBot : BasePaddle
     [SerializeField] private RuntimeAnimatorController[] Characters;
 
     [SerializeField] private Transform[] XBounds;
+    private CharactersDatabase Database => Databases.CharactersDatabase;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -21,7 +22,9 @@ public class PaddleBot : BasePaddle
 
     public override void OnEnable()
     {
-        base.Animator.runtimeAnimatorController = Characters[Random.Range(0, Characters.Length)];
+        int CharIndex = Random.Range(0, Characters.Length);
+        base.Animator.runtimeAnimatorController = Characters[CharIndex];
+        base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetCharacterOfIndex(CharIndex).GetImageSize; 
 
         if (Constants.Mode == GameMode.CLASSIC)
             gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;

@@ -25,9 +25,25 @@ public class AudioManager : MonoBehaviour
 
     public static float MaxMusic = 0.2f;
     public static float MaxSound = 1f;
+
+    private static AudioManager _audioManager;
+    public static AudioManager Audio
+    {
+    	get { return _audioManager; }
+    }
     private int soundIndex = 0;
     void Awake()
     {
+        if (!_audioManager)
+        {
+            _audioManager = this;
+            DontDestroyOnLoad(this.gameObject);
+        }else
+        {
+            Destroy(this.gameObject);
+        }
+
+
         soundSource.volume = PlayerPrefs.GetFloat("Sound", MaxSound);
         musicSource.volume = PlayerPrefs.GetFloat("Music", MaxMusic);
     }
@@ -50,6 +66,7 @@ public class AudioManager : MonoBehaviour
     {
         if (!soundSource)
             return;
+
         soundSource.clip = menuClickSound;
         soundSource.Play();
     }
@@ -57,6 +74,9 @@ public class AudioManager : MonoBehaviour
     public void PlayHoverSound()
     {
         if (!soundSource)
+            return;
+
+        if (!hoverSound)
             return;
 
         soundSource.clip = hoverSound;

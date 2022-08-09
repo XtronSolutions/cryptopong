@@ -171,10 +171,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 269
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -192,10 +192,10 @@ TextureImporter:
         serializedVersion: 2
         x: 270
         y: 0
-        width: 264
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -211,12 +211,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_2
       rect:
         serializedVersion: 2
-        x: 543
+        x: 540
         y: 0
-        width: 231
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -232,12 +232,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_3
       rect:
         serializedVersion: 2
-        x: 807
+        x: 810
         y: 0
-        width: 228
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -253,12 +253,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_4
       rect:
         serializedVersion: 2
-        x: 1096
+        x: 1080
         y: 0
-        width: 253
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -274,12 +274,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_5
       rect:
         serializedVersion: 2
-        x: 1349
+        x: 1350
         y: 0
-        width: 264
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -295,12 +295,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_6
       rect:
         serializedVersion: 2
-        x: 1633
+        x: 1620
         y: 0
-        width: 245
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -316,12 +316,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_7
       rect:
         serializedVersion: 2
-        x: 1882
+        x: 1890
         y: 0
-        width: 241
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -337,12 +337,12 @@ TextureImporter:
       name: koalaponggam33ebase-Sheet_8
       rect:
         serializedVersion: 2
-        x: 2167
+        x: 2160
         y: 0
-        width: 229
+        width: 270
         height: 250
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

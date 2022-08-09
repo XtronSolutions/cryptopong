@@ -97,8 +97,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         PhotonNetwork.SetPlayerCustomProperties(properties);
 
         UpdatePreview();
-        if (Managers.Audio)
-            Managers.Audio.PlayClickSound();
+        if (AudioManager.Audio)
+            AudioManager.Audio.PlayClickSound();
     }
 
     private void OnNext()
@@ -111,8 +111,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         //     Index++;
 
         // UpdatePreview();
-        if (Managers.Audio)
-            Managers.Audio.PlayClickSound();
+        if (AudioManager.Audio)
+            AudioManager.Audio.PlayClickSound();
     }
 
     private void OnPrev()
@@ -125,8 +125,8 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
         //     Index = Database.Characters.Count - 1;
 
         // UpdatePreview();
-        if (Managers.Audio)
-            Managers.Audio.PlayClickSound();
+        if (AudioManager.Audio)
+            AudioManager.Audio.PlayClickSound();
     }
 
     private void UpdatePreview()

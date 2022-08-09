@@ -175,9 +175,9 @@ TextureImporter:
       name: Sheet-attack_0
       rect:
         serializedVersion: 2
-        x: 18
+        x: 0
         y: 0
-        width: 223
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -196,9 +196,9 @@ TextureImporter:
       name: Sheet-attack_1
       rect:
         serializedVersion: 2
-        x: 289
+        x: 270
         y: 0
-        width: 212
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -217,9 +217,9 @@ TextureImporter:
       name: Sheet-attack_2
       rect:
         serializedVersion: 2
-        x: 569
+        x: 540
         y: 0
-        width: 183
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -238,9 +238,9 @@ TextureImporter:
       name: Sheet-attack_3
       rect:
         serializedVersion: 2
-        x: 838
+        x: 810
         y: 0
-        width: 183
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -259,9 +259,9 @@ TextureImporter:
       name: Sheet-attack_4
       rect:
         serializedVersion: 2
-        x: 1118
+        x: 1080
         y: 0
-        width: 223
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -280,10 +280,10 @@ TextureImporter:
       name: Sheet-attack_5
       rect:
         serializedVersion: 2
-        x: 1379
+        x: 1350
         y: 9
-        width: 222
-        height: 262
+        width: 270
+        height: 271
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -301,9 +301,9 @@ TextureImporter:
       name: Sheet-attack_6
       rect:
         serializedVersion: 2
-        x: 1659
+        x: 1620
         y: 0
-        width: 213
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -322,9 +322,9 @@ TextureImporter:
       name: Sheet-attack_7
       rect:
         serializedVersion: 2
-        x: 1919
+        x: 1890
         y: 0
-        width: 182
+        width: 270
         height: 280
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -343,12 +343,12 @@ TextureImporter:
       name: Sheet-attack_8
       rect:
         serializedVersion: 2
-        x: 2199
+        x: 2160
         y: 0
-        width: 172
+        width: 270
         height: 280
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

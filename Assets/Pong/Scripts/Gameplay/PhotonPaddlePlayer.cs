@@ -58,7 +58,10 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         base.OnEnable();
 
         if (base.Animator)
+        {
             base.Animator.runtimeAnimatorController = Database.GetSelectedCharacter.AnimatorController;
+            base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetSelectedCharacter.GetImageSize;
+        }
         else
             Debug.LogError("Animator not assigned.");
     }
@@ -282,7 +285,10 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         this.charNameText.text = info.photonView.Owner.NickName;
 
         if (base.Animator)
+        {
             base.Animator.runtimeAnimatorController = Database.GetCharacterOfIndex((int)info.photonView.Controller.CustomProperties["character"]).AnimatorController;
+            base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetCharacterOfIndex((int)info.photonView.Controller.CustomProperties["character"]).GetImageSize;
+        }
         else
             Debug.LogError("Animator not assigned.");
     }

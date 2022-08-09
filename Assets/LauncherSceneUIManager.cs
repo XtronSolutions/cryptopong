@@ -22,27 +22,34 @@ public class LauncherSceneUIManager : MonoBehaviour
 
     public void OnClickMultiplayerButton()
     {
+        AudioManager.Audio.PlayClickSound();
         multiplayerButtonPanel.SetActive(false);
         modesPanel.SetActive(true);
     }
 
     public void OnClickControllerButton(int type)
     {
+        AudioManager.Audio.PlayClickSound();
         Constants.ControllerIndex = type;
         controllerPanel.SetActive(false);
         mapPanel.SetActive(true);
+    }
+
+    public void ClickButtonSound()
+    {
+        AudioManager.Audio.PlayClickSound();
     }
 
     public void OnClickFreeToPlay()
     {
         modesPanel.SetActive(false);
         controllerPanel.SetActive(true);
-
         Constants.ModeIndex = 0;
     }
 
     public void OnClickP2E()
     {
+        AudioManager.Audio.PlayClickSound();
         modesPanel.SetActive(false);
         wagePanel.SetActive(true);
         Constants.ModeIndex = 1;
@@ -50,6 +57,7 @@ public class LauncherSceneUIManager : MonoBehaviour
 
     public void OnClickWageButton(int wageAmount)
     {
+        AudioManager.Audio.PlayClickSound();
         // need to use wage amount in its prespective
         wagePanel.SetActive(false);
         controllerPanel.SetActive(true);
@@ -57,7 +65,7 @@ public class LauncherSceneUIManager : MonoBehaviour
     }
     public void OnClickWageBackButton()
     {
-
+        AudioManager.Audio.PlayClickSound();
         modesPanel.SetActive(true);
         wagePanel.SetActive(false);
 
@@ -71,6 +79,7 @@ public class LauncherSceneUIManager : MonoBehaviour
         // }
         // else
         // {
+        AudioManager.Audio.PlayClickSound();
         PhotonNetwork.NickName = Constants.UserName;
         shopPanel.SetActive(false);
         roomPanel.SetActive(true);
@@ -80,31 +89,35 @@ public class LauncherSceneUIManager : MonoBehaviour
 
     public void OnClickNamePanelPlayBUtton()
     {
+        AudioManager.Audio.PlayClickSound();
         namePanel.SetActive(false);
         roomPanel.SetActive(true);
-
     }
 
     public void GoBackButton_MapSelection()
     {
+        AudioManager.Audio.PlayClickSound();
         mapPanel.SetActive(false);
         controllerPanel.SetActive(true);
     }
 
     public void GoBackButton_ControlPanel()
     {
+        AudioManager.Audio.PlayClickSound();
         controllerPanel.SetActive(false);
         modesPanel.SetActive(true);
     }
 
     public void GoBackButton_ShopMenu()
     {
+        AudioManager.Audio.PlayClickSound();
         shopPanel.SetActive(false);
         mapPanel.SetActive(true);
     }
 
     public void GoBackButton_MultiplayerConnection()
     {
+        AudioManager.Audio.PlayClickSound();
         PhotonLauncher.DisconnectMaster();
         roomPanel.SetActive(false);
         shopPanel.SetActive(true);

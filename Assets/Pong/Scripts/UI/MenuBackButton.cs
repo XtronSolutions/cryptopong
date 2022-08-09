@@ -17,10 +17,10 @@ public class MenuBackButton : MonoBehaviour
 	public GameObject Panel;
 	public void OnClickBackButton()
 	{
-		Managers.Audio.PlayClickSound ();
+		AudioManager.Audio.PlayClickSound ();
 		Panel.SetActive (false);
 		MainMenu.Instance.menuButtons.SetActive (true);
-		PlayerPrefs.SetFloat ("Sound",Managers.Audio.soundSource.volume);
-		PlayerPrefs.SetFloat ("Music",Managers.Audio.musicSource.volume);
+		PlayerPrefs.SetFloat ("Sound", AudioManager.Audio.soundSource.volume);
+		PlayerPrefs.SetFloat ("Music", AudioManager.Audio.musicSource.volume);
 	}
 }

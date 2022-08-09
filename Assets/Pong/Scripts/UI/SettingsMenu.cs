@@ -13,12 +13,12 @@ public class SettingsMenu : MonoBehaviour {
 
 	void Awake()
 	{
-		float _music = Managers.Audio.GetMusicVolume;
+		float _music = AudioManager.Audio.GetMusicVolume;
 
-		SoundSlider.value = Managers.Audio.GetSoundVolume;
+		SoundSlider.value = AudioManager.Audio.GetSoundVolume;
 		MusicSlider.value = _music * (1 / AudioManager.MaxMusic);
 
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
+		soundVolumeText.text = ((int)(AudioManager.Audio.soundSource.volume*100)).ToString()+"%";
 		musicVolumeText.text = ((int)(MusicSlider.value * 100)).ToString()+"%";
 		controllerSelectionDropdown.value =PlayerPrefs.GetInt ("Input");
 
@@ -28,48 +28,48 @@ public class SettingsMenu : MonoBehaviour {
 
 	public void OnSoundUpdate(float value)
 	{
-		Managers.Audio.SetSoundFxVolume (value);
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
-		Managers.Audio.PlayClickSound ();
+		AudioManager.Audio.SetSoundFxVolume (value);
+		soundVolumeText.text = ((int)(AudioManager.Audio.soundSource.volume*100)).ToString()+"%";
+		AudioManager.Audio.PlayClickSound ();
 	}
 
 	public void OnMusicUpdate(float value)
 	{
-		Managers.Audio.SetSoundMusicVolume (value);
-		musicVolumeText.text = ((int)(Managers.Audio.musicSource.volume*100)).ToString()+"%";
-		Managers.Audio.PlayClickSound ();
+		AudioManager.Audio.SetSoundMusicVolume (value);
+		musicVolumeText.text = ((int)(AudioManager.Audio.musicSource.volume*100)).ToString()+"%";
+		AudioManager.Audio.PlayClickSound ();
 	}
 
 	public void IncrementSound()
 	{
-		Managers.Audio.SetSoundFxVolume (0.1f);
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
-		Managers.Audio.PlayClickSound ();
-		SoundSlider.value = Managers.Audio.GetSoundVolume;
+		AudioManager.Audio.SetSoundFxVolume (0.1f);
+		soundVolumeText.text = ((int)(AudioManager.Audio.soundSource.volume*100)).ToString()+"%";
+		AudioManager.Audio.PlayClickSound ();
+		SoundSlider.value = AudioManager.Audio.GetSoundVolume;
 	}
 
 	public void DecrementSound()
 	{
-		Managers.Audio.SetSoundFxVolume (-0.1f);
-		soundVolumeText.text = ((int)(Managers.Audio.soundSource.volume*100)).ToString()+"%";
-		Managers.Audio.PlayClickSound ();
-		SoundSlider.value = Managers.Audio.GetSoundVolume;
+		AudioManager.Audio.SetSoundFxVolume (-0.1f);
+		soundVolumeText.text = ((int)(AudioManager.Audio.soundSource.volume*100)).ToString()+"%";
+		AudioManager.Audio.PlayClickSound ();
+		SoundSlider.value = AudioManager.Audio.GetSoundVolume;
 	}
 
 	public void IncrementMusic()
 	{
 		if (MusicSlider.value <= 0.9)
 		{
-			Managers.Audio.SetSoundMusicVolume(AudioManager.MaxMusic / 10);
+			AudioManager.Audio.SetSoundMusicVolume(AudioManager.MaxMusic / 10);
 			MusicSlider.value += 0.1f;
 			musicVolumeText.text = ((int)(MusicSlider.value * 100)).ToString() + "%";
-			Managers.Audio.PlayClickSound();
+			AudioManager.Audio.PlayClickSound();
         }else
         {
-			Managers.Audio.SetSoundMusicVolume(AudioManager.MaxMusic,true);
+			AudioManager.Audio.SetSoundMusicVolume(AudioManager.MaxMusic,true);
 			MusicSlider.value += 0.1f;
 			musicVolumeText.text = ((int)(MusicSlider.value * 100)).ToString() + "%";
-			Managers.Audio.PlayClickSound();
+			AudioManager.Audio.PlayClickSound();
 		}
 	}
 
@@ -77,16 +77,16 @@ public class SettingsMenu : MonoBehaviour {
 	{
 		if (MusicSlider.value >= 0.1)
 		{
-			Managers.Audio.SetSoundMusicVolume(-AudioManager.MaxMusic/10);
+			AudioManager.Audio.SetSoundMusicVolume(-AudioManager.MaxMusic/10);
 			MusicSlider.value -= 0.1f;
 			musicVolumeText.text = ((int)(MusicSlider.value * 100)).ToString() + "%";
-			Managers.Audio.PlayClickSound();
+			AudioManager.Audio.PlayClickSound();
 		}else
         {
-			Managers.Audio.SetSoundMusicVolume(0,true);
+			AudioManager.Audio.SetSoundMusicVolume(0,true);
 			MusicSlider.value -= 0.1f;
 			musicVolumeText.text = ((int)(MusicSlider.value * 100)).ToString() + "%";
-			Managers.Audio.PlayClickSound();
+			AudioManager.Audio.PlayClickSound();
 		}
 
 	}
@@ -101,7 +101,7 @@ public class SettingsMenu : MonoBehaviour {
 			PlayerPrefs.SetInt ("Input",2);
 
 		Managers.Input.inputType = (InputMethod) PlayerPrefs.GetInt ("Input");
-		Managers.Audio.PlayClickSound ();
+		AudioManager.Audio.PlayClickSound ();
 	}
 
 }

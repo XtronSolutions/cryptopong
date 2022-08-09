@@ -13,7 +13,7 @@ public class MenuState : _StatesBase
         //PlayerPrefs.DeleteAll();
         var isLoggedIn = FirebaseManager.Instance.Credentails.Email != null;
         Managers.UI.ActivateUI(isLoggedIn ? Menus.MAIN : Menus.LOGIN);
-        Managers.Audio.PlayLoginMusic();
+        AudioManager.Audio.PlayLoginMusic();
         Managers.PowUps.canSpawnPowerup = false;
         Managers.UI.inGameUI.gameBackButton.gameObject.SetActive(false);
 

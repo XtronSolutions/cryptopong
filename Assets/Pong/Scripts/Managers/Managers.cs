@@ -14,7 +14,7 @@ using System.Collections;
 
 [RequireComponent(typeof(GameManager))]
 [RequireComponent(typeof(UIManager))]
-[RequireComponent(typeof(AudioManager))]
+//[RequireComponent(typeof(AudioManager))]
 [RequireComponent(typeof(ScoreManager))]
 [RequireComponent(typeof(PlayerInputManager))]
 [RequireComponent(typeof(MatchManager))]
@@ -47,11 +47,11 @@ public class Managers : MonoBehaviour
 		get { return _uiManager; }
 	}
 
-	private static AudioManager _audioManager;
-	public static AudioManager Audio
-	{
-		get { return _audioManager; }
-	}
+	//private static AudioManager _audioManager;
+	//public static AudioManager Audio
+	//{
+	//	get { return _audioManager; }
+	//}
 
 	public static CommunityMenu _communityMenu;
 	public static CommunityMenu communityMenu
@@ -93,7 +93,7 @@ public class Managers : MonoBehaviour
 	{
 		_gameManager = GetComponent<GameManager>();
 		_uiManager = GetComponent<UIManager>();
-		_audioManager = GetComponent<AudioManager>();
+		//_audioManager = GetComponent<AudioManager>();
 		_scoreManager = GetComponent<ScoreManager> ();
 		_inputManager = GetComponent<PlayerInputManager> ();
 		_matchManager = GetComponent<MatchManager> ();

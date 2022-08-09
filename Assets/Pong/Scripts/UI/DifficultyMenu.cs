@@ -39,14 +39,14 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
 
     private void OnBackButtonPressed()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.UI.ActivateUI(Menus.LEVELS);
     }
 
     private void StartGame()
     {
         Events.DoFireGameStart(true);
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.Match.ResetSavedGame();
         Managers.Game.SetState(typeof(KickOffState));
         Managers.UI.ActivateUI(Menus.INGAME);
@@ -58,13 +58,13 @@ public class DifficultyMenu : PersistentSingleton<MonoBehaviour>
         switch (levelIndex)
         {
             case 0:
-                Managers.Audio.PlayCyberpunkMusic();
+                AudioManager.Audio.PlayCyberpunkMusic();
                 break;
             case 1:
-                Managers.Audio.PlaySpaceMusic();
+                AudioManager.Audio.PlaySpaceMusic();
                 break;
             case 2:
-                Managers.Audio.PlayForestMusic();
+                AudioManager.Audio.PlayForestMusic();
                 break;
         }
     }

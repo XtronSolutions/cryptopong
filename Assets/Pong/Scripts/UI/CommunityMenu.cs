@@ -19,19 +19,19 @@ public class CommunityMenu : MonoBehaviour
 
     public void OnTwitterPressed()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Application.OpenURL("https://twitter.com/PongHeroes");
     }
 
     public void OnTelegramPressed()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Application.OpenURL("https://t.me/pongheroes");
     }
 
     public void OnMainMenuPressed()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.Game.SetState(typeof(MenuState));
     }
 }

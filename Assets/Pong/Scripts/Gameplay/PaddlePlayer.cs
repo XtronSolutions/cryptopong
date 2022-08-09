@@ -44,7 +44,10 @@ public class PaddlePlayer : BasePaddle
         base.OnEnable();
 
         if (base.Animator)
+        {
             base.Animator.runtimeAnimatorController = Database.GetSelectedCharacter.AnimatorController;
+            base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetSelectedCharacter.GetImageSize;
+        }
         else
             Debug.LogError("Animator not assigned.");
     }

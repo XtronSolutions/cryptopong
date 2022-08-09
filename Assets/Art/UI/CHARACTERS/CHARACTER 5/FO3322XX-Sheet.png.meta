@@ -174,7 +174,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 251
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -193,9 +193,9 @@ TextureImporter:
       name: FO3322XX-Sheet_1
       rect:
         serializedVersion: 2
-        x: 269
+        x: 260
         y: 0
-        width: 242
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -214,9 +214,9 @@ TextureImporter:
       name: FO3322XX-Sheet_3
       rect:
         serializedVersion: 2
-        x: 528
+        x: 520
         y: 0
-        width: 223
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -235,9 +235,9 @@ TextureImporter:
       name: FO3322XX-Sheet_4
       rect:
         serializedVersion: 2
-        x: 789
+        x: 780
         y: 0
-        width: 212
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -256,9 +256,9 @@ TextureImporter:
       name: FO3322XX-Sheet_5
       rect:
         serializedVersion: 2
-        x: 1039
+        x: 1040
         y: 0
-        width: 262
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -277,10 +277,10 @@ TextureImporter:
       name: FO3322XX-Sheet_6
       rect:
         serializedVersion: 2
-        x: 1309
-        y: 9
-        width: 242
-        height: 232
+        x: 1560
+        y: 0
+        width: 260
+        height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -298,9 +298,9 @@ TextureImporter:
       name: FO3322XX-Sheet_7
       rect:
         serializedVersion: 2
-        x: 1559
+        x: 1300
         y: 0
-        width: 253
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -319,9 +319,9 @@ TextureImporter:
       name: FO3322XX-Sheet_8
       rect:
         serializedVersion: 2
-        x: 1829
+        x: 1820
         y: 0
-        width: 212
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -340,9 +340,9 @@ TextureImporter:
       name: FO3322XX-Sheet_9
       rect:
         serializedVersion: 2
-        x: 2098
+        x: 2080
         y: 0
-        width: 242
+        width: 260
         height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

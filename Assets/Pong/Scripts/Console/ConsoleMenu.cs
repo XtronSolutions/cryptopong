@@ -42,17 +42,20 @@ public class ConsoleMenu : MonoBehaviour
 
     private void OnForgotButtonClicked()
     {
+        AudioManager.Audio.PlayClickSound();
         Events.DoFireForgetPassword();
     }
 
     private void OnCloseButtonClicked()
     {
+        AudioManager.Audio.PlayClickSound();
         Parent.SetActive(false);
         Callback?.Invoke();
     }
 
     private void OnResendButtonClicked()
     {
+        AudioManager.Audio.PlayClickSound();
         this.ResendButton.interactable = false;
         apiRequestHandler.Instance.sendVerificationAgain();
     }

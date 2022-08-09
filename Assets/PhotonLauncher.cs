@@ -142,6 +142,8 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
 
     public void Return()
     {
+        AudioManager.Audio.PlayClickSound();
+        AudioManager.Audio.PlayLobbyMusic();
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.Disconnect();

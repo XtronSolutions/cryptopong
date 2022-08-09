@@ -15,12 +15,12 @@ public class GameOverState : _StatesBase
         Managers.Match.Reset();
         if (winner == PaddleOwner.AI)
         {
-            Managers.Audio.PlayLoseSound();
+            AudioManager.Audio.PlayLoseSound();
             GA_AnalyticsManager.Instance.PushProgressionEvent(false, false, true);
         }
         else
         {
-            Managers.Audio.PlayWinSound();
+            AudioManager.Audio.PlayWinSound();
             GA_AnalyticsManager.Instance.PushProgressionEvent(false, true, false);
         }
         StartCoroutine(WaitIntervalGameOver());

@@ -57,7 +57,7 @@ public class LoginMenu : MonoBehaviour
         this.StatusText.text = $"";
         StopCoroutine(animateRoutine);
         Managers.UI.ActivateUI(Menus.MAIN);
-        Managers.Audio.PlayLobbyMusic();
+        AudioManager.Audio.PlayLobbyMusic();
     }
 
     private void OnPlayAsGuest()
@@ -72,11 +72,11 @@ public class LoginMenu : MonoBehaviour
         else
             Debug.LogError("FM instance is null");
 
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         MakeInteractable(true);
         this.StatusText.text = $"";
         Managers.UI.ActivateUI(Menus.MAIN);
-        Managers.Audio.PlayLobbyMusic();
+        AudioManager.Audio.PlayLobbyMusic();
     }
 
     private void MakeInteractable(bool value)
@@ -105,7 +105,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnLoginButtonClicked()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
 
         if (!Constants.WalletConnected && !Constants.IsTest)
         {
@@ -120,7 +120,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnRegisterButtonClicked()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
 
         if (!Constants.WalletConnected && !Constants.IsTest)
         {

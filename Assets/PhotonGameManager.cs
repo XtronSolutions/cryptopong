@@ -81,6 +81,19 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
         var levelIndex = ((int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.LEVEL_KEY]);
         Levels[levelIndex].SetActive(true);
+
+        switch (levelIndex)
+        {
+            case 0:
+                AudioManager.Audio.PlayCyberpunkMusic();
+                break;
+            case 1:
+                AudioManager.Audio.PlaySpaceMusic();
+                break;
+            case 2:
+                AudioManager.Audio.PlayForestMusic();
+                break;
+        }
     }
 
     IEnumerator PopulatePlayers()
@@ -115,7 +128,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         // "back" button of phone equals "Escape". quit app if that's pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            QuitApplication();
+            //QuitApplication();
         }
     }
 
@@ -158,6 +171,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
+        AudioManager.Audio.PlayLobbyMusic();
         SceneManager.LoadScene("PhotonLauncher");
     }
 

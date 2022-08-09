@@ -24,12 +24,13 @@ public class CharactersDatabase : ScriptableObject
         [Space(10)]
         [SerializeField] private State UnlockStatus;
         [SerializeField] private int Price;
+        [SerializeField] private Vector2 ImageSize;
 
         public State GetState => UnlockStatus;
         public RuntimeAnimatorController AnimatorController => CharacterAnimator;
 
         public int GetPrice => Price;
-
+        public Vector2 GetImageSize => ImageSize;
         public Sprite GetIcon => Icon;
         public Sprite GetSilhouette => Silhouette;
 

@@ -51,7 +51,7 @@ public class Ball : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         hitParticle.Play();
-        Managers.Audio.PlayCollisionSound();
+        AudioManager.Audio.PlayCollisionSound();
         StartCoroutine(Managers.Cam.shaker.Shake());
 
         if (other.gameObject.name.Equals("RightWall"))

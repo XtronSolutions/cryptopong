@@ -10,6 +10,7 @@ public enum GameMode
 public static class Constants
 {
     public static readonly Vector2 PLAYER = new Vector3(8, 0, -10);
+    public static readonly Vector2 PLAYERJOINT = new Vector3(787.155f, 0, -10);
     public static readonly Vector2 AI = new Vector3(-8, 0, -10);
     public static readonly Vector3 PADDLE_SCALE = new Vector3(1f, 1f, 1f);
     public static readonly float PADDLE_SPEED = 15f;
@@ -29,7 +30,7 @@ public static class Constants
     public static bool TournamentActive = false;
     public static bool PlayingAsGuest = false;
 
-    public static bool IsTest = true; //bool to test wallet functionality inside editor
+    public static bool IsTest = false; //bool to test wallet functionality inside editor
     public static bool IsTestNet = false;//bool to test code on testnet chain
     public static bool IsStagging = false;
     public static bool IsDebugBuild = false;

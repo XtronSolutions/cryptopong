@@ -34,8 +34,8 @@ public class HoverAnimations : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (AutomateHover)
             return;
-        if(Managers.Audio)
-            Managers.Audio.PlayHoverSound();
+        if(AudioManager.Audio)
+            AudioManager.Audio.PlayHoverSound();
 
             AnimationsHandler.Instance.scaleUpButton(gameObject);
     }

@@ -28,7 +28,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
 
     public void Continue()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.Match.RetrieveSavedMatch();
         Managers.Game.SetState(typeof(KickOffState));
         Managers.UI.ActivateUI(Menus.INGAME);
@@ -37,7 +37,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
     public void NewGame()
     {
         Constants.Mode = GameMode.CLASSIC;
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.Match.Reset();
         // Managers.Match.ResetSavedGame ();
         // Managers.Game.SetState(typeof(KickOffState));
@@ -48,7 +48,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
     public void FreeStyle_NewGame()
     {
         Constants.Mode = GameMode.FREESTYLE;
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.Match.Reset();
         // Managers.Match.ResetSavedGame ();
         // Managers.Game.SetState(typeof(KickOffState));
@@ -58,26 +58,27 @@ public class MainMenu : PersistentSingleton<MainMenu>
 
     public void Multiplayer()
     {
+        AudioManager.Audio.PlayClickSound();
         SceneManager.LoadScene("PhotonLauncher");
     }
 
     public void Settings()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         DisableMenuButtons();
         settingsMenu.SetActive(true);
     }
 
     public void Shop()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         DisableMenuButtons();
         shopMenu.SetActive(true);
     }
 
     public void Credits()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         DisableMenuButtons();
         credits.SetActive(true);
     }

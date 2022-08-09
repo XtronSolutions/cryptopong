@@ -7,13 +7,17 @@ public class MatchManager : MonoBehaviour
     public Ball ball;
     public GameObject aiPaddle;
     public GameObject playerPaddle;
+    public GameObject playerJoint;
+    public GameObject AIJoint;
     public SavedGame savedGame;
 
     public void Reset()
     {
         ball.ResetBall();
 
-        playerPaddle.transform.position = Constants.PLAYER;
+        //playerPaddle.transform.position = Constants.PLAYER;
+
+        playerJoint.transform.localPosition = Constants.PLAYERJOINT;
         aiPaddle.transform.position = Constants.AI;
         playerPaddle.transform.localScale = Constants.PADDLE_SCALE;
         aiPaddle.transform.localScale = Constants.PADDLE_SCALE;

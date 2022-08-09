@@ -21,7 +21,7 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
 
     private void OnBackButtonPressed()
     {
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.UI.ActivateUI(Menus.MAIN);
     }
 
@@ -32,7 +32,7 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
         PlayerPrefs.SetInt("Level", Index);
         PlayerPrefs.Save();
 
-        Managers.Audio.PlayClickSound();
+        AudioManager.Audio.PlayClickSound();
         Managers.UI.ActivateUI(Menus.DIFFICULTY);
         GA_AnalyticsManager.Instance.StoredProgression.MapUsed = $"Level_{Index}";
     }
@@ -48,8 +48,8 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
             Index++;
 
         UpdateView();
-        Managers.Audio.PlayClickSound();
-        Debug.Log("OnNext()");
+        AudioManager.Audio.PlayClickSound();
+        //Debug.Log("OnNext()");
     }
 
     private void OnPrev()
@@ -63,8 +63,8 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
             Index = Levels.Length - 1;
 
         UpdateView();
-        Managers.Audio.PlayClickSound();
-        Debug.Log("OnPrev()");
+        AudioManager.Audio.PlayClickSound();
+        //Debug.Log("OnPrev()");
     }
 
     private void UpdateView()
@@ -100,7 +100,7 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
 
             LevelButton.Init(Previews[i], i, Index == i, (ind) =>
             {
-                Managers.Audio.PlayClickSound();
+                AudioManager.Audio.PlayClickSound();
                 LevelButtons[Index].UpdateView(ind);
                 Levels[Index].SetActive(false);
                 LevelButton.UpdateView(ind);
