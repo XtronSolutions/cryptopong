@@ -28,12 +28,13 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     private int GetMaxScores => (int)PhotonNetwork.CurrentRoom.CustomProperties[Constants.MAXSCORES_KEY];
     SmoothSyncPUN2 smoothSync;
 
+    private int turn = 0;
     private Vector2 GetKickDirection
     {
         get
         {
             float r = Random.value;
-            Vector2 _direction = (r >= 0.5f) ? new Vector2(1, r) : new Vector2(-1, r);
+            Vector2 _direction = new Vector2(turn, r);//(r >= 0.5f) ? new Vector2(1, r) : new Vector2(-1, r);
             return _direction;
         }
     }
@@ -49,7 +50,6 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         {
             photonView.RPC(nameof(ResetBall), RpcTarget.All);
             photonView.RPC(nameof(_KickOffBall), RpcTarget.All, GetKickDirection);
-            // Invoke(nameof(KickOffBall), 3);
         }
         // else
         // {
@@ -118,8 +118,8 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                if (photonView.IsMine)
-                    ResetBall();
+                // if (PhotonPlayerManager.LocalPlayerInstance.IsMine)
+                //     ResetBall();
             }
         }
         else if (other.gameObject.name.Equals("LeftWall"))
@@ -143,13 +143,13 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             }
             else
             {
-                if (photonView.IsMine)
-                    ResetBall();
+                // if (PhotonPlayerManager.LocalPlayerInstance.IsMine)
+                //     ResetBall();
             }
         }
         else if (other.gameObject.CompareTag("PADDLE"))
         {
-            if (photonView.IsMine)
+            if (PhotonPlayerManager.LocalPlayerInstance.IsMine)
             {
                 Vector2 curVelocity = ballBody.velocity;
 
@@ -159,17 +159,21 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
                 Vector2 dir = new Vector2(temp, x).normalized;
                 Vector2 targetVel = dir * curVelocity.magnitude * speedMultiplier;
 
-                PlayAttack(photonView.OwnerActorNr);
-                AssignVelocity(targetVel, curVelocity);
-                
-                photonView.RPC(nameof(PlayAttack), RpcTarget.Others, photonView.OwnerActorNr);
-                photonView.RPC(nameof(AssignVelocity), RpcTarget.Others, targetVel, curVelocity);
+                PlayAttack(PhotonPlayerManager.LocalPlayerInstance.OwnerActorNr);
+                // AssignVelocity(targetVel, curVelocity);
+
+                // ballBody.velocity = Vector2.zero;
+                // photonView.RPC(nameof(PlayAttack), RpcTarget.All, photonView.OwnerActorNr);
+                // PhotonNetwork.RaiseEvent(0, photonView.OwnerActorNr, Photon.Realtime.RaiseEventOptions.Default, ExitGames.Client.Photon.SendOptions.SendReliable);
+                photonView.RPC(nameof(AssignVelocity), RpcTarget.All, targetVel, curVelocity);
 
                 lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
                 lastPhotonView = other.gameObject.GetComponent<PhotonView>();
             }
             else
             {
+                PlayAttack(other.gameObject.GetComponent<PhotonView>().OwnerActorNr);
+
                 // if (photonView.IsMine)
                 // {
                 //     ballBody.velocity = Vector2.zero;
@@ -183,7 +187,10 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     {
         var player = PhotonGameManager.Instance.Players.Find(x => x.OwnerActorNr == ownerActorNumber);
         if (player != null)
+        {
+            Debug.LogError("attack animation played!");
             player.GetComponent<PhotonPaddlePlayer>().PlayAttack();
+        }
     }
 
     [PunRPC]
@@ -216,6 +223,7 @@ public class PhotonBall : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     [PunRPC]
     public void ResetBall()
     {
+        turn = turn == 1 ? -1 : 1;
         ballBody.velocity = Vector2.zero;
         transform.position = Vector2.zero;
         particle.gameObject.SetActive(false);
