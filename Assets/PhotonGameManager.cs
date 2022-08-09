@@ -29,6 +29,8 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     public Transform[] XboundsPlayerA, XboundsPlayerB;
     #endregion
 
+    public PhotonView GetLocalPlayer => Players.Find(x => x.OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber);
+
     #region MonoBehaviour CallBacks
 
     private void Awake()

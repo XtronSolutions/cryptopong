@@ -7,7 +7,7 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     #region Public Fields
 
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-    public static GameObject LocalPlayerInstance;
+    public static PhotonView LocalPlayerInstance;
 
     #endregion
 
@@ -30,7 +30,7 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         // used in GameManager.cs: we keep track of the localPlayer instance to prevent instanciation when levels are synchronized
         if (photonView.IsMine)
         {
-            LocalPlayerInstance = gameObject;
+            LocalPlayerInstance = GetComponent<PhotonView>();
         }
 
         // #Critical

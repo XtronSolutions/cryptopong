@@ -30,7 +30,6 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
     public override void Awake()
     {
         base.Awake();
-        Init();
     }
 
     private void Init()
@@ -58,11 +57,13 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
 
     private void OnEnable()
     {
-        if (Initialised)
+        if (!Initialised)
         {
-            Index = Database.GetSelectedCharacterIndex;
-            StartCoroutine(Refresh());
+            Init();
         }
+
+        Index = Database.GetSelectedCharacterIndex;
+        StartCoroutine(Refresh());
     }
 
     private IEnumerator Refresh()
@@ -75,14 +76,15 @@ public class ShopMenu : PersistentSingleton<ShopMenu>
 
     private IEnumerator Start()
     {
-        UpdatePreview();
         NextButton.onClick.AddListener(OnNext);
         PrevButton.onClick.AddListener(OnPrev);
         SelectButton.onClick.AddListener(OnSelect);
 
         yield return new WaitForSeconds(0.1f);
-        Pagination.ChangePage(Index);
+        
         Initialised = true;
+        Index = Database.GetSelectedCharacterIndex;
+        StartCoroutine(Refresh());
     }
 
     private void OnSelect()
