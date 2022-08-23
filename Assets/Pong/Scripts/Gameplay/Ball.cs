@@ -48,6 +48,7 @@ public class Ball : MonoBehaviour
     }
     private void OnImpactMultiplierChanged(float value) => speedMultiplier = value;
 
+    float prevVelocity=0;
     void OnCollisionEnter2D(Collision2D other)
     {
         hitParticle.Play();
@@ -70,8 +71,67 @@ public class Ball : MonoBehaviour
             int temp = 0;
             temp = (other.transform.position.x > 1) ? -1 : 1;
             Vector2 dir = new Vector2(temp, x).normalized;
-            ballBody.velocity = dir * velocity.magnitude * speedMultiplier;
+            
             lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
+
+            if (BasePaddle.RubySwordGlobalActivattion)
+            {
+                if (lastTouchedPaddle.RubySwordActivated)
+                {
+                    if (BasePaddle.StoreVelocity)
+                    {
+                        prevVelocity = velocity.magnitude * speedMultiplier;
+                        BasePaddle.StoreVelocity = false;
+                    }
+
+
+                    ballBody.velocity = (dir * velocity.magnitude);
+                    Debug.LogError("increasing... value" + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100));
+                    ballBody.velocity += ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
+                }
+                else
+                {
+
+                    ballBody.velocity = (dir * velocity.magnitude);
+                    Debug.LogError("decrasing... value" + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100));
+                    ballBody.velocity -= ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
+
+                }
+            }
+            else
+            {
+                if (prevVelocity == 0)
+                {
+                    ballBody.velocity = dir * velocity.magnitude * speedMultiplier;
+                }
+                else
+                {
+                    ballBody.velocity = dir*prevVelocity;
+                    prevVelocity = 0;
+                }
+
+            }
+
+            //if (BasePaddle.RubySwordGlobalActivattion)
+            //{
+            //    if (lastTouchedPaddle.RubySwordActivated)
+            //    {
+            //        if (BasePaddle.StoreVelocity)
+            //        {
+            //            prevVelocity = velocity.magnitude * speedMultiplier;
+            //            BasePaddle.StoreVelocity = false;
+            //        }
+
+            //        ballBody.velocity = (dir * velocity.magnitude * speedMultiplier) + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
+            //    }
+            //    else
+            //    {
+            //        ballBody.velocity = prevVelocity * dir;
+            //    }
+            //}else
+            //{
+            //    ballBody.velocity = dir * velocity.magnitude * speedMultiplier;
+            //}
 
             if (lastTouchedPaddle.GetType().Name.Equals(nameof(PaddlePlayer)))
             {
@@ -84,7 +144,6 @@ public class Ball : MonoBehaviour
     {
         if (lastTouchedPaddle != null)
             other.gameObject.GetComponent<Powerup>().TriggerPowerup(lastTouchedPaddle);
-
     }
 
     public void KickOffBall()

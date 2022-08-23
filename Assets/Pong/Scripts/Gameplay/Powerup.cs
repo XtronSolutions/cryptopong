@@ -15,6 +15,9 @@ using DG.Tweening;
 
 public enum PowerupType
 {
+    POWERUP_SHIELD,
+    POWERUP_MYSTERYBOX,
+    POWERUP_RUBYSWORD,
     PADDLE_SPEED_UP,
     PADDLE_SPEED_DOWN,
     PADDLE_ENLARGE,
@@ -69,6 +72,15 @@ public class Powerup : MonoBehaviour
     {
         switch (type)
         {
+            case PowerupType.POWERUP_SHIELD:
+                pad.PowerUpShield();
+                break;
+            case PowerupType.POWERUP_MYSTERYBOX:
+                pad.PowerUpMysteryBox(pad);
+                break;
+            case PowerupType.POWERUP_RUBYSWORD:
+                pad.PowerUpRubySword();
+                break;
             case PowerupType.PADDLE_SPEED_UP:
                 PaddleSpeedUp(pad);
                 break;
@@ -86,7 +98,6 @@ public class Powerup : MonoBehaviour
                 break;
         }
     }
-
 
     public void PaddleSpeedUp(BasePaddle pad)
     {

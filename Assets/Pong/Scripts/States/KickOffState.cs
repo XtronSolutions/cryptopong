@@ -64,7 +64,7 @@ public class KickOffState : _StatesBase
                     Managers.UI.inGameUI.score_bot.enabled = true;
                     Managers.PowUps.canSpawnPowerup = true;
                     Managers.Match.ball.ballBody.velocity = _ballVelocity;
-                    //StartCoroutine(Managers.PowUps.SpawnPowerup());
+                    StartCoroutine(Managers.PowUps.SpawnPowerup());
                 });
     }
 

@@ -1,21 +1,36 @@
-﻿//  /*********************************************************************************
-//   *********************************************************************************
-//   *********************************************************************************
-//   * Produced by Skard Games										                  *
-//   * Facebook: https://goo.gl/5YSrKw											      *
-//   * Contact me: https://goo.gl/y5awt4								              *											
-//   * Developed by Cavit Baturalp Gürdin: https://tr.linkedin.com/in/baturalpgurdin *
-//   *********************************************************************************
-//   *********************************************************************************
-//   *********************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+[System.Serializable]
+public class ShieldData
+{
+	public Vector3 NormalScale;
+	public Vector3 EnlargeScale;
+	public Vector2 NoramlColliderSize;
+	public Vector2 EnlargeColliderSize;
+	public float ShieldImpactDuration;
+}
+
+[System.Serializable]
+public class MysteryBoxData
+{
+	public List<GameObject> PowerUpRandom;
+	public float BoxImpactDuration;
+}
+
+[System.Serializable]
+public class RubySwordData
+{
+	public float SpeedIncrease;
+	public float SwordImpactDuration;
+}
 public class PowerupManager : MonoBehaviour {
 
+	public ShieldData shieldData;
+	public MysteryBoxData mysteryBoxData;
+	public RubySwordData rubySwordData;
 	public float speedUpValue;
 	public float speedDownValue;
 	public float enlargeValue;
