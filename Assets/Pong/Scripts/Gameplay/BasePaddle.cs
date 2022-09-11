@@ -33,6 +33,8 @@ public class BasePaddle : MonoBehaviourPunCallbacks
     [HideInInspector] public bool RubySwordActivated = false;
     [HideInInspector] public static bool RubySwordGlobalActivattion=false;
     [HideInInspector] public static bool StoreVelocity = false;
+    public bool IsPlayerA = false;
+
     protected virtual void Start()
     {
         _ball = Managers.Match.ball;
@@ -71,6 +73,7 @@ public class BasePaddle : MonoBehaviourPunCallbacks
         StartCoroutine(ApplyRubySword());
     }
 
+
     public IEnumerator ApplyRubySword()
     {
         if(!BasePaddle.StoreVelocity)
@@ -98,5 +101,18 @@ public class BasePaddle : MonoBehaviourPunCallbacks
         clone.GetComponent<Powerup>().TriggerPowerup(_pod);
         yield return new WaitForSeconds(Managers.PowUps.mysteryBoxData.BoxImpactDuration);
     }
+
+    public void PowerUpExtraLife(BasePaddle pad)
+    {
+        StopCoroutine(ApplyExtraLife(pad));
+        StartCoroutine(ApplyExtraLife(pad));
+    }
+
+    public IEnumerator ApplyExtraLife(BasePaddle pad)
+    {
+        Managers.Score.UpdateScore(true, Managers.PowUps.extraData.LifeIncrement);
+        yield return null;
+    }
+
 
 }

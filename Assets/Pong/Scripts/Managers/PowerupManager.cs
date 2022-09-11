@@ -26,11 +26,19 @@ public class RubySwordData
 	public float SpeedIncrease;
 	public float SwordImpactDuration;
 }
+
+[System.Serializable]
+public class ExtraData
+{
+	public int LifeIncrement;
+	public float SwordImpactDuration;
+}
 public class PowerupManager : MonoBehaviour {
 
 	public ShieldData shieldData;
 	public MysteryBoxData mysteryBoxData;
 	public RubySwordData rubySwordData;
+	public ExtraData extraData;
 	public float speedUpValue;
 	public float speedDownValue;
 	public float enlargeValue;

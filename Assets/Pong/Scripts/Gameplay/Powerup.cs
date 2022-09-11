@@ -18,6 +18,7 @@ public enum PowerupType
     POWERUP_SHIELD,
     POWERUP_MYSTERYBOX,
     POWERUP_RUBYSWORD,
+    POWERUP_EXTRALIFE,
     PADDLE_SPEED_UP,
     PADDLE_SPEED_DOWN,
     PADDLE_ENLARGE,
@@ -59,7 +60,7 @@ public class Powerup : MonoBehaviour
         }
         else
         {
-            DOTween.ToAlpha(() => _sprite.color, x => _sprite.color = x, 0, PowerupLifeDuration / 5).SetLoops(5)
+            DOTween.ToAlpha(() => _sprite.color, x => _sprite.color = x, 0, PowerupLifeDuration / 7).SetLoops(7)
         .OnComplete(() =>
         {
             DisablePowerup();
@@ -80,6 +81,9 @@ public class Powerup : MonoBehaviour
                 break;
             case PowerupType.POWERUP_RUBYSWORD:
                 pad.PowerUpRubySword();
+                break;
+            case PowerupType.POWERUP_EXTRALIFE:
+                pad.PowerUpExtraLife(pad);
                 break;
             case PowerupType.PADDLE_SPEED_UP:
                 PaddleSpeedUp(pad);

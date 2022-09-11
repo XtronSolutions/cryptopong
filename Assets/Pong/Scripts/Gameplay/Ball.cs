@@ -18,6 +18,7 @@ public class Ball : MonoBehaviour
     public float speedMultiplier;
     public ParticleSystem particle;
     public ParticleSystem hitParticle;
+    public ParticleSystem Fireball;
     [HideInInspector]
     public Rigidbody2D ballBody;
     [HideInInspector]
@@ -78,6 +79,8 @@ public class Ball : MonoBehaviour
             {
                 if (lastTouchedPaddle.RubySwordActivated)
                 {
+                    Fireball.Play();
+
                     if (BasePaddle.StoreVelocity)
                     {
                         prevVelocity = velocity.magnitude * speedMultiplier;
@@ -86,15 +89,14 @@ public class Ball : MonoBehaviour
 
 
                     ballBody.velocity = (dir * velocity.magnitude);
-                    Debug.LogError("increasing... value" + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100));
                     ballBody.velocity += ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
                 }
                 else
                 {
 
-                    ballBody.velocity = (dir * velocity.magnitude);
-                    Debug.LogError("decrasing... value" + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100));
-                    ballBody.velocity -= ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
+                    //ballBody.velocity = (dir * velocity.magnitude);
+                    //Debug.LogError("decrasing... value" + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100));
+                    //ballBody.velocity -= ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
 
                 }
             }
