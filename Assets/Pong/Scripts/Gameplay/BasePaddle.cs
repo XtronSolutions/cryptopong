@@ -12,6 +12,13 @@
 using UnityEngine;
 using System.Collections;
 using Photon.Pun;
+
+[System.Serializable]
+public enum PlayerSelected
+{
+    PLAYERA=0,
+    PLAYERB=1
+}
 public enum PaddleOwner
 {
     PLAYER,
@@ -33,7 +40,7 @@ public class BasePaddle : MonoBehaviourPunCallbacks
     [HideInInspector] public bool RubySwordActivated = false;
     [HideInInspector] public static bool RubySwordGlobalActivattion=false;
     [HideInInspector] public static bool StoreVelocity = false;
-    public bool IsPlayerA = false;
+    public PlayerSelected playerSelected;
 
     protected virtual void Start()
     {
@@ -51,20 +58,36 @@ public class BasePaddle : MonoBehaviourPunCallbacks
 
     }
 
-    public void PowerUpShield()
+    public void PowerUpEnlarge()
     {
-        StopCoroutine(ApplyShield());
-        StartCoroutine(ApplyShield());
+        StopCoroutine(ApplyEnlarge());
+        StartCoroutine(ApplyEnlarge());
     }
-    public IEnumerator ApplyShield()
+    public IEnumerator ApplyEnlarge()
     {
-        this.transform.localScale = Managers.PowUps.shieldData.EnlargeScale;
-        this.GetComponent<BoxCollider2D>().size = Managers.PowUps.shieldData.EnlargeColliderSize;
+        this.transform.localScale = Managers.PowUps.enlargeData.EnlargeScale;
+        this.GetComponent<BoxCollider2D>().size = Managers.PowUps.enlargeData.EnlargeColliderSize;
 
-        yield return new WaitForSeconds(Managers.PowUps.shieldData.ShieldImpactDuration);
+        yield return new WaitForSeconds(Managers.PowUps.enlargeData.EnlargeImpactDuration);
 
-        this.transform.localScale = Managers.PowUps.shieldData.NormalScale;
-        this.GetComponent<BoxCollider2D>().size = Managers.PowUps.shieldData.NoramlColliderSize;
+        this.transform.localScale = Managers.PowUps.enlargeData.NormalScale;
+        this.GetComponent<BoxCollider2D>().size = Managers.PowUps.enlargeData.NoramlColliderSize;
+    }
+
+    public void PowerUpShrink()
+    {
+        StopCoroutine(ApplyShrink());
+        StartCoroutine(ApplyShrink());
+    }
+    public IEnumerator ApplyShrink()
+    {
+        this.transform.localScale = Managers.PowUps.shrinkData.ShrinkScale;
+        this.GetComponent<BoxCollider2D>().size = Managers.PowUps.shrinkData.ShrinkColliderSize;
+
+        yield return new WaitForSeconds(Managers.PowUps.shrinkData.ShrinkImpactDuration);
+
+        this.transform.localScale = Managers.PowUps.shrinkData.NormalScale;
+        this.GetComponent<BoxCollider2D>().size = Managers.PowUps.shrinkData.NoramlColliderSize;
     }
 
     public void PowerUpRubySword()
@@ -110,9 +133,33 @@ public class BasePaddle : MonoBehaviourPunCallbacks
 
     public IEnumerator ApplyExtraLife(BasePaddle pad)
     {
-        Managers.Score.UpdateScore(true, Managers.PowUps.extraData.LifeIncrement);
+        if(pad.playerSelected==PlayerSelected.PLAYERA)
+            Managers.Score.UpdateScore(true, Managers.PowUps.extraData.LifeIncrement);
+        else if (pad.playerSelected == PlayerSelected.PLAYERB)
+            Managers.Score.UpdateScore(false, Managers.PowUps.extraData.LifeIncrement);
+
         yield return null;
     }
 
+    public void PowerUpShield(BasePaddle pad)
+    {
+        StopCoroutine(ApplyShield(pad));
+        StartCoroutine(ApplyShield(pad));
+    }
+
+    public IEnumerator ApplyShield(BasePaddle pad)
+    {
+        if (pad.playerSelected == PlayerSelected.PLAYERA)
+            Managers.PowUps.shieldData.PlayerAShield.SetActive(true);
+        else if (pad.playerSelected == PlayerSelected.PLAYERB)
+            Managers.PowUps.shieldData.PlayerBShield.SetActive(true);
+
+        yield return new WaitForSeconds(Managers.PowUps.shieldData.ShieldImpactDuration);
+
+        if (pad.playerSelected == PlayerSelected.PLAYERA)
+            Managers.PowUps.shieldData.PlayerAShield.SetActive(false);
+        else if (pad.playerSelected == PlayerSelected.PLAYERB)
+            Managers.PowUps.shieldData.PlayerBShield.SetActive(false);
+    }
 
 }

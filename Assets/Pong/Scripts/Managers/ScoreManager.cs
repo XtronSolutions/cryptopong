@@ -68,15 +68,10 @@ public class ScoreManager : MonoBehaviour
     public void UpdateScore(bool isPlayerA, int _score)
     {
         if (isPlayerA)
-            playerScore -= _score;
+            aiScore = aiScore - _score <= 0 ? 0 : aiScore - _score;
         else
-            aiScore -= _score;
-
+            playerScore = playerScore - _score <= 0 ? 0 : playerScore - _score;
+       
         Managers.UI.inGameUI.UpdateScore();
-
-        if (playerScore == scoreLimit || aiScore == scoreLimit)
-            Managers.Game.SetState(typeof(GameOverState));
-        else
-            Managers.Game.SetState(typeof(GoalState));
     }
 }

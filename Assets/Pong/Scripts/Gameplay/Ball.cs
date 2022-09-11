@@ -114,30 +114,35 @@ public class Ball : MonoBehaviour
 
             }
 
-            //if (BasePaddle.RubySwordGlobalActivattion)
-            //{
-            //    if (lastTouchedPaddle.RubySwordActivated)
-            //    {
-            //        if (BasePaddle.StoreVelocity)
-            //        {
-            //            prevVelocity = velocity.magnitude * speedMultiplier;
-            //            BasePaddle.StoreVelocity = false;
-            //        }
-
-            //        ballBody.velocity = (dir * velocity.magnitude * speedMultiplier) + ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
-            //    }
-            //    else
-            //    {
-            //        ballBody.velocity = prevVelocity * dir;
-            //    }
-            //}else
-            //{
-            //    ballBody.velocity = dir * velocity.magnitude * speedMultiplier;
-            //}
-
             if (lastTouchedPaddle.GetType().Name.Equals(nameof(PaddlePlayer)))
             {
                 Managers.Score.TotalHits += 1;
+            }
+        }
+        else if (other.gameObject.name.Equals("RightSheild"))
+        {
+            BasePaddle[] _data = FindObjectsOfType<BasePaddle>();
+            for (int i = 0; i < _data.Length; i++)
+            {
+                if (_data[i].playerSelected == PlayerSelected.PLAYERA)
+                {
+                    lastTouchedPaddle = _data[i];
+                    break;
+                }
+            }
+        }
+
+        else if (other.gameObject.name.Equals("LeftShield"))
+        {
+            BasePaddle[] _data = FindObjectsOfType<BasePaddle>();
+            for (int i = 0; i < _data.Length; i++)
+            {
+                if (_data[i].playerSelected == PlayerSelected.PLAYERB)
+                {
+                    lastTouchedPaddle = _data[i];
+                    break;
+                }
+
             }
         }
     }

@@ -6,11 +6,30 @@ using System.Linq;
 [System.Serializable]
 public class ShieldData
 {
+	public GameObject PlayerAShield;
+	public GameObject PlayerBShield;
+	public float ShieldImpactDuration;
+}
+
+
+[System.Serializable]
+public class ShrinkData
+{
+	public Vector3 NormalScale;
+	public Vector3 ShrinkScale;
+	public Vector2 NoramlColliderSize;
+	public Vector2 ShrinkColliderSize;
+	public float ShrinkImpactDuration;
+}
+
+[System.Serializable]
+public class EnlargeData
+{
 	public Vector3 NormalScale;
 	public Vector3 EnlargeScale;
 	public Vector2 NoramlColliderSize;
 	public Vector2 EnlargeColliderSize;
-	public float ShieldImpactDuration;
+	public float EnlargeImpactDuration;
 }
 
 [System.Serializable]
@@ -35,10 +54,12 @@ public class ExtraData
 }
 public class PowerupManager : MonoBehaviour {
 
-	public ShieldData shieldData;
+	public EnlargeData enlargeData;
+	public ShrinkData shrinkData;
 	public MysteryBoxData mysteryBoxData;
 	public RubySwordData rubySwordData;
 	public ExtraData extraData;
+	public ShieldData shieldData;
 	public float speedUpValue;
 	public float speedDownValue;
 	public float enlargeValue;

@@ -19,8 +19,6 @@ public enum PowerupType
     POWERUP_MYSTERYBOX,
     POWERUP_RUBYSWORD,
     POWERUP_EXTRALIFE,
-    PADDLE_SPEED_UP,
-    PADDLE_SPEED_DOWN,
     PADDLE_ENLARGE,
     PADDLE_SHRINK,
     PADDLE_GHOST
@@ -74,7 +72,7 @@ public class Powerup : MonoBehaviour
         switch (type)
         {
             case PowerupType.POWERUP_SHIELD:
-                pad.PowerUpShield();
+                pad.PowerUpShield(pad);
                 break;
             case PowerupType.POWERUP_MYSTERYBOX:
                 pad.PowerUpMysteryBox(pad);
@@ -85,17 +83,11 @@ public class Powerup : MonoBehaviour
             case PowerupType.POWERUP_EXTRALIFE:
                 pad.PowerUpExtraLife(pad);
                 break;
-            case PowerupType.PADDLE_SPEED_UP:
-                PaddleSpeedUp(pad);
-                break;
-            case PowerupType.PADDLE_SPEED_DOWN:
-                PaddleSpeedDown(pad);
-                break;
             case PowerupType.PADDLE_ENLARGE:
-                PaddleEnlarge(pad);
+                pad.PowerUpEnlarge();
                 break;
             case PowerupType.PADDLE_SHRINK:
-                PaddleShrink(pad);
+                pad.PowerUpShrink();
                 break;
             case PowerupType.PADDLE_GHOST:
                 PaddleGhost(pad);
