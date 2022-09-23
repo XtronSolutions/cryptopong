@@ -44,11 +44,17 @@ public class InGameUI : MonoBehaviour
 
     public void GameBackButtonClicked()
     {
-        Events.DoFireGameStart(false);
-        AudioManager.Audio.PlayClickSound();
-        Managers.UI.ActivateUI(Menus.MAIN);
-        Managers.Game.SetState(typeof(MenuState));
-        Managers.Match.SaveMatch();
+        if (!Constants.IsMultiplayer)
+        {
+            Debug.Log("Back Button Pressed");
+            Managers.Game.isGameActive = false;
+            Events.DoFireGameStart(false);
+            AudioManager.Audio.PlayClickSound();
+            Managers.UI.ActivateUI(Menus.MAIN);
+            Managers.Game.SetState(typeof(MenuState));
+            Managers.Match.SaveMatch();
+        }else
+        { Debug.Log("Back Button Pressed but is not active"); }
     }
 
     public void SetInfoText(string text, bool isEnabled)

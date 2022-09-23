@@ -35,6 +35,10 @@ public class UIManager : MonoBehaviour
     public LoginMenu LoginMenu;
     public RegisterMenu RegisterMenu;
     public CommunityMenu CommunityMenu;
+    public GameObject LevelObstacles;
+
+    public GameObject[] ObjectToDisable;
+    public Image[] ObstacleImages;
 
     public void ActivateUI(Menus menutype)
     {
@@ -45,5 +49,21 @@ public class UIManager : MonoBehaviour
         LoginMenu.gameObject.SetActive(menutype.Equals(Menus.LOGIN));
         RegisterMenu.gameObject.SetActive(menutype.Equals(Menus.REGISTER));
         CommunityMenu.gameObject.SetActive(menutype.Equals(Menus.COMMUNITY));
+    }
+
+    public void DisableObjects()
+    {
+        for (int i = 0; i < ObjectToDisable.Length; i++)
+        {
+            ObjectToDisable[i].SetActive(false);
+        }
+    }
+
+    public void DisableObsImages()
+    {
+        for (int i = 0; i < ObstacleImages.Length; i++)
+        {
+            ObstacleImages[i].enabled = false;
+        }
     }
 }

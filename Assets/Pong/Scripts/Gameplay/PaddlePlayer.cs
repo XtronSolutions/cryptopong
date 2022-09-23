@@ -95,7 +95,7 @@ public class PaddlePlayer : BasePaddle
         //CheckMovementBlock(direction);
     }
 
-    
+
     void DragInput()
     {
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
@@ -111,13 +111,23 @@ public class PaddlePlayer : BasePaddle
             if (!lastMousePos.Equals(curPosition))
                 lastMousePos = curPosition;
 
-             directionX = 0;
-             directionY = 0;
+            directionX = 0;
+            directionY = 0;
 
             switch (Constants.Mode)
             {
                 case GameMode.CLASSIC:
                     directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
+                    break;
+                case GameMode.TOURNAMENT:
+                    if (Constants.tournamentMode == TournamentMode.CLASSIC)
+                    {
+                        directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
+                    } else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                    {
+                        directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
+                        directionX = Mathf.Clamp((Input.GetAxisRaw("Horizontal")), -1, 1);
+                    }
                     break;
                 case GameMode.FREESTYLE:
                     directionY = Mathf.Clamp((Input.GetAxisRaw("Vertical")), -1, 1);
@@ -125,7 +135,7 @@ public class PaddlePlayer : BasePaddle
                     break;
             }
 
-            Debug.Log(directionX+" "+directionY);
+            Debug.Log(directionX + " " + directionY);
             CheckMovementBlock(directionX, directionY);
         }
         else
@@ -145,6 +155,16 @@ public class PaddlePlayer : BasePaddle
                         case GameMode.CLASSIC:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             break;
+                        case GameMode.TOURNAMENT:
+                            if (Constants.tournamentMode == TournamentMode.CLASSIC)
+                            {
+                                curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                            } else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                            {
+                                curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                                curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
+                            }
+                            break;
                         case GameMode.FREESTYLE:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             curPosition.x = Mathf.Clamp(storedXCursor + deltaY, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
@@ -155,7 +175,17 @@ public class PaddlePlayer : BasePaddle
             }
             else
             {
-                var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
+
+                if (Constants.Mode == GameMode.FREESTYLE) //retrict mouse on freestyle mode
+                    return;
+
+                if(Constants.Mode == GameMode.TOURNAMENT)
+                {
+                    if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                        return;
+                }
+
+                    var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
                 if (!hasMouseMoved)
                     return;
 
@@ -165,6 +195,17 @@ public class PaddlePlayer : BasePaddle
                 {
                     case GameMode.CLASSIC:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                        break;
+                    case GameMode.TOURNAMENT:
+                        if (Constants.tournamentMode == TournamentMode.CLASSIC)
+                        {
+                            curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                        }
+                        else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                        {
+                            curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                            curPosition.x = Mathf.Clamp(storedXCursor, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
+                        }
                         break;
                     case GameMode.FREESTYLE:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
@@ -187,6 +228,19 @@ public class PaddlePlayer : BasePaddle
             case GameMode.CLASSIC:
                 diff = YBoundsRef.position.y;
                 pos.y = Mathf.Clamp(pos.y, -diff, diff);
+                break;
+            case GameMode.TOURNAMENT:
+                if (Constants.tournamentMode == TournamentMode.CLASSIC)
+                {
+                    diff = YBoundsRef.position.y;
+                    pos.y = Mathf.Clamp(pos.y, -diff, diff);
+                }
+                else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                {
+                    diff = YBoundsRef.position.y;
+                    pos.y = Mathf.Clamp(pos.y, -diff, diff);
+                    pos.x = Mathf.Clamp(pos.x, XBoundsRef[1].position.x, XBoundsRef[0].position.x);
+                }
                 break;
             case GameMode.FREESTYLE:
                 diff = YBoundsRef.position.y;

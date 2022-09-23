@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public static partial class Events
 {
@@ -23,19 +24,53 @@ public class LoginMenu : MonoBehaviour
     [SerializeField] private Button PlayAsGuestButton;
     [SerializeField] private TMP_InputField EmailField, PasswordField;
     [SerializeField] private TMP_Text StatusText;
+    [SerializeField] private Toggle RememberMeTog;
     private Coroutine animateRoutine;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        Managers.UI.DisableObjects();
+        Managers.UI.DisableObsImages();
+        getSavedCredData();
+        RememberMeTog.isOn = Constants.RememberMe;
         this.LoginButton.onClick.AddListener(OnLoginButtonClicked);
         this.RegisterButton.onClick.AddListener(OnRegisterButtonClicked);
         this.PlayAsGuestButton.onClick.AddListener(OnPlayAsGuest);
+        this.RememberMeTog.onValueChanged.AddListener(delegate {
+            OnRemeberMeToggleChanged(this.RememberMeTog);
+        });
 
         Events.OnLoginFailed += OnFailure;
         Events.OnLoginSuccess += OnLoginSuccess;
         Events.OnForgetPassword += OnForgetPassword;
     }
 
+    private void OnDisable()
+    {
+        this.LoginButton.onClick.RemoveListener(OnLoginButtonClicked);
+        this.RegisterButton.onClick.RemoveListener(OnRegisterButtonClicked);
+        this.PlayAsGuestButton.onClick.RemoveListener(OnPlayAsGuest);
+        this.RememberMeTog.onValueChanged.RemoveListener(delegate {
+            OnRemeberMeToggleChanged(this.RememberMeTog);
+        });
+
+        Events.OnLoginFailed -= OnFailure;
+        Events.OnLoginSuccess -= OnLoginSuccess;
+        Events.OnForgetPassword -= OnForgetPassword;
+    }
+
+    public void getSavedCredData()
+    {
+        string _data = PlayerPrefs.GetString(Constants.CredKey, "");
+        if (!string.IsNullOrEmpty(_data))
+        {
+            Constants.RememberMe = true;
+            AuthCredentials _cred = JsonConvert.DeserializeObject<AuthCredentials>(_data);
+            EmailField.text = _cred.Email;
+            PasswordField.text = _cred.Password;
+        }
+    }
+  
     private void OnForgetPassword()
     {
         apiRequestHandler.Instance.onForgetPassword(EmailField.text);
@@ -52,6 +87,15 @@ public class LoginMenu : MonoBehaviour
 
     private void OnLoginSuccess()
     {
+        if(Constants.RememberMe)
+        {
+            string _json = JsonConvert.SerializeObject(FirebaseManager.Instance.Credentails);
+            PlayerPrefs.SetString(Constants.CredKey, _json);
+        }else
+        {
+            PlayerPrefs.DeleteKey(Constants.CredKey);
+        }
+
         Constants.PlayingAsGuest = false;
         MakeInteractable(true);
         this.StatusText.text = $"";
@@ -78,6 +122,7 @@ public class LoginMenu : MonoBehaviour
         Managers.UI.ActivateUI(Menus.MAIN);
         AudioManager.Audio.PlayLobbyMusic();
     }
+
 
     private void MakeInteractable(bool value)
     {
@@ -129,5 +174,10 @@ public class LoginMenu : MonoBehaviour
         }
 
         Managers.UI.ActivateUI(Menus.REGISTER);
+    }
+
+    public void OnRemeberMeToggleChanged(Toggle _togg)
+    {
+        Constants.RememberMe = _togg.isOn;
     }
 }

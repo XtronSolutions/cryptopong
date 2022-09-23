@@ -12,6 +12,12 @@ public class KickOffState : _StatesBase
 
     public override void OnActivate()
     {
+
+        int Index = PlayerPrefs.GetInt("Level");
+
+        if(Index==1) //moving bar env
+            Managers.UI.LevelObstacles.SetActive(true);
+
         Debug.Log("<color=green>KickOff State</color> OnActive");
         Managers.Game.isGameActive = true;
 
@@ -64,6 +70,8 @@ public class KickOffState : _StatesBase
                     Managers.UI.inGameUI.score_bot.enabled = true;
                     Managers.PowUps.canSpawnPowerup = true;
                     Managers.Match.ball.ballBody.velocity = _ballVelocity;
+
+                    if(!Constants.IsMultiplayer)
                     StartCoroutine(Managers.PowUps.SpawnPowerup());
                 });
     }

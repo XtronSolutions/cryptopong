@@ -192,8 +192,9 @@ public class apiRequestHandler : MonoBehaviour
                 FirebaseManager.Instance.Credentails.Email = _email;
                 FirebaseManager.Instance.Credentails.Password = _pwd;
 
-                Events.DoFireLoginSuccess();
                 FirebaseManager.Instance.SetPlayerData(request.downloadHandler.text);
+                Events.DoFireLoginSuccess();
+                
             }
             else if ((string)res.SelectToken("message") == "Email is not verified")
             {
@@ -275,9 +276,9 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("Result is: ");
-            Debug.Log(request.result);
-            Debug.Log(request.downloadHandler.text);
+            //Debug.Log("Result is: ");
+            //Debug.Log(request.result);
+            //Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
 
             if (request.result == UnityWebRequest.Result.Success)

@@ -19,6 +19,36 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
 
     [SerializeField] private Button BackButton;
 
+    public void StartTournament()
+    {
+        Constants.tournamentMode = TournamentMode.FREESTYLE;
+        Events.DoFireGameStart(true);
+        AudioManager.Audio.PlayClickSound();
+        Managers.Match.ResetSavedGame();
+        Managers.Game.SetState(typeof(KickOffState));
+        Managers.UI.ActivateUI(Menus.INGAME);
+        Managers.Score.playerScore = Managers.Score.aiScore = 0;
+        Managers.UI.inGameUI.UpdateScore();
+      
+        int levelIndex = PlayerPrefs.GetInt("Level");
+
+        switch (levelIndex)
+        {
+            case 0:
+                AudioManager.Audio.PlayCyberpunkMusic();
+                break;
+            case 1:
+                AudioManager.Audio.PlaySpaceMusic();
+                break;
+            case 2:
+                AudioManager.Audio.PlayForestMusic();
+                break;
+        }
+
+        GA_AnalyticsManager.Instance.StoredProgression.Difficulty = "Intermediate";
+        Events.DoChangeIntelligence(2);
+    }
+
     private void OnBackButtonPressed()
     {
         AudioManager.Audio.PlayClickSound();
@@ -33,8 +63,12 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
         PlayerPrefs.Save();
 
         AudioManager.Audio.PlayClickSound();
-        Managers.UI.ActivateUI(Menus.DIFFICULTY);
         GA_AnalyticsManager.Instance.StoredProgression.MapUsed = $"Level_{Index}";
+
+        if (Constants.Mode == GameMode.TOURNAMENT)
+            StartTournament();
+        else
+            Managers.UI.ActivateUI(Menus.DIFFICULTY);
     }
 
     private void OnNext()
@@ -69,21 +103,40 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
 
     private void UpdateView()
     {
-        Levels[Index].SetActive(true);
+        for (int q = 0; q < Levels.Length; q++)
+        {
+            if(q==Index)
+                Levels[q].SetActive(true);
+            else
+                Levels[q].SetActive(false);
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         NextButton.onClick.AddListener(OnNext);
         PrevButton.onClick.AddListener(OnPrev);
         SelectButton.onClick.AddListener(OnSelect);
         BackButton.onClick.AddListener(OnBackButtonPressed);
 
-        Index = PlayerPrefs.GetInt("Level", Index);
+        if (Constants.Mode == GameMode.TOURNAMENT)
+        {
+            Index = Constants.SelectedMapTournament;
+            PlayerPrefs.SetInt("Level", Index);
+        }
+        else
+            Index = PlayerPrefs.GetInt("Level", Index);
 
         UpdateView();
         GenerateButtons();
+    }
+
+    private void OnDisable()
+    {
+        NextButton.onClick.RemoveListener(OnNext);
+        PrevButton.onClick.RemoveListener(OnPrev);
+        SelectButton.onClick.RemoveListener(OnSelect);
+        BackButton.onClick.RemoveListener(OnBackButtonPressed);
     }
 
     private void GenerateButtons()
@@ -93,20 +146,50 @@ public class LevelsMenu : PersistentSingleton<LevelsMenu>
             Destroy(LevelButtons[i].gameObject);
         }
 
+        LevelButtons.Clear();
         for (int i = 0; i < Levels.Length; i++)
         {
             var LevelButton = Instantiate<LevelButton>(LevelButtonPrefab, ButtonsContainer);
             LevelButtons.Add(LevelButton);
 
-            LevelButton.Init(Previews[i], i, Index == i, (ind) =>
+            if (Constants.Mode == GameMode.TOURNAMENT)
             {
-                AudioManager.Audio.PlayClickSound();
-                LevelButtons[Index].UpdateView(ind);
-                Levels[Index].SetActive(false);
-                LevelButton.UpdateView(ind);
-                Index = ind;
-                UpdateView();
-            });
+                if(i==Constants.SelectedMapTournament)
+                {
+                    LevelButton.Init(Previews[i], i, Index == i, (ind) =>
+                    {
+                        AudioManager.Audio.PlayClickSound();
+                        LevelButtons[Index].UpdateView(ind);
+                        Levels[Index].SetActive(false);
+                        LevelButton.UpdateView(ind);
+                        Index = ind;
+                        UpdateView();
+                    }, true);
+                }else
+                {
+                    LevelButton.Init(Previews[i], i, Index == i, (ind) =>
+                    {
+                        AudioManager.Audio.PlayClickSound();
+                        LevelButtons[Index].UpdateView(ind);
+                        Levels[Index].SetActive(false);
+                        LevelButton.UpdateView(ind);
+                        Index = ind;
+                        UpdateView();
+                    }, false);
+                }
+            }
+            else
+            {
+                LevelButton.Init(Previews[i], i, Index == i, (ind) =>
+                {
+                    AudioManager.Audio.PlayClickSound();
+                    LevelButtons[Index].UpdateView(ind);
+                    Levels[Index].SetActive(false);
+                    LevelButton.UpdateView(ind);
+                    Index = ind;
+                    UpdateView();
+                }, true);
+            }
         }
     }
 

@@ -166,6 +166,9 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
             }
             else
             {
+                if (Constants.Mode == GameMode.FREESTYLE) //retrict mouse on freestyle mode
+                    return;
+
                 var hasMouseMoved = Mathf.RoundToInt(Mathf.Abs(curPosition.y - lastMousePos.y)) > 0 || Mathf.RoundToInt(Mathf.Abs(curPosition.x - lastMousePos.x)) > 0;
                 if (!hasMouseMoved)
                     return;

@@ -46,7 +46,7 @@ public class PhotonLauncher : MonoBehaviourPunCallbacks
     {
         var customProperties = new Hashtable
         {
-            { Constants.MAXSCORES_KEY, 5 },
+            { Constants.MAXSCORES_KEY, Constants.MaxScore },
             { Constants.MODE_KEY, Constants.ModeIndex },
             { Constants.LEVEL_KEY, Constants.LevelIndex  },
             { Constants.CONTROLLER_KEY, Constants.ControllerIndex  },

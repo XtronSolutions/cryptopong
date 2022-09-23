@@ -4,6 +4,13 @@ using UnityEngine;
 public enum GameMode
 {
     CLASSIC = 1,
+    FREESTYLE = 2,
+    TOURNAMENT=3
+}
+
+public enum TournamentMode
+{
+    CLASSIC = 1,
     FREESTYLE = 2
 }
 
@@ -27,8 +34,9 @@ public static class Constants
     public static string MAIN_MENU_SCENE_NAME = "Gameplay";
     public static bool IsPractice = false;
     public static bool IsTournament = false;
-    public static bool TournamentActive = false;
+    public static bool TournamentActive = true;
     public static bool PlayingAsGuest = false;
+    public static int SelectedMapTournament = 1;
 
     public static bool IsTest = false; //bool to test wallet functionality inside editor
     public static bool IsTestNet = false;//bool to test code on testnet chain
@@ -67,10 +75,11 @@ public static class Constants
     public static bool ApprovePong = false;
     public static bool GameStarted = false;
     public static bool GameFinished = false;
+    public static bool RememberMe = false;
 
     public static string TestWalletAddress = "0x5ae0d51FA54C70d731a4d5940Aef216F3fCbEd10"; //"0xD4d844C5A1cFAB13A8Ab252E466188d";
 
-    public static int LeaderboardCount = 100;//top player count for leaderboard
+    public static int LeaderboardCount = 200;//top player count for leaderboard
 
     #region Photon Properties
     public static string SelectedRegion;
@@ -85,6 +94,8 @@ public static class Constants
     public static string CHARACTER_KEY => "character";
     public static string CONTROLLER_KEY => "controller";
     public static string MAXSCORES_KEY => "maxScores";
+    public static int MaxScore = 3;
+    public static TournamentMode tournamentMode;
     #endregion
 
     public static string GetShortWalletAddress(string _acc)

@@ -72,13 +72,7 @@ public class TournamentManager : MonoBehaviour
     string textfieldSeconds;//string store converstion of seconds into string for display
     
     private const string firebaseLoginUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
-
-    //Staging : AIzaSyBpdWOUj1_7iN3F3YBYetCONjMwVCVAIGE
-    //Production : AIzaSyDcLz0eTFpmf7pksItUB_AQ6YA2SNErx_8
-    private const string firebaseApiKey = "AIzaSyDcLz0eTFpmf7pksItUB_AQ6YA2SNErx_8";
-
-    //Staging : https://us-central1-coinracer-stagging.cloudfunctions.net/
-    //Production : https://us-central1-coinracer-alpha-tournaments.cloudfunctions.net/
+    private const string firebaseApiKey = "AIzaSyDG7C0sHN4-hXhjOyTdyaBpQc3BArIBVsU";
     private  string torunamentDataURL ;
     private void OnEnable()
     {
@@ -87,9 +81,9 @@ public class TournamentManager : MonoBehaviour
         TournamentStartTimer = false;
 
         if (Constants.IsStagging)
-            torunamentDataURL = "https://us-central1-coinracer-stagging.cloudfunctions.net/Tournament";
+            torunamentDataURL = "https://us-central1-pong-tournaments.cloudfunctions.net";
         else
-            torunamentDataURL = "https://us-central1-coinracer-alpha-tournaments.cloudfunctions.net/Tournament";
+            torunamentDataURL = "https://us-central1-pong-tournaments.cloudfunctions.net";
      
         GetTournamentDataDB();
       

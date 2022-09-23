@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -12,12 +11,31 @@ public class MainMenu : PersistentSingleton<MainMenu>
     public GameObject showAdsDefault;
     public GameObject continueButton;
     public GameObject shopMenu;
+    public GameObject ModeSelection;
     public Text pongLogoText;
+    public Text XpText;
 
     void OnEnable()
     {
         pongLogoText.enabled = true;
         menuButtons.SetActive(true);
+        UpdateXPText();
+    }
+
+    private void Start()
+    {
+        Managers.UI.DisableObjects();
+        Managers.UI.DisableObsImages();
+    }
+    public void UpdateXPText()
+    {
+        if (FirebaseManager.Instance)
+        {
+            if (FirebaseManager.Instance.PlayerData != null)
+                XpText.text = "XP : " + FirebaseManager.Instance.PlayerData.TotalScore.ToString();
+            else
+                XpText.text = "XP : 0";
+        }
     }
 
     void OnDisable()
@@ -43,6 +61,7 @@ public class MainMenu : PersistentSingleton<MainMenu>
         // Managers.Game.SetState(typeof(KickOffState));
         Managers.UI.ActivateUI(Menus.LEVELS);
         GA_AnalyticsManager.Instance.StoredProgression.Mode = "Practice";
+        ModeSelection.SetActive(false);
     }
 
     public void FreeStyle_NewGame()
@@ -54,6 +73,35 @@ public class MainMenu : PersistentSingleton<MainMenu>
         // Managers.Game.SetState(typeof(KickOffState));
         Managers.UI.ActivateUI(Menus.LEVELS);
         GA_AnalyticsManager.Instance.StoredProgression.Mode = "FreeStyle";
+        ModeSelection.SetActive(false);
+    }
+
+    public void OnModeSelection()
+    {
+        AudioManager.Audio.PlayClickSound();
+        ModeSelection.SetActive(true);
+    }
+
+    public void Tournament()
+    {
+        if (!Constants.PlayingAsGuest)
+        {
+            if (Constants.TournamentActive)
+            {
+                Constants.Mode = GameMode.TOURNAMENT;
+                AudioManager.Audio.PlayClickSound();
+                Managers.Match.Reset();
+                Managers.UI.ActivateUI(Menus.LEVELS);
+                GA_AnalyticsManager.Instance.StoredProgression.Mode = "Tournament";
+            }
+            else
+            {
+                Events.DoReportMessage(new messageInfo("Tournament is not active"));
+            }
+        }else
+        {
+            Events.DoReportMessage(new messageInfo("You cannot play tournament as a guest, please register or login."));
+        }
     }
 
     public void Multiplayer()
@@ -86,6 +134,14 @@ public class MainMenu : PersistentSingleton<MainMenu>
     public void DisableMenuButtons()
     {
         menuButtons.SetActive(false);
+    }
+
+    public void Logout()
+    {
+        Constants.PlayingAsGuest = false;
+        AudioManager.Audio.PlayClickSound();
+        Managers.UI.ActivateUI(Menus.LOGIN);
+        AudioManager.Audio.PlayLoginMusic();
     }
 
 }

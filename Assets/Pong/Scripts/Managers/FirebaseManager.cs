@@ -42,7 +42,7 @@ public class FirebaseManager : MonoBehaviour
 
     private int key = 129;
     private string UID = "";
-    public UserData PlayerData;
+    public UserData PlayerData=null;
     public updateDataPayload PlayerDataPayload;
 
 

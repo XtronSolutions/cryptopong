@@ -12,13 +12,13 @@ public class LevelButton : MonoBehaviour, IPointerClickHandler
     private int Index;
     private Action<int> Callback;
 
-    public void Init(Sprite preview, int index = -1, bool isSelected = false, Action<int> callback = null)
+    public void Init(Sprite preview, int index = -1, bool isSelected = false, Action<int> callback = null,bool _isenable=true)
     {
         Index = index;
         Callback = callback;
         PreviewImage.sprite = preview;
         Highlight.SetActive(isSelected);
-        this.gameObject.SetActive(true);
+        this.gameObject.SetActive(_isenable);
     }
 
     public void OnPointerClick(PointerEventData eventData)

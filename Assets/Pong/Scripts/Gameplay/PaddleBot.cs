@@ -24,14 +24,28 @@ public class PaddleBot : BasePaddle
     {
         int CharIndex = Random.Range(0, Characters.Length);
         base.Animator.runtimeAnimatorController = Characters[CharIndex];
-        base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetCharacterOfIndex(CharIndex).GetImageSize; 
+        base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetCharacterOfIndex(CharIndex).GetImageSize;
 
         if (Constants.Mode == GameMode.CLASSIC)
+        {
             gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        }
         else if (Constants.Mode == GameMode.FREESTYLE)
         {
             gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            gameObject.GetComponent<Rigidbody2D>().mass = 0.001f;
+            gameObject.GetComponent<Rigidbody2D>().mass = 0.0001f;
+        }
+        else if (Constants.Mode == GameMode.TOURNAMENT)
+        {
+            if (Constants.tournamentMode == TournamentMode.CLASSIC)
+            {
+                gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            }
+            else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+            {
+                gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                gameObject.GetComponent<Rigidbody2D>().mass = 0.0001f;
+            }
         }
     }
 
@@ -73,6 +87,19 @@ public class PaddleBot : BasePaddle
                     case GameMode.CLASSIC:
                         _rigidBody.velocity = Vector2.up * ReactionSpeed;
                         break;
+                    case GameMode.TOURNAMENT:
+                        if (Constants.tournamentMode == TournamentMode.CLASSIC)
+                        {
+                            _rigidBody.velocity = Vector2.up * ReactionSpeed;
+                        }
+                        else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                        {
+                            _rigidBody.velocity = new Vector2(1, 1) * FreeStyleReactionSpeed;
+
+                            if (transform.position.x > XBounds[1].position.x)
+                                _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+                        }
+                        break;
                     case GameMode.FREESTYLE:
                         _rigidBody.velocity = new Vector2(1, 1) * FreeStyleReactionSpeed;
 
@@ -91,6 +118,18 @@ public class PaddleBot : BasePaddle
                 {
                     case GameMode.CLASSIC:
                         _rigidBody.velocity = Vector2.down * ReactionSpeed;
+                        break;
+                    case GameMode.TOURNAMENT:
+                        if (Constants.tournamentMode == TournamentMode.CLASSIC)
+                        {
+                            _rigidBody.velocity = Vector2.down * ReactionSpeed;
+                        }else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+                        {
+                            _rigidBody.velocity = new Vector2(-1, -1) * FreeStyleReactionSpeed;
+
+                            if (transform.position.x < XBounds[0].position.x)
+                                _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+                        }
                         break;
                     case GameMode.FREESTYLE:
                         _rigidBody.velocity = new Vector2(-1, -1) * FreeStyleReactionSpeed;

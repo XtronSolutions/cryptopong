@@ -30,16 +30,4 @@ public class PhotonScoresManager : MonoBehaviourPunCallbacks
         instance.playerScoresB += increment;
         instance.TextPlayerB.text = instance.playerScoresB.ToString();
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

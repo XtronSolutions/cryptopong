@@ -32,10 +32,12 @@ public class Powerup : MonoBehaviour
     public float PowerupLifeDuration;
 
     private SpriteRenderer _sprite;
+    bool CanCheckActive = true;
 
     void Awake()
     {
         _sprite = GetComponent<SpriteRenderer>();
+        CanCheckActive = true;
     }
 
     void Start()
@@ -62,10 +64,24 @@ public class Powerup : MonoBehaviour
         .OnComplete(() =>
         {
             DisablePowerup();
-        });
+        }
+        );
         }
     }
 
+    private void FixedUpdate()
+    {
+        CheckForGameActive();
+    }
+
+    public void CheckForGameActive()
+    {
+        if(!Managers.Game.isGameActive && CanCheckActive)
+        {
+            CanCheckActive = false;
+            DisablePowerup();
+        }
+    }
 
     public void PowerUp(BasePaddle pad)
     {

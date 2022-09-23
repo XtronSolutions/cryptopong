@@ -23,8 +23,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip forestMap;
     public AudioClip spaceMap;
 
-    public static float MaxMusic = 0.2f;
-    public static float MaxSound = 1f;
+    public static float MaxMusic = 0.2f; //0.2f
+    public static float HalfMusic = 0.1f;
+    public static float MaxSound = 0.5f;//1f
 
     private static AudioManager _audioManager;
     public static AudioManager Audio
@@ -34,6 +35,9 @@ public class AudioManager : MonoBehaviour
     private int soundIndex = 0;
     void Awake()
     {
+        //PlayerPrefs.DeleteKey("Sound");
+        //PlayerPrefs.DeleteKey("Music");
+
         if (!_audioManager)
         {
             _audioManager = this;
@@ -45,7 +49,7 @@ public class AudioManager : MonoBehaviour
 
 
         soundSource.volume = PlayerPrefs.GetFloat("Sound", MaxSound);
-        musicSource.volume = PlayerPrefs.GetFloat("Music", MaxMusic);
+        musicSource.volume = PlayerPrefs.GetFloat("Music", HalfMusic);
     }
 
     public float GetSoundVolume => soundSource.volume;
