@@ -64,6 +64,36 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
         }
         else
             Debug.LogError("Animator not assigned.");
+
+        //Rigidbody2D r_body = gameObject.GetComponent<Rigidbody2D>();
+        //PerformBodyChanges(r_body);
+    }
+
+    public void PerformBodyChanges(Rigidbody2D r_body)
+    {
+        if (Constants.Mode == GameMode.CLASSIC)
+        {
+            r_body.mass = 0.9f;
+            r_body.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        }
+        else if (Constants.Mode == GameMode.FREESTYLE)
+        {
+            r_body.mass = 0;
+            r_body.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+        else if (Constants.Mode == GameMode.TOURNAMENT)
+        {
+            if (Constants.tournamentMode == TournamentMode.CLASSIC)
+            {
+                r_body.mass = 0.9f;
+                r_body.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            }
+            else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
+            {
+                r_body.mass = 0;
+                r_body.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -152,7 +182,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                     switch (Constants.Mode)
                     {
                         case GameMode.CLASSIC:
-                            // curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
+                            curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
                             break;
                         case GameMode.FREESTYLE:
                             curPosition.y = Mathf.Clamp(curPosition.y + deltaY, -YBoundsRef.position.y, YBoundsRef.position.y);
@@ -178,7 +208,7 @@ public class PhotonPaddlePlayer : BasePaddle, IPunObservable, IPunInstantiateMag
                 switch (Constants.Mode)
                 {
                     case GameMode.CLASSIC:
-                        // curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
+                        curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);
                         break;
                     case GameMode.FREESTYLE:
                         curPosition.y = Mathf.Clamp(curPosition.y, -YBoundsRef.position.y, YBoundsRef.position.y);

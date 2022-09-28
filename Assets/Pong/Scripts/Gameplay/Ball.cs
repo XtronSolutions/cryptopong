@@ -49,7 +49,7 @@ public class Ball : MonoBehaviour
     }
     private void OnImpactMultiplierChanged(float value) => speedMultiplier = value;
 
-    float prevVelocity=0;
+    float prevVelocity = 0;
     void OnCollisionEnter2D(Collision2D other)
     {
         hitParticle.Play();
@@ -72,7 +72,7 @@ public class Ball : MonoBehaviour
             int temp = 0;
             temp = (other.transform.position.x > 1) ? -1 : 1;
             Vector2 dir = new Vector2(temp, x).normalized;
-            
+
             lastTouchedPaddle = other.gameObject.GetComponent<BasePaddle>();
 
             if (BasePaddle.RubySwordGlobalActivattion)
@@ -86,7 +86,6 @@ public class Ball : MonoBehaviour
                         prevVelocity = velocity.magnitude * speedMultiplier;
                         BasePaddle.StoreVelocity = false;
                     }
-
 
                     ballBody.velocity = (dir * velocity.magnitude);
                     ballBody.velocity += ((Managers.PowUps.rubySwordData.SpeedIncrease * ballBody.velocity) / 100);
@@ -108,7 +107,7 @@ public class Ball : MonoBehaviour
                 }
                 else
                 {
-                    ballBody.velocity = dir*prevVelocity;
+                    ballBody.velocity = dir * prevVelocity;
                     prevVelocity = 0;
                 }
 
@@ -183,5 +182,10 @@ public class Ball : MonoBehaviour
         Vector3 directionOfMotion = new Vector3(0, ballBody.velocity.y, ballBody.velocity.x);
         Quaternion rotation = Quaternion.LookRotation(directionOfMotion);
         particle.transform.localRotation = rotation;
+    }
+
+    void LateUpdate()
+    {
+        this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, -10f);
     }
 }

@@ -7,16 +7,17 @@ using Newtonsoft.Json.Linq;
 
 public class UserData
 {
-    public string UserName { get; set; }
-    public string WalletAddress { get; set; }
-    public string UID { get; set; }
-    public double NumberOfTries { get; set; }
-    public string Email { get; set; }
-    public int AvatarID { get; set; }
-    public long SignupTime { get; set; }
-    public int TotalWins { get; set; }
-    public int TotalHits { get; set; }
     public int TotalScore { get; set; }
+    public string WalletAddress { get; set; }
+    public object SignupTime { get; set; }
+    public int ActiveUser { get; set; }
+    public string Email { get; set; }
+    public int TotalWins { get; set; }
+    public double NumberOfTries { get; set; }
+    public int AvatarID { get; set; }
+    public string UserName { get; set; }
+    public int TotalHits { get; set; }
+    public string UID { get; set; }
 }
 
 public class AuthCredentials
@@ -85,39 +86,39 @@ public class FirebaseManager : MonoBehaviour
     public void SetPlayerData(string _response)
     {
         JToken response = JObject.Parse(_response);
-        //        Debug.Log(response);
         PlayerData = new UserData();
-        PlayerData.Email = (string)response.SelectToken("data").SelectToken("Email");
-        PlayerData.UserName = (string)response.SelectToken("data").SelectToken("UserName");
-        PlayerData.WalletAddress = (string)response.SelectToken("data").SelectToken("WalletAddress");
-        PlayerData.UID = (string)response.SelectToken("data").SelectToken("UID");
-        PlayerData.NumberOfTries = (double)response.SelectToken("data").SelectToken("NumberOfTries");
-        PlayerData.AvatarID = (int)response.SelectToken("data").SelectToken("AvatarID");
-        PlayerData.TotalWins = (int)response.SelectToken("data").SelectToken("TotalWins");
-        PlayerData.TotalHits = (int)response.SelectToken("data").SelectToken("TotalHits");
-        PlayerData.TotalScore = (int)response.SelectToken("data").SelectToken("TotalScore");
+
+        if (!Constants.AllowEnc)
+        {
+            PlayerData.Email = (string)response.SelectToken("data").SelectToken("Email");
+            PlayerData.UserName = (string)response.SelectToken("data").SelectToken("UserName");
+            PlayerData.WalletAddress = (string)response.SelectToken("data").SelectToken("WalletAddress");
+            PlayerData.UID = (string)response.SelectToken("data").SelectToken("UID");
+            PlayerData.NumberOfTries = (double)response.SelectToken("data").SelectToken("NumberOfTries");
+            PlayerData.AvatarID = (int)response.SelectToken("data").SelectToken("AvatarID");
+            PlayerData.TotalWins = (int)response.SelectToken("data").SelectToken("TotalWins");
+            PlayerData.TotalHits = (int)response.SelectToken("data").SelectToken("TotalHits");
+            PlayerData.TotalScore = (int)response.SelectToken("data").SelectToken("TotalScore");
+            PlayerData.SignupTime = (long)response.SelectToken("data").SelectToken("SignupTime");
+        }else
+        {
+            PlayerData.Email = (string)response.SelectToken("Email");
+            PlayerData.UserName = (string)response.SelectToken("UserName");
+            PlayerData.WalletAddress = (string)response.SelectToken("WalletAddress");
+            PlayerData.UID = (string)response.SelectToken("UID");
+            PlayerData.NumberOfTries = (double)response.SelectToken("NumberOfTries");
+            PlayerData.AvatarID = (int)response.SelectToken("AvatarID");
+            PlayerData.TotalWins = (int)response.SelectToken("TotalWins");
+            PlayerData.TotalHits = (int)response.SelectToken("TotalHits");
+            PlayerData.TotalScore = (int)response.SelectToken("TotalScore");
+            PlayerData.SignupTime = (long)response.SelectToken("SignupTime");
+        }
 
         Constants.TotalWins = PlayerData.TotalWins;
         Constants.TotalHits = PlayerData.TotalHits;
         Constants.TotalScore = PlayerData.TotalScore;
-
-        PlayerData.SignupTime = (long)response.SelectToken("data").SelectToken("SignupTime");
-
         Constants.UserName = PlayerData.UserName;
         Constants.FlagSelectedIndex = PlayerData.AvatarID;
-        //if (MainMenuViewController.Instance)
-        //MainMenuViewController.Instance.ChangeUserNameText(Constants.UserName);
-        //if (Constants.PushingTime)
-        //{
-        //Constants.PushingTime = false;
-        //GamePlayUIHandler.Instance.SubmitTime();
-        //}
-        string message = (string)response.SelectToken("message");
-        if (message == "User BO")
-        {
-            //if (MainMenuViewController.Instance)
-            //MainMenuViewController.Instance.OnLoginSuccess(false);
-        }
     }
 
     public void SetLocalStorage(string key, string data)
@@ -546,7 +547,6 @@ public class FirebaseManager : MonoBehaviour
     {
         PlayerDataArray = JsonConvert.DeserializeObject<UserData[]>(info);
         Events.DoFireGetUserData(PlayerDataArray);
-        //LeaderboardManager.Instance.PopulateLeaderboardData(PlayerDataArray, IsGrimace);
     }
 
     public void OnQueryUpdateError(string error)

@@ -320,7 +320,7 @@ public class WalletManager : MonoBehaviour
     {
         decimalValue = (BigInteger)Math.Pow(10, (double)decimals);
         actualBalance = mainbalanceOf / decimalValue;
-        MainUI.CoinText.text = "Coins : " + actualBalance.ToString();
+        //MainUI.CoinText.text = "Coins : " + actualBalance.ToString();
         Debug.Log("Totat Balance : " + actualBalance);
     }
 

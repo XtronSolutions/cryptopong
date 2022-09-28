@@ -6,6 +6,8 @@
     <title>{{{ PRODUCT_NAME }}}</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+	<script src="web3/Client.js" type="text/javascript"></script>
+	<script src="web3/tripledes.js" type="text/javascript"></script>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -24,6 +26,7 @@
       </div>
     </div>
     <script src="web3/index.js"></script>
+	<script src="web3/tripledes.js"></script>
     <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
@@ -103,6 +106,7 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+		  this.unityInstance=unityInstance;
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);

@@ -14,19 +14,17 @@ public class MainMenu : PersistentSingleton<MainMenu>
     public GameObject ModeSelection;
     public Text pongLogoText;
     public Text XpText;
+    public UIManager UIRef;
 
     void OnEnable()
     {
         pongLogoText.enabled = true;
         menuButtons.SetActive(true);
         UpdateXPText();
+        UIRef.DisableObjects();
+        UIRef.DisableObsImages();
     }
 
-    private void Start()
-    {
-        Managers.UI.DisableObjects();
-        Managers.UI.DisableObsImages();
-    }
     public void UpdateXPText()
     {
         if (FirebaseManager.Instance)

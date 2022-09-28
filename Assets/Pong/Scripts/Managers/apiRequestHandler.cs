@@ -1,14 +1,25 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
 #region SuperClasses
+
+public class APIRequest
+{
+    public string data;
+}
+public class DataRequest
+{
+    public string Message { set; get; }
+    public string OtherMessage { set; get; }
+}
+
 public class UserDataBO
 {
-
     public string userName { get; set; }
 
     public string email { get; set; }
@@ -40,11 +51,25 @@ public class LeaderboardPayload
     public LeaderboardCounter data { get; set; }
 }
 #endregion
+
+public enum RequestType
+{
+    NONE=0,
+    LEADERBOARD=1,
+    LOGIN=2,
+    UPDATE=3
+}
 public class apiRequestHandler : MonoBehaviour
 {
     //Production : https://us-central1-pong-tournaments.cloudfunctions.net/
     //pong production : AIzaSyDG7C0sHN4-hXhjOyTdyaBpQc3BArIBVsU
+#if UNITY_WEBGL
+    [DllImport("__Internal")]
+    private static extern void EncJS(string data, string objName, string callback);
 
+    [DllImport("__Internal")]
+    private static extern void DecJS(string data, string objName, string callback);
+#endif
     private string BaseURL;
     private string loginURL;
     private const string firebaseLoginUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
@@ -56,6 +81,10 @@ public class apiRequestHandler : MonoBehaviour
     private string updateUserBoURL;
     private string leaderboardBOURL;
     public static apiRequestHandler Instance;
+    string StoredTokenResult;
+    string StoredReq;
+    private RequestType requestType = RequestType.NONE;
+    private string msgOther = "GC,,Ktj(ts]z";
 
     public void Start()
     {
@@ -64,7 +93,6 @@ public class apiRequestHandler : MonoBehaviour
             Instance = this;
             // DontDestroyOnLoad(this.gameObject);
         }
-
 
         BaseURL = "https://us-central1-pong-tournaments.cloudfunctions.net/";
         firebaseApiKey = "AIzaSyDG7C0sHN4-hXhjOyTdyaBpQc3BArIBVsU";
@@ -76,6 +104,130 @@ public class apiRequestHandler : MonoBehaviour
 
         forgetPassword = forgetPassword + firebaseApiKey;
         emailVerification = emailVerification + firebaseApiKey;
+    }
+
+    public void SetRequestType(RequestType _type)
+    {
+        requestType = _type;
+    }
+
+    public string CheckResponseType(string _data, bool _enc, bool _onenc, bool _dec, bool _ondec)
+    {
+        string _request = "";
+        switch (requestType)
+        {
+            case RequestType.NONE:
+                break;
+            case RequestType.LEADERBOARD:
+                if (_enc || _dec)
+                {
+                    DataRequest _Ddata = new DataRequest();
+                    _Ddata.Message = _data;
+                    _Ddata.OtherMessage = Constants.OtherMsg + msgOther;
+
+                    _request = JsonConvert.SerializeObject(_Ddata);
+                }
+                else if (_onenc)
+                {
+                    APIRequest _newRequest = new APIRequest();
+                    _newRequest.data = _data;
+                    StoredReq = JsonConvert.SerializeObject(_newRequest);
+                    GetLeaderboardAsync(StoredTokenResult, StoredReq);
+                } else if (_ondec)
+                {
+                    FirebaseManager.Instance.OnQueryUpdate(_data);
+                }
+                break;
+            case RequestType.LOGIN:
+                if (_enc || _dec)
+                {
+                    DataRequest _Ddata = new DataRequest();
+                    _Ddata.Message = _data;
+                    _Ddata.OtherMessage = Constants.OtherMsg + msgOther;
+
+                    _request = JsonConvert.SerializeObject(_Ddata);
+                }
+                else if (_onenc)
+                {
+                    APIRequest _newRequest = new APIRequest();
+                    _newRequest.data = _data;
+                    StoredReq = JsonConvert.SerializeObject(_newRequest);
+                    ProcessLoginAsync(StoredTokenResult, StoredReq);
+                } else if (_ondec)
+                {
+                    FirebaseManager.Instance.SetPlayerData(_data);
+                    Events.DoFireLoginSuccess();
+                }
+                break;
+            case RequestType.UPDATE:
+                if (_enc || _dec)
+                {
+                    DataRequest _Ddata = new DataRequest();
+                    _Ddata.Message = _data;
+                    _Ddata.OtherMessage = Constants.OtherMsg + msgOther;
+
+                    _request = JsonConvert.SerializeObject(_Ddata);
+                }
+                else if (_onenc)
+                {
+                    APIRequest _newRequest = new APIRequest();
+                    _newRequest.data = _data;
+                    StoredReq = JsonConvert.SerializeObject(_newRequest);
+                    ProcessDataUpdateAsync(StoredTokenResult, StoredReq);
+                }
+                else if (_ondec)
+                {
+                    FirebaseManager.Instance.OnDocUpdate("");
+                }
+                break;
+        }
+
+        return _request;
+    }
+    public void PerfromEnc(string _data)
+    {
+        string _request = CheckResponseType(_data, true, false, false, false);
+
+#if !UNITY_EDITOR
+        EncJS(_request,this.gameObject.name,"OnEnc");
+#else
+        Debug.Log("can't call JS from browser");
+#endif
+    }
+
+    public void OnEnc(string info)
+    {
+        if (info != "null" && info != "" && info != null && info != string.Empty)
+        {
+            CheckResponseType(info, false, true, false, false);
+        }
+        else
+        {
+            Debug.LogError(info);
+        }
+    }
+
+    public void PerfromDec(string _data)
+    {
+        string _request = CheckResponseType(_data, false, false, true, false);
+
+#if !UNITY_EDITOR
+        DecJS(_request,this.gameObject.name,"OnDec");
+#else
+        Debug.Log("can't call JS from browser");
+#endif
+    }
+
+    public void OnDec(string info)
+    {
+        if (info != "null" && info != "" && info != null && info != string.Empty)
+        {
+            CheckResponseType(info, false, false, false, true);
+        }
+        else
+        {
+            Debug.LogError(info);
+        }
     }
     public void updatePlayerData()
     {
@@ -141,15 +293,15 @@ public class apiRequestHandler : MonoBehaviour
         if (TokenResult.Contains("error"))
         {
             Events.DoFireLoginFailed("");
-            
+
             if (TokenResult.Contains("INVALID_PASSWORD"))
             {
                 Events.DoReportMessage(new messageInfo("Incorrect password.", null, false, true));
-            }else if (TokenResult.Contains("INVALID_EMAIL"))
+            } else if (TokenResult.Contains("INVALID_EMAIL"))
             {
                 Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Email is invalid.", null, false, false));
-            }else
+            } else
             {
                 Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Something went wrong, please try again.", null, false, false));
@@ -159,7 +311,11 @@ public class apiRequestHandler : MonoBehaviour
             return;
         }
 
+        FirebaseManager.Instance.Credentails.Email = _email;
+        FirebaseManager.Instance.Credentails.Password = _pwd;
+
         LoginDataBO loginData = new LoginDataBO();
+        StoredTokenResult = TokenResult;
 
         if (Constants.IsTest)
             loginData.walletAddress = Constants.TestWalletAddress;
@@ -168,10 +324,23 @@ public class apiRequestHandler : MonoBehaviour
 
         LoginDataBOPayload loginDataPayload = new LoginDataBOPayload();
         loginDataPayload.data = loginData;
-        string req = JsonConvert.SerializeObject(loginDataPayload);
+        string req = "";
+        if (Constants.AllowEnc)
+        {
+            req = JsonConvert.SerializeObject(loginDataPayload.data);
+            SetRequestType(RequestType.LOGIN);
+            PerfromEnc(req);
+        } else
+        {
+            req = JsonConvert.SerializeObject(loginDataPayload);
+            ProcessLoginAsync(StoredTokenResult, req);
+        }
+    }
+    async public void ProcessLoginAsync(string TokenResult, string req)
+    {
         using UnityWebRequest request = UnityWebRequest.Put(BaseURL + "Login", req);
         request.SetRequestHeader("Content-Type", "application/json");
-        string _reqToken = "Bearer " + TokenResult;
+        string _reqToken = "Bearer " + StoredTokenResult;
         request.SetRequestHeader("Authorization", _reqToken);
 
         await request.SendWebRequest();
@@ -183,25 +352,26 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log(request.result);
-            //Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
-            //Debug.Log((string)res.SelectToken("message"));
             if (request.result == UnityWebRequest.Result.Success)
             {
-                FirebaseManager.Instance.Credentails.Email = _email;
-                FirebaseManager.Instance.Credentails.Password = _pwd;
-
-                FirebaseManager.Instance.SetPlayerData(request.downloadHandler.text);
-                Events.DoFireLoginSuccess();
-                
+                if (Constants.AllowEnc)
+                {
+                    SetRequestType(RequestType.LOGIN);
+                    PerfromDec((string)res.SelectToken("data"));
+                }
+                else
+                {
+                    FirebaseManager.Instance.SetPlayerData(request.downloadHandler.text);
+                    Events.DoFireLoginSuccess();
+                }
             }
             else if ((string)res.SelectToken("message") == "Email is not verified")
             {
                 Constants.ResendTokenID = TokenResult;
                 FirebaseManager.Instance.showVerificationScreen();
                 Events.DoFireLoginFailed("");
-                Events.DoReportMessage(new messageInfo("Email is not verified, please verify your email address and try again.", null, true));
+                Events.DoReportMessage(new messageInfo("Email is not verified, check your inbox or spam, please verify your email address and try again.", null, true));
             }
             else if ((string)res.SelectToken("message") == "No User Found.")
             {
@@ -276,9 +446,6 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log("Result is: ");
-            //Debug.Log(request.result);
-            //Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
 
             if (request.result == UnityWebRequest.Result.Success)
@@ -304,8 +471,25 @@ public class apiRequestHandler : MonoBehaviour
             return;
         }
 
+        StoredTokenResult = TokenResult;
         FirebaseManager.Instance.updatePlayerDataPayload();
-        string req = JsonConvert.SerializeObject(FirebaseManager.Instance.PlayerDataPayload);
+        string req;
+        
+        if(Constants.AllowEnc)
+        {
+            req = JsonConvert.SerializeObject(FirebaseManager.Instance.PlayerDataPayload.data);
+            SetRequestType(RequestType.UPDATE);
+            PerfromEnc(req);
+        }
+        else
+        {
+            req = JsonConvert.SerializeObject(FirebaseManager.Instance.PlayerDataPayload);
+            ProcessDataUpdateAsync(StoredTokenResult, req);
+        }
+    }
+
+    async public void ProcessDataUpdateAsync(string TokenResult, string req)
+    {
         using UnityWebRequest request = UnityWebRequest.Put(BaseURL + "UpdateUserBO", req);
         request.SetRequestHeader("Content-Type", "application/json");
         string _reqToken = "Bearer " + TokenResult;
@@ -320,8 +504,6 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log(request.result);
-            //Debug.Log(request.downloadHandler.text);
             JToken res = JObject.Parse(request.downloadHandler.text);
             if (request.result == UnityWebRequest.Result.Success)
             {
@@ -348,13 +530,32 @@ public class apiRequestHandler : MonoBehaviour
             return;
         }
 
+        StoredTokenResult = TokenResult;
         LeaderboardCounter _count = new LeaderboardCounter();
         _count.number = Constants.LeaderboardCount;
 
         LeaderboardPayload obj = new LeaderboardPayload();
         obj.data = _count;
-        string req = JsonConvert.SerializeObject(obj);
+        string req;
+        if (Constants.AllowEnc)
+        {
+            req = JsonConvert.SerializeObject(obj.data);
+            SetRequestType(RequestType.LEADERBOARD);
+            PerfromEnc(req);
+        }else
+        {
+            req = JsonConvert.SerializeObject(obj);
+            GetLeaderboardAsync(StoredTokenResult,req);
+        }
+        
+    }
+    async public void GetLeaderboardAsync(string TokenResult,string req)
+    {
         string _mainURL = BaseURL + "Leaderboard";
+
+        if(Constants.AllowEnc)
+            _mainURL = BaseURL + "LeaderboardE";
+
         using UnityWebRequest request = UnityWebRequest.Put(_mainURL, req);
         request.SetRequestHeader("Content-Type", "application/json");
         string _reqToken = "Bearer " + TokenResult;
@@ -368,13 +569,17 @@ public class apiRequestHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log("LeaderBoard Result is: ");
-            //Debug.Log(request.result);
-            //Debug.Log(request.downloadHandler.text);
-
             if (request.result == UnityWebRequest.Result.Success)
             {
-                FirebaseManager.Instance.OnQueryUpdate(request.downloadHandler.text);
+                if (Constants.AllowEnc)
+                {
+                    SetRequestType(RequestType.LEADERBOARD);
+                    PerfromDec(request.downloadHandler.text);
+                }
+                else
+                {
+                    FirebaseManager.Instance.OnQueryUpdate(request.downloadHandler.text);
+                }            
             }
             else
             {

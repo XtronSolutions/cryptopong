@@ -25,26 +25,33 @@ public class PaddleBot : BasePaddle
         int CharIndex = Random.Range(0, Characters.Length);
         base.Animator.runtimeAnimatorController = Characters[CharIndex];
         base.Animator.GetComponent<RectTransform>().sizeDelta = Database.GetCharacterOfIndex(CharIndex).GetImageSize;
+        Rigidbody2D r_body = gameObject.GetComponent<Rigidbody2D>();
+        PerformBodyChanges(r_body);
+    }
 
+    public void PerformBodyChanges(Rigidbody2D r_body)
+    {
         if (Constants.Mode == GameMode.CLASSIC)
         {
-            gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            r_body.mass = 0.9f;
+            r_body.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
         else if (Constants.Mode == GameMode.FREESTYLE)
         {
-            gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            gameObject.GetComponent<Rigidbody2D>().mass = 0.0001f;
+            r_body.mass = 0;
+            r_body.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         else if (Constants.Mode == GameMode.TOURNAMENT)
         {
             if (Constants.tournamentMode == TournamentMode.CLASSIC)
             {
-                gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+                r_body.mass = 0.9f;
+                r_body.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
             }
             else if (Constants.tournamentMode == TournamentMode.FREESTYLE)
             {
-                gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                gameObject.GetComponent<Rigidbody2D>().mass = 0.0001f;
+                r_body.mass = 0;
+                r_body.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
         }
     }

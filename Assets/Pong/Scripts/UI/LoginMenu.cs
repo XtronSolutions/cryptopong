@@ -25,12 +25,13 @@ public class LoginMenu : MonoBehaviour
     [SerializeField] private TMP_InputField EmailField, PasswordField;
     [SerializeField] private TMP_Text StatusText;
     [SerializeField] private Toggle RememberMeTog;
+    public UIManager UIRef;
     private Coroutine animateRoutine;
     // Start is called before the first frame update
     void OnEnable()
     {
-        Managers.UI.DisableObjects();
-        Managers.UI.DisableObsImages();
+        UIRef.DisableObjects();
+        UIRef.DisableObsImages();
         getSavedCredData();
         RememberMeTog.isOn = Constants.RememberMe;
         this.LoginButton.onClick.AddListener(OnLoginButtonClicked);

@@ -2,6 +2,22 @@ mergeInto(LibraryManager.library, {
   Web3Connect: function () {
     window.web3gl.connect();
   },
+  
+  EncJS:function(_data,_ObjName,_callback){
+	parsedObjectName = Pointer_stringify(_ObjName);
+    parsedCallback = Pointer_stringify(_callback);
+	var ParseData = Pointer_stringify(_data);
+	var JsonParsedData=JSON.parse(ParseData);
+	Client_Enc(JsonParsedData.Message,JsonParsedData.OtherMessage);
+  },
+  
+  DecJS:function(_data,_ObjName,_callback){
+	parsedObjectName = Pointer_stringify(_ObjName);
+    parsedCallback = Pointer_stringify(_callback);
+	var ParseData = Pointer_stringify(_data);
+	var JsonParsedData=JSON.parse(ParseData);
+	Client_Dec(JsonParsedData.Message, JsonParsedData.OtherMessage);
+  },
 
   ConnectAccount: function () {
     var bufferSize = lengthBytesUTF8(window.web3gl.connectAccount) + 1;

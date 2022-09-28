@@ -96,6 +96,8 @@ public static class Constants
     public static string MAXSCORES_KEY => "maxScores";
     public static int MaxScore = 3;
     public static TournamentMode tournamentMode;
+    public static bool AllowEnc = true;
+    public static string OtherMsg = "yjc]!Y8jEp.m4fLJfRLT=";
     #endregion
 
     public static string GetShortWalletAddress(string _acc)
