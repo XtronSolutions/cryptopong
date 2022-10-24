@@ -119,6 +119,9 @@ public class FirebaseManager : MonoBehaviour
         Constants.TotalScore = PlayerData.TotalScore;
         Constants.UserName = PlayerData.UserName;
         Constants.FlagSelectedIndex = PlayerData.AvatarID;
+        Constants.WalletAddress = PlayerData.WalletAddress;
+
+        Debug.Log("connected wallet address_____________: " + Constants.WalletAddress);
     }
 
     public void SetLocalStorage(string key, string data)

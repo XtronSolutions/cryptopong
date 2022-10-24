@@ -49,6 +49,7 @@ public class ScoreManager : MonoBehaviour
 
     public void OnScore(PaddleOwner scorer)
     {
+        BasePaddle.RubySwordGlobalActivattion = false;
         if (scorer == PaddleOwner.PLAYER)
         {
             playerScore++;

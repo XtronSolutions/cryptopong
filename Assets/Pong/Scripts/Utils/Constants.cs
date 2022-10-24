@@ -34,7 +34,7 @@ public static class Constants
     public static string MAIN_MENU_SCENE_NAME = "Gameplay";
     public static bool IsPractice = false;
     public static bool IsTournament = false;
-    public static bool TournamentActive = true;
+    public static bool TournamentActive = false;
     public static bool PlayingAsGuest = false;
     public static int SelectedMapTournament = 1;
 

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using System.Linq;
 
 #region SuperClasses
 
@@ -170,8 +171,10 @@ public class WalletManager : MonoBehaviour
     {
         Instance = this;
 
-        if (!IsGamePlay)
-            Constants.WalletConnected = false;
+        //if (!IsGamePlay)
+        Constants.WalletConnected = true;
+        Constants.WalletAddress ="999"+RandomString(29);
+        SetAcount(Constants.WalletAddress);
 
         if (Constants.IsTestNet)
         {
@@ -205,6 +208,14 @@ public class WalletManager : MonoBehaviour
             SetAcount(Constants.WalletAddress);
             //InvokeRepeating("getNftsData", 0.1f, 10f);
         }
+    }
+
+    private static System.Random random = new System.Random();
+    public static string RandomString(int length)
+    {
+        const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
     /// <summary>

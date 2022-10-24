@@ -296,12 +296,18 @@ public class apiRequestHandler : MonoBehaviour
 
             if (TokenResult.Contains("INVALID_PASSWORD"))
             {
-                Events.DoReportMessage(new messageInfo("Incorrect password.", null, false, true));
+                Events.DoReportMessage(new messageInfo("Incorrect password.", null, false, false));
             } else if (TokenResult.Contains("INVALID_EMAIL"))
             {
                 Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Email is invalid.", null, false, false));
-            } else
+            }
+            else if (TokenResult.Contains("error_EMAIL_NOT_FOUND"))
+            {
+                Events.DoFireLoginFailed("");
+                Events.DoReportMessage(new messageInfo("Email not found.", null, false, false));
+            }
+            else
             {
                 Events.DoFireLoginFailed("");
                 Events.DoReportMessage(new messageInfo("Something went wrong, please try again.", null, false, false));
@@ -487,7 +493,6 @@ public class apiRequestHandler : MonoBehaviour
             ProcessDataUpdateAsync(StoredTokenResult, req);
         }
     }
-
     async public void ProcessDataUpdateAsync(string TokenResult, string req)
     {
         using UnityWebRequest request = UnityWebRequest.Put(BaseURL + "UpdateUserBO", req);

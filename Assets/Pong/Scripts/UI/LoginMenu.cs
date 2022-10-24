@@ -72,10 +72,16 @@ public class LoginMenu : MonoBehaviour
         }
     }
   
-    private void OnForgetPassword()
+    public void OnForgetPassword()
     {
-        apiRequestHandler.Instance.onForgetPassword(EmailField.text);
-        Events.DoReportMessage(new messageInfo("Instructions have been sent, please check your email."));
+        if (!string.IsNullOrEmpty(EmailField.text))
+        {
+            apiRequestHandler.Instance.onForgetPassword(EmailField.text);
+            Events.DoReportMessage(new messageInfo("Instructions have been sent, please check your email."));
+        }else
+        {
+            Events.DoReportMessage(new messageInfo("Please enter email."));
+        }
     }
 
     private void OnFailure(string error)
@@ -102,7 +108,7 @@ public class LoginMenu : MonoBehaviour
         this.StatusText.text = $"";
         StopCoroutine(animateRoutine);
         Managers.UI.ActivateUI(Menus.MAIN);
-        AudioManager.Audio.PlayLobbyMusic();
+        //AudioManager.Audio.PlayLobbyMusic();
     }
 
     private void OnPlayAsGuest()
@@ -121,7 +127,7 @@ public class LoginMenu : MonoBehaviour
         MakeInteractable(true);
         this.StatusText.text = $"";
         Managers.UI.ActivateUI(Menus.MAIN);
-        AudioManager.Audio.PlayLobbyMusic();
+        //AudioManager.Audio.PlayLobbyMusic();
     }
 
 
